@@ -29,7 +29,6 @@
                          "tailwind-merge":  "^2.6.0",
                          "zustand":  "^4.4.0",
                          "react-hot-toast":  "^2.4.1",
-                         "@houselevi/travel-api": "file:../../packages/travel-api" 
                      },
     "devDependencies":  {
                             "@tailwindcss/postcss":  "^4.1.18",
