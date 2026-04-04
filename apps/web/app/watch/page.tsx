@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import { useAuthContext } from '@/lib/auth';
+import { useAuthContext } from '@houselevi/auth';
 import { WatchHero }    from '../components/watch/WatchHero';
 import { HostsRow }     from '../components/watch/HostsRow';
 import { ContentRow }   from '../components/watch/ContentRow';
@@ -73,23 +73,23 @@ export default function WatchPage() {
       moviesData,
       seriesData,
     ] = await Promise.all([
-      // Hero — public, but filtered to free content only
+      // Hero ï¿½ public, but filtered to free content only
       fetchJSON<any>('/api/content/hero', { item: null }),
-      // Hosts — public
+      // Hosts ï¿½ public
       fetchJSON<any>('/api/content/hosts', { hosts: [] }),
-      // Latest — FREE content only (isPremium=false enforced on backend)
+      // Latest ï¿½ FREE content only (isPremium=false enforced on backend)
       fetchJSON<any>('/api/content/latest-episodes?limit=12&isPremium=false', { items: [] }, token || undefined),
-      // Continue watching — auth only
+      // Continue watching ï¿½ auth only
       token
         ? fetchJSON<any>('/api/content/continue-watching?limit=8', { items: [] }, token)
         : Promise.resolve({ items: [] }),
-      // Featured — free only
+      // Featured ï¿½ free only
       fetchJSON<any>('/api/content?isPremium=false&limit=12', { items: [] }),
-      // Stage plays — free only
+      // Stage plays ï¿½ free only
       fetchJSON<any>('/api/content?type=stage-play&isPremium=false&limit=12', { items: [] }),
-      // Movies — free only
+      // Movies ï¿½ free only
       fetchJSON<any>('/api/content?type=movie&isPremium=false&limit=12', { items: [] }),
-      // Series — free only
+      // Series ï¿½ free only
       fetchJSON<any>('/api/content?type=series&isPremium=false&limit=12', { items: [] }),
     ]);
 

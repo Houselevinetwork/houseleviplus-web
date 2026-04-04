@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { AuthProvider } from '@/lib/auth';
+import { AuthProvider } from '@houselevi/auth';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 

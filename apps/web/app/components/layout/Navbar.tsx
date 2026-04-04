@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuthContext } from '@/lib/auth';
+import { useAuthContext } from '@houselevi/auth';
 import { AuthPromptModal } from '../common/AuthPromptModal';
 import './navbar.css';
 

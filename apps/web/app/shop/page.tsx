@@ -7,7 +7,7 @@
  * - Announcement bar
  * - Hero banner
  * - Best Sellers   (isFeatured:true products)
- * - Editorial banner (OLD MONEY · HOUSELEVI+ OFFICIAL)
+ * - Editorial banner (OLD MONEY ï¿½ HOUSELEVI+ OFFICIAL)
  * - Partner Brands  (partner-brands category, hidden if empty)
  * - Collections grid
  * - Reviews
@@ -201,7 +201,7 @@ function ProductCard({ p }: { p: Product }) {
 }
 
 // -- Product strip with pagination ------------------------------
-function ProductStrip({ products, loading, empty = 'No products yet — check back soon.' }: { products: Product[]; loading: boolean; empty?: string }) {
+function ProductStrip({ products, loading, empty = 'No products yet ï¿½ check back soon.' }: { products: Product[]; loading: boolean; empty?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const perPage    = 5;
@@ -336,7 +336,7 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* -- Editorial Banner — OLD MONEY · HOUSELEVI+ OFFICIAL -- */}
+        {/* -- Editorial Banner ï¿½ OLD MONEY ï¿½ HOUSELEVI+ OFFICIAL -- */}
         <div style={{ position: 'relative', width: '100%', minHeight: 420, overflow: 'hidden', background: '#111' }}>
           {loading
             ? <Skel w="100%" h={420} r={0} />
@@ -355,7 +355,7 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* -- Levi's Closet+ — Old Money category ---------------- */}
+        {/* -- Levi's Closet+ ï¿½ Old Money category ---------------- */}
         <div style={{ background: '#fff', width: '100%', paddingBottom: 8 }}>
           <SectionHead title="Levi's Closet+" href="/shop/all-products" hrefLabel="Shop Collection" />
           <ProductStrip products={data?.oldMoney ?? []} loading={loading} empty="Old Money products coming soon." />
@@ -364,7 +364,7 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* -- Partner Brands — only shows if products exist ------- */}
+        {/* -- Partner Brands ï¿½ only shows if products exist ------- */}
         {(loading || (data?.partnerBrands?.length ?? 0) > 0) && (
           <div style={{ background: '#f8f6f2', width: '100%', paddingBottom: 48 }}>
             <SectionHead title="Partner Brands" href="/shop/collections/partner-brands" />
@@ -404,7 +404,7 @@ export default function ShopPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
               <Stars n={data?.reviewAvg ?? 4.5} size={16} />
               <span style={{ fontFamily: 'Lato', fontSize: 13, color: 'rgba(18,18,18,0.55)', letterSpacing: '0.06em' }}>
-                {data?.reviewAvg?.toFixed(1) ?? '4.5'} · {data?.reviewCount ?? 0} reviews
+                {data?.reviewAvg?.toFixed(1) ?? '4.5'} ï¿½ {data?.reviewCount ?? 0} reviews
               </span>
             </div>
 

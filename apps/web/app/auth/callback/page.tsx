@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useAuthContext } from '@/lib/auth';
+import { useAuthContext } from '@houselevi/auth';
 
 type Status = 'verifying' | 'completed' | 'failed';
 

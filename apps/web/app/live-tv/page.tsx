@@ -2,12 +2,12 @@
 /**
  * Location: apps/web/app/mood-tv/page.tsx
  *
- * HL Mood TV — 24/7 live stream.
+ * HL Mood TV ï¿½ 24/7 live stream.
  * AUTH GATE: Entire page requires sign in (nothing to browse first).
  */
 
 import { useEffect, useState } from 'react';
-import { useAuthContext } from '@/lib/auth';
+import { useAuthContext } from '@houselevi/auth';
 import { VideoPlayer }     from '../components/mood-tv/VideoPlayer';
 import { BrandingSection } from '../components/mood-tv/BrandingSection';
 import './mood-tv.css';
@@ -111,7 +111,7 @@ export default function MoodTVPage() {
     );
   }
 
-  // Guest will have been redirected by now — but as a safety net, render nothing
+  // Guest will have been redirected by now ï¿½ but as a safety net, render nothing
   if (!isAuthenticated) return null;
 
   return (
