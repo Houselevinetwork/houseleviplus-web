@@ -127,10 +127,10 @@ const COMPARE_ROWS: { label: string; values: string[] }[] = [
   { label: 'Screens at once',  values: ['1',       '1',         '2',               '4'] },
   { label: 'Devices',          values: ['Phone/Tablet', 'All devices', 'All devices', 'All devices'] },
   { label: 'Downloads',        values: ['1 device','1 device',  '2 devices',       '6 devices'] },
-  { label: 'Spatial audio',    values: ['�',       '�',         '�',               '?'] },
-  { label: 'Early releases',   values: ['�',       '�',         '?',               '?'] },
-  { label: 'VIP events',       values: ['�',       '�',         '�',               '?'] },
-  { label: 'Priority support', values: ['�',       '�',         '�',               '?'] },
+  { label: 'Spatial audio',    values: ['ï¿½',       'ï¿½',         'ï¿½',               '?'] },
+  { label: 'Early releases',   values: ['ï¿½',       'ï¿½',         '?',               '?'] },
+  { label: 'VIP events',       values: ['ï¿½',       'ï¿½',         'ï¿½',               '?'] },
+  { label: 'Priority support', values: ['ï¿½',       'ï¿½',         'ï¿½',               '?'] },
 ];
 
 // -- FAQ data ------------------------------------------------------------------
@@ -145,7 +145,7 @@ const FAQS = [
   },
   {
     q: 'Can I share my account?',
-    a: 'A House Levi+ account is for people who live together in a single household. The number of simultaneous screens depends on your plan � Standard allows 2, Premium VIP allows 4.',
+    a: 'A House Levi+ account is for people who live together in a single household. The number of simultaneous screens depends on your plan ï¿½ Standard allows 2, Premium VIP allows 4.',
   },
   {
     q: 'What happens when I cancel?',
@@ -153,7 +153,7 @@ const FAQS = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'We offer a 7-day free trial on the Standard plan for new members. No credit card required to start � you only pay if you decide to continue.',
+    a: 'We offer a 7-day free trial on the Standard plan for new members. No credit card required to start ï¿½ you only pay if you decide to continue.',
   },
   {
     q: 'What devices can I watch on?',
@@ -250,7 +250,7 @@ export default function AboutPremiumPage() {
         )}
 
         <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', marginTop: 16 }}>
-          7-day free trial on Standard � No commitment � Cancel anytime
+          7-day free trial on Standard ï¿½ No commitment ï¿½ Cancel anytime
         </p>
       </div>
 
@@ -320,7 +320,7 @@ export default function AboutPremiumPage() {
                   fontSize: 12, color: 'rgba(255,255,255,0.45)',
                   margin: '0 0 24px', letterSpacing: '0.04em',
                 }}>
-                  {plan.quality} � {plan.devices} screen{plan.devices > 1 ? 's' : ''}
+                  {plan.quality} ï¿½ {plan.devices} screen{plan.devices > 1 ? 's' : ''}
                 </p>
 
                 {/* Features */}
@@ -391,7 +391,7 @@ export default function AboutPremiumPage() {
         }}>
           Prices shown in Kenyan Shillings. Taxes may apply depending on your location.
           <br />
-          M-Pesa and card payments accepted. Cancel anytime � no hidden fees.
+          M-Pesa and card payments accepted. Cancel anytime ï¿½ no hidden fees.
         </p>
       </div>
 
@@ -449,7 +449,7 @@ export default function AboutPremiumPage() {
                     <td key={j} style={{
                       textAlign: 'center', padding: '14px 8px',
                       fontSize: 13,
-                      color: val === '�'
+                      color: val === 'ï¿½'
                         ? 'rgba(255,255,255,0.18)'
                         : j === 2
                           ? '#fff'
@@ -495,7 +495,7 @@ export default function AboutPremiumPage() {
             { icon: '?', title: 'Premium originals', desc: 'Exclusive series and films produced by HL+, nowhere else.' },
             { icon: '??', title: 'Live events',        desc: 'Watch theatre, concerts and cultural events as they happen.' },
             { icon: '?', title: 'Offline viewing',    desc: 'Download content and watch without internet connection.' },
-            { icon: '??', title: 'All devices',        desc: 'Smart TV, laptop, phone or tablet � your choice.' },
+            { icon: '??', title: 'All devices',        desc: 'Smart TV, laptop, phone or tablet ï¿½ your choice.' },
             { icon: '??', title: 'Early releases',     desc: 'Standard and above get new content days before public.' },
             { icon: '?', title: 'VIP access',         desc: 'Premium VIP members get event invitations and merch discounts.' },
           ].map(item => (
@@ -609,7 +609,7 @@ export default function AboutPremiumPage() {
           fontSize: 11, color: 'rgba(255,255,255,0.2)',
           marginTop: 16, lineHeight: 1.7,
         }}>
-          7-day free trial on Standard plan � Cancel anytime � No hidden fees
+          7-day free trial on Standard plan ï¿½ Cancel anytime ï¿½ No hidden fees
         </p>
       </div>
 

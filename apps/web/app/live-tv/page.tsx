@@ -2,7 +2,7 @@
 /**
  * Location: apps/web/app/mood-tv/page.tsx
  *
- * HL Mood TV � 24/7 live stream.
+ * HL Mood TV ï¿½ 24/7 live stream.
  * AUTH GATE: Entire page requires sign in (nothing to browse first).
  */
 
@@ -111,7 +111,7 @@ export default function MoodTVPage() {
     );
   }
 
-  // Guest will have been redirected by now � but as a safety net, render nothing
+  // Guest will have been redirected by now ï¿½ but as a safety net, render nothing
   if (!isAuthenticated) return null;
 
   return (

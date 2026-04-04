@@ -45,7 +45,7 @@ export default function GalleryPage() {
         // Small delay so the page is fully ready
         setTimeout(() => {
           const msg = document.createElement('div');
-          msg.textContent = 'You are signed in � click any photo to download.';
+          msg.textContent = 'You are signed in ï¿½ click any photo to download.';
           msg.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:12px 24px;font-size:13px;letter-spacing:0.06em;z-index:9999;animation:fadeOut 3s forwards';
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3200);
@@ -91,12 +91,12 @@ export default function GalleryPage() {
 
   const handleImageClick = (imageUrl: string) => {
     if (isAuthenticated) {
-      // Already logged in � download directly, no modal
+      // Already logged in ï¿½ download directly, no modal
       triggerDownload(imageUrl);
       // Show coffee modal after download
       setTimeout(() => setShowCoffee(true), 400);
     } else {
-      // Not logged in � show sign-in prompt
+      // Not logged in ï¿½ show sign-in prompt
       setDownloadImage(imageUrl);
     }
   };
@@ -140,7 +140,7 @@ export default function GalleryPage() {
           )}
           {!isAuthenticated && (
             <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.35)', margin: 0 }}>
-              � Sign in to download
+              ï¿½ Sign in to download
             </p>
           )}
         </div>
@@ -290,7 +290,7 @@ export default function GalleryPage() {
         )}
       </div>
 
-      {/* Sign-in modal � only shown when not authenticated */}
+      {/* Sign-in modal ï¿½ only shown when not authenticated */}
       {downloadImage && !isAuthenticated && (
         <DownloadModal
           imageUrl={downloadImage}
