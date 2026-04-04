@@ -9,7 +9,7 @@ import './navbar.css';
 // Types
 type SubStatus = 'guest' | 'free' | 'premium';
 
-// Nav items — Watch is rendered separately first
+// Nav items - Watch is rendered separately first
 const NAV_ITEMS = [
   { label: 'Home',           path: '/home' },
   { label: 'Premium Access', path: '/premium-access' },
@@ -21,8 +21,6 @@ const NAV_ITEMS = [
 const GO_PREMIUM_URL =
   process.env.NEXT_PUBLIC_GOPREMIUM_URL || 'http://localhost:3004';
 
-// ? Pass token via ?t= so gopremium can read it (localStorage is not
-//    shared across different origins / ports).
 function redirectToGoPremium() {
   const token =
     typeof window !== 'undefined'
@@ -110,7 +108,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
-// Cart count hook — authenticated users only
+// Cart count hook - authenticated users only
 function useCartCount() {
   const { isAuthenticated } = useAuthContext();
   const [count, setCount] = useState(0);
@@ -140,8 +138,6 @@ function getUserInitials(user: any): string {
   if (user?.email)     return user.email[0].toUpperCase();
   return 'HL';
 }
-
-// --- Navbar -------------------------------------------------------------------
 
 export function Navbar() {
   const router   = useRouter();
@@ -373,10 +369,7 @@ export function Navbar() {
                         <div className="nav-account-divider" />
                         <button
                           className="nav-account-item nav-account-item--upgrade"
-                          onClick={() => {
-                            setAccountOpen(false);
-                            redirectToGoPremium();
-                          }}
+                          onClick={() => { setAccountOpen(false); redirectToGoPremium(); }}
                         >
                           Go Premium
                         </button>
@@ -500,7 +493,7 @@ export function Navbar() {
       <AuthPromptModal
         isOpen={showMoodModal}
         onClose={() => setShowMoodModal(false)}
-        contentTitle="HL Mood TV — 24/7 Live"
+        contentTitle="HL Mood TV - 24/7 Live"
         moodTV
       />
     </>
