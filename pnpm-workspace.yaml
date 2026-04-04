@@ -1,0 +1,11 @@
+packages:
+  - 'apps/*'
+  - 'packages/LAYER-1-PRIMITIVES/*'
+  - 'packages/LAYER-1-DESIGN/*'
+  - 'packages/LAYER-2-SECURITY/*'
+  - 'packages/LAYER-3-SERVICES/*'
+  - 'packages/LAYER-4-CONTENT/*'
+  - 'packages/LAYER-5-COMMERCE/*'
+  - 'packages/LAYER-6-FEATURES/*'
+  - 'packages/LAYER-7-ADMIN/*'
+  - 'packages/UI-COMPONENTS/*'

@@ -1,0 +1,14 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "@houselevi/live-streaming",
+    "description":  "Live streaming with Cloudflare Stream",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3"
+                        },
+    "dependencies":  {
+                         "axios":  "^1.6.0",
+                         "@houselevi/types":  "workspace:*",
+                         "@houselevi/config":  "workspace:*"
+                     },
+    "main":  "./src/index.ts"
+}

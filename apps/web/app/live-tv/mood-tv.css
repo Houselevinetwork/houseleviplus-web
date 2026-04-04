@@ -1,0 +1,684 @@
+﻿/*  CRITICAL: Remove ALL Container Padding  */
+* { box-sizing: border-box; }
+
+html, body { overflow-x: hidden; }
+
+.mood-tv {
+  margin: 0 !important;
+  padding: 0 !important;   /* NO padding-top — the fixed navbar floats over the video */
+  width: 100vw !important;
+  min-width: 100vw !important;
+  max-width: 100vw !important;
+  position: relative;
+  left: 0 !important;
+  right: 0 !important;
+  overflow-x: hidden;
+  background: #0A0909;
+  min-height: 100vh;
+}
+
+body main:has(.mood-tv) {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+}
+
+.mood-tv-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #0A0909;
+  color: #fff;
+  gap: 1rem;
+}
+
+.mood-tv-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: #D4AF37;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════════
+   THEATRE WRAPPER
+═══════════════════════════════════════════════════════ */
+
+/*
+  Navbar height from navbar.css:
+  Desktop (.nav-container): 72px
+  Mobile  (≤640px):          64px
+*/
+:root { --navbar-h: 72px; }
+
+@media (max-width: 640px) {
+  :root { --navbar-h: 64px; }
+}
+
+.moodtv-theatre-wrapper {
+  width: 100%;
+  background: #0A0909;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════
+   VIDEO BOX
+   This is also the fullscreen container — it wraps the
+   video, all overlays, AND the floating schedule.
+   When fullscreened it expands to 100vw × 100vh, and
+   the schedule overlay remains visible at the bottom.
+═══════════════════════════════════════════════════════ */
+
+.moodtv-video-box {
+  position: relative;
+  width: 100%;
+  /*
+    Full viewport height. The fixed navbar floats over the very top
+    of the video (same pattern as DailyWire+). No padding-top math
+    needed — this is always exactly one screen tall, pushing the
+    branding section fully below the fold regardless of navbar height.
+  */
+  height: 100dvh;
+  min-height: 480px;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Browser fullscreen — expand to fill the entire screen */
+.moodtv-video-box:fullscreen,
+.moodtv-video-box:-webkit-full-screen {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  width: 100vw !important;
+}
+
+/* ── Video element fills the box ── */
+.moodtv-video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Left & right vignette (framing effect) ── */
+.moodtv-vignette-left,
+.moodtv-vignette-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 160px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.moodtv-vignette-left {
+  left: 0;
+  background: linear-gradient(to right,
+    rgba(0,0,0,0.72) 0%,
+    rgba(0,0,0,0.28) 55%,
+    transparent 100%
+  );
+}
+
+.moodtv-vignette-right {
+  right: 0;
+  background: linear-gradient(to left,
+    rgba(0,0,0,0.72) 0%,
+    rgba(0,0,0,0.28) 55%,
+    transparent 100%
+  );
+}
+
+/* ── Placeholder ── */
+.moodtv-video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.moodtv-play-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moodtv-play-triangle {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 4px;
+}
+
+.moodtv-placeholder-label {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Centred overlay (buffering / error) ── */
+.moodtv-abs-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  z-index: 20;
+}
+
+.moodtv-error-bg { background: rgba(0,0,0,0.85); }
+
+.moodtv-error-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 12px;
+  color: #ff6b6b;
+  letter-spacing: 0.1em;
+}
+
+.moodtv-error-msg {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+  max-width: 300px;
+}
+
+.moodtv-retry-btn {
+  padding: 8px 20px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  border-radius: 2px;
+}
+
+/* ── LIVE badge ── */
+.moodtv-live-badge {
+  position: absolute;
+  top: calc(var(--navbar-h, 72px) + 14px);
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 5px 10px;
+  border-radius: 3px;
+  z-index: 30;
+}
+
+.moodtv-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff3b3b;
+  animation: moodtv-pulse 1.5s infinite;
+}
+
+.moodtv-live-badge span {
+  font-family: Arial Black, sans-serif;
+  font-size: 10px;
+  color: #fff;
+  letter-spacing: 0.15em;
+}
+
+.moodtv-loop-count {
+  font-family: Arial, sans-serif !important;
+  font-size: 9px !important;
+  color: rgba(255,255,255,0.5) !important;
+  margin-left: 4px;
+}
+
+/* ── Up next ── */
+.moodtv-upnext {
+  position: absolute;
+  top: calc(var(--navbar-h, 72px) + 14px);
+  right: 14px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 16px;
+  border-radius: 3px;
+  max-width: 220px;
+  z-index: 30;
+}
+
+.moodtv-upnext-label {
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.moodtv-upnext-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 12px;
+  color: #fff;
+}
+
+.moodtv-upnext-time {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+/* ── Program info (bottom-left, above schedule) ── */
+.moodtv-program-info {
+  position: absolute;
+  /* sits above the schedule overlay (~210px) + controls bar (~56px) */
+  bottom: 270px;
+  left: 32px;
+  z-index: 28;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.moodtv-program-show {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.moodtv-program-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+}
+
+.moodtv-program-desc {
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.65);
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+}
+
+/* ── Controls bar — overlaid just above the schedule ── */
+.moodtv-controls-bar {
+  position: absolute;
+  bottom: 210px;   /* sits directly on top of the schedule overlay */
+  left: 0;
+  right: 0;
+  z-index: 26;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5));
+  padding: 28px 20px 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.moodtv-controls-bar--visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.moodtv-progress-wrap { margin-bottom: 10px; }
+
+.moodtv-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moodtv-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.moodtv-ctrl-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.15s;
+}
+.moodtv-ctrl-btn:hover { opacity: 0.75; }
+
+.moodtv-volume-slider {
+  width: 70px;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.moodtv-clock {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.08em;
+}
+
+@keyframes moodtv-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes moodtv-spin  { to{transform:rotate(360deg)} }
+
+/* ═══════════════════════════════════════════════════════
+   FLOATING SCHEDULE OVERLAY
+   position: absolute at the bottom of .moodtv-video-box
+   Transparent gradient — video shows through.
+   Always present: normal mode AND fullscreen mode.
+═══════════════════════════════════════════════════════ */
+
+.schedule-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,0,0,0.50) 22%,
+    rgba(0,0,0,0.80) 55%,
+    rgba(0,0,0,0.95) 100%
+  );
+}
+
+/* ── Schedule section ── */
+.schedule-section {
+  width: 100%;
+  padding: 20px 0 24px;
+  flex-shrink: 0;
+}
+
+.schedule-header {
+  padding: 0 32px;
+  margin-bottom: 14px;
+}
+
+.schedule-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.125rem;
+  margin: 0;
+}
+
+/* Carousel row: pinned card + divider + scrollable track */
+.schedule-carousel {
+  position: relative;
+  padding: 0 32px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Pinned "Now Playing" — never scrolls */
+.schedule-now-pin {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Thin vertical divider */
+.schedule-pin-divider {
+  flex-shrink: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.12);
+  margin: 4px 10px;
+  align-self: stretch;
+}
+
+/* Scrollable upcoming track */
+.schedule-carousel-track {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 0;
+  flex: 1;
+}
+.schedule-carousel-track::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════════════════════
+   SCHEDULE CARD
+   All original CSS preserved exactly.
+   min-height set to 142px — matches Flutter design spec
+   (Flutter card height: 141.50px → rounded to 142px).
+═══════════════════════════════════════════════════════ */
+
+.schedule-card {
+  flex: 1 0 240px;
+  max-width: 440px;
+  background: #151515;
+  border-radius: 4px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 142px;   /* ← Flutter spec: 141.50px */
+  position: relative;
+  transition: background 0.2s;
+}
+
+.schedule-card:hover { background: #1a1a1a; }
+
+.schedule-card--playing { background: #212121; }
+
+.schedule-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(21,21,21,0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 10;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.schedule-carousel-btn:hover {
+  background: rgba(40,40,40,1);
+  border-color: rgba(255,255,255,0.3);
+}
+.schedule-carousel-btn--left  { left: -4px; }
+.schedule-carousel-btn--right { right: -4px; }
+
+.schedule-card-playing-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.schedule-card-playing-dot {
+  width: 8px;
+  height: 8px;
+  background: #DB3D3B;
+  border-radius: 4px;
+  animation: moodtv-pulse 2s infinite;
+}
+
+.schedule-card-playing-badge span {
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.0175rem;
+}
+
+.schedule-card-time {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.0175rem;
+}
+
+.schedule-card-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.57;
+  letter-spacing: 0.02125rem;
+  margin: 0;
+  flex: 1;
+}
+
+.schedule-card-show {
+  color: #8F8F8F;
+  font-size: 0.8625rem;
+  font-weight: 700;
+  letter-spacing: 0.015rem;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BRANDING SECTION
+═══════════════════════════════════════════════════════ */
+
+.branding-section {
+  max-width: 1376px;
+  margin: 0 auto;
+  padding: 24px 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.branding-logo {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.branding-logo-icon { font-size: 1.25rem; }
+
+.branding-logo-text {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.branding-description {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PROGRESS BAR (shared)
+═══════════════════════════════════════════════════════ */
+
+.progress-bar-container { width: 100%; }
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #DB3D3B;
+  border-radius: 24px;
+  position: relative;
+  transition: width 0.3s;
+}
+
+.progress-bar-handle {
+  position: absolute;
+  right: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .moodtv-video-box {
+    height: 100dvh;
+    min-height: 380px;
+  }
+
+  .moodtv-vignette-left,
+  .moodtv-vignette-right { width: 80px; }
+
+  .moodtv-program-info {
+    bottom: 240px;
+    left: 16px;
+    max-width: 260px;
+  }
+  .moodtv-program-title  { font-size: 1rem; }
+  .moodtv-program-desc   { display: none; }
+
+  .moodtv-controls-bar   { bottom: 185px; }
+
+  .schedule-section  { padding: 16px 0 16px; }
+  .schedule-header   { padding: 0 16px; }
+  .schedule-carousel { padding: 0 16px; }
+
+  .schedule-card {
+    flex: 0 0 200px;
+    max-width: 200px;
+    min-height: 142px;
+  }
+
+  .schedule-carousel-btn { display: none; }
+  .branding-section { padding: 24px 16px; }
+}

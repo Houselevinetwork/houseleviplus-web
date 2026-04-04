@@ -1,0 +1,191 @@
+/**
+ * House Levi+ Global Styles
+ * Drew Doggett Inspired - Minimal, Elegant, Timeless
+ */
+
+/* ============================================
+   CSS VARIABLES - BRAND COLORS
+   ============================================ */
+
+:root {
+  /* Brand Colors */
+  --levi-black: #000000;
+  --levi-white: #FFFFFF;
+  --levi-blue: #4169E1;
+  --levi-blue-hover: #5B7FE5;
+  --levi-blue-light: rgba(65, 105, 225, 0.1);
+  
+  /* Grays */
+  --levi-gray-50: #FAFAFA;
+  --levi-gray-100: #F5F5F5;
+  --levi-gray-200: #EEEEEE;
+  --levi-gray-300: #E0E0E0;
+  --levi-gray-400: #BDBDBD;
+  --levi-gray-500: #9E9E9E;
+  --levi-gray-600: #757575;
+  --levi-gray-700: #616161;
+  --levi-gray-800: #424242;
+  --levi-gray-900: #212121;
+  
+  /* Light Mode (Default) */
+  --bg-primary: var(--levi-white);
+  --bg-secondary: var(--levi-gray-50);
+  --text-primary: var(--levi-black);
+  --text-secondary: var(--levi-gray-700);
+  --text-tertiary: var(--levi-gray-500);
+  --border-color: var(--levi-gray-200);
+  --accent: var(--levi-blue);
+  --accent-hover: var(--levi-blue-hover);
+}
+
+[data-theme="dark"] {
+  /* Dark Mode */
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #1A1A1A;
+  --text-primary: var(--levi-white);
+  --text-secondary: var(--levi-gray-300);
+  --text-tertiary: var(--levi-gray-500);
+  --border-color: var(--levi-gray-800);
+}
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================
+   TYPOGRAPHY - Drew Doggett Style
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 300;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+em, i {
+  font-style: italic;
+  color: var(--accent);
+}
+
+a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--levi-gray-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--levi-gray-500);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--levi-gray-700);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--levi-gray-600);
+}

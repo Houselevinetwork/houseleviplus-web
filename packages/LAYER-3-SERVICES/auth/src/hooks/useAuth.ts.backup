@@ -1,0 +1,128 @@
+'use client';
+
+import { useState } from 'react';
+
+interface UseAuthReturn {
+  step: 'email' | 'otp';
+  email: string;
+  otp: string;
+  loading: boolean;
+  error: string;
+  countdown: number;
+  setEmail: (email: string) => void;
+  setOtp: (otp: string) => void;
+  handleEmailSubmit: (e: React.FormEvent) => Promise<void>;
+  handleOTPSubmit: (e: React.FormEvent) => Promise<void>;
+  handleResendOTP: () => Promise<void>;
+  backToEmail: () => void;
+}
+
+export function useAuth(): UseAuthReturn {
+  const [step, setStep] = useState<'email' | 'otp'>('email');
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [countdown, setCountdown] = useState(0);
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const discoveryRes = await fetch('/api/auth/email-discovery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!discoveryRes.ok) throw new Error('Failed to verify email');
+
+      const otpRes = await fetch('/api/auth/otp-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!otpRes.ok) throw new Error('Failed to send verification code');
+
+      setStep('otp');
+      startCountdown();
+    } catch (err: any) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOTPSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/otp-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: otp }),
+      });
+
+      if (!res.ok) throw new Error('Invalid verification code');
+
+      const data = await res.json();
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      window.location.href = '/browse';
+    } catch (err: any) {
+      setError(err.message || 'Verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    if (countdown > 0) return;
+
+    try {
+      await fetch('/api/auth/otp-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      startCountdown();
+    } catch (err) {
+      setError('Failed to resend code');
+    }
+  };
+
+  const startCountdown = () => {
+    setCountdown(60);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const backToEmail = () => setStep('email');
+
+  return {
+    step,
+    email,
+    otp,
+    loading,
+    error,
+    countdown,
+    setEmail,
+    setOtp,
+    handleEmailSubmit,
+    handleOTPSubmit,
+    handleResendOTP,
+    backToEmail,
+  };
+}

@@ -1,0 +1,30 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "Event ticketing system",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/ticketing",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "@houselevi/orders":  "workspace:*",
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "keywords":  [
+                     "ticketing",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

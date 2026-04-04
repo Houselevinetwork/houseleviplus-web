@@ -1,0 +1,43 @@
+@"
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment files — NEVER commit these
+.env
+.env.development
+.env.production
+.env.local
+.env*.local
+*.env
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Turbo cache
+.turbo/
+"@ | Out-File -FilePath .gitignore -Encoding utf8

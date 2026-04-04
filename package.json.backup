@@ -1,0 +1,19 @@
+{
+  "name": "houselevi-plus",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/LAYER-1-DESIGN/*",
+    "packages/LAYER-2-FEATURES/*",
+    "packages/LAYER-3-SERVICES/*",
+    "packages/LAYER-4-UTILS/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "dev:api": "pnpm --filter api start:dev",
+    "build": "pnpm -r build",
+    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
+  },
+  "packageManager": "pnpm@8.0.0"
+}

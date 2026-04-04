@@ -1,0 +1,29 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "Anomaly detection + fraud prevention",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/fraud-detection",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "keywords":  [
+                     "fraud-detection",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

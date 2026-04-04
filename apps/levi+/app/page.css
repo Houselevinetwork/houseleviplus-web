@@ -1,0 +1,409 @@
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM SPLASH SCREEN
+   Blue Glow + Smooth Animations + Premium Feel + Zoom Out Exit
+   ═══════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #000000 0%, #080808 50%, #0a0a1a 100%);
+  overflow: hidden;
+  animation: backdropFadeIn 1s ease-in forwards;
+  z-index: 9999;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit {
+  animation: splashZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.splash::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: contentFadeIn 0.8s ease-out forwards;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit .content {
+  animation: contentZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLUE GLOW EFFECT
+   ═══════════════════════════════════════════════════════════════ */
+
+.splash-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(65, 105, 225, 0.25) 0%, rgba(65, 105, 225, 0.1) 30%, transparent 70%);
+  filter: blur(40px);
+  animation: glowPulse 4s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit .splash-glow {
+  animation: glowZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGO CONTAINER
+   ═══════════════════════════════════════════════════════════════ */
+
+.logo-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  animation: logoPremiumEntrance 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit .logo {
+  animation: logoZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.logo-text {
+  font-size: 5.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  line-height: 1;
+  text-shadow: 
+    0 0 30px rgba(65, 105, 225, 0.5),
+    0 0 60px rgba(65, 105, 225, 0.3);
+}
+
+.logo-plus {
+  font-size: 6rem;
+  font-weight: 300;
+  color: #4169E1;
+  line-height: 1;
+  text-shadow: 
+    0 0 40px rgba(65, 105, 225, 0.8),
+    0 0 80px rgba(65, 105, 225, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TAGLINE - Simple and elegant
+   ═══════════════════════════════════════════════════════════════ */
+
+.tagline {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin: 0;
+  animation: textFadeIn 1.2s ease-in-out 1.2s forwards;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit .tagline {
+  animation: textZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOADING INDICATOR - Smooth dots
+   ═══════════════════════════════════════════════════════════════ */
+
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  animation: loadingFadeIn 0.8s ease-in-out 2.2s forwards;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash--exit .loading-dots {
+  animation: dotsZoomOut 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(65, 105, 225, 0.6);
+  animation: dot-bounce 1.4s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ENTRANCE ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Backdrop fades in smoothly */
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Content appears */
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Premium logo entrance - smooth scale and fade */
+@keyframes logoPremiumEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(20px);
+    filter: blur(10px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+    filter: blur(0);
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Text fades in smoothly */
+@keyframes textFadeIn {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Loading dots fade in */
+@keyframes loadingFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EXIT ANIMATIONS - Zoom Out
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Splash zooms out and fades */
+@keyframes splashZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Content zooms out */
+@keyframes contentZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+/* Logo zooms out */
+@keyframes logoZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+/* Glow zooms out */
+@keyframes glowZoomOut {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+/* Text zooms out */
+@keyframes textZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Dots zoom out */
+@keyframes dotsZoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLET (≤ 768px)
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 3.5rem;
+  }
+
+  .logo-plus {
+    font-size: 4rem;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+  }
+
+  .splash-glow {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE (≤ 480px)
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .logo {
+    gap: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .logo-text {
+    font-size: 2.5rem;
+  }
+
+  .logo-plus {
+    font-size: 2.8rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .content {
+    gap: 1.5rem;
+  }
+
+  .splash-glow {
+    width: 300px;
+    height: 300px;
+  }
+}

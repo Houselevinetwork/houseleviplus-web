@@ -1,0 +1,312 @@
+/* ─── Hardcoded dark — never inherits CSS variables ─────────────────────────── */
+.footer {
+  background: #080808;
+  border-top: 1px solid rgba(65, 105, 225, 0.15);
+  width: 100%;
+}
+
+.footer-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 52px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   3-COLUMN GRID
+══════════════════════════════════════════════════════════ */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 40px;
+}
+
+/* ── Brand (left) ─────────────────────────────────────── */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-logo {
+  font-size: 1.25rem;           /* matches nav-logo scale */
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: opacity 0.2s;
+  width: auto;
+  line-height: 1;
+}
+.footer-logo:hover { opacity: 0.65; }
+.footer-logo-plus  { color: #4169E1; }
+
+.footer-sub {
+  font-size: 0.875rem;           /* same as nav-link */
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+/* ── Legal links (center) ────────────────────────────── */
+.footer-legal-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.footer-legal-link {
+  font-size: 0.9rem;             /* matches nav-link */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+  font-family: inherit;
+  width: auto;
+  white-space: nowrap;
+}
+.footer-legal-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Right: socials + badges ─────────────────────────── */
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+/* Social circles */
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.footer-icon:hover {
+  background: rgba(65, 105, 225, 0.15);
+  border-color: rgba(65, 105, 225, 0.4);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.footer-icon-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(65, 105, 225, 0.25);
+  opacity: 0;
+  filter: blur(7px);
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.footer-icon:hover .footer-icon-glow { opacity: 1; }
+
+/* App store badges */
+.footer-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  color: #fff;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+.footer-badge:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+.footer-badge-icon {
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.footer-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+}
+.footer-badge-sub  { font-size: 0.65rem; color: rgba(255, 255, 255, 0.35); letter-spacing: 0.05em; }
+.footer-badge-name { font-size: 0.875rem; font-weight: 700; line-height: 1.2; }
+
+/* ══════════════════════════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════════════════════════ */
+.footer-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.08), transparent);
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOTTOM BAR
+══════════════════════════════════════════════════════════ */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-copy {
+  font-size: 0.825rem;           /* pronounced, readable */
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.footer-sep {
+  color: rgba(255, 255, 255, 0.15);
+  user-select: none;
+}
+
+.footer-cookie-link {
+  color: rgba(255, 255, 255, 0.35);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  transition: color 0.2s;
+  width: auto;
+}
+.footer-cookie-link:hover { color: rgba(255, 255, 255, 0.7); }
+
+/* DPA badge */
+.footer-dpa {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.775rem;           /* readable, not tiny */
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: help;
+  transition: border-color 0.2s, color 0.2s;
+  font-style: normal;
+}
+.footer-dpa:hover {
+  border-color: rgba(65, 105, 225, 0.35);
+  color: rgba(255, 255, 255, 0.6);
+}
+.footer-dpa svg { color: rgba(65, 105, 225, 0.7); flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════════════════
+   TABLET  (≤ 1024px) — 2-col: brand+legal left, right col
+══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 36px 24px;
+  }
+
+  /* Brand spans full first row */
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  /* Legal links left, right col right on second row */
+  .footer-legal-links {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+
+  .footer-right {
+    align-items: flex-end;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE  (≤ 640px) — full stack
+══════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .footer-wrap { padding: 40px 20px 24px; gap: 28px; }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: unset;
+    gap: 28px;
+  }
+
+  .footer-brand { grid-column: 1; }
+
+  .footer-sub { max-width: 100%; font-size: 0.875rem; }
+
+  .footer-legal-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .footer-right {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer-badges { flex-wrap: wrap; }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .footer-copy { font-size: 0.825rem; }
+}

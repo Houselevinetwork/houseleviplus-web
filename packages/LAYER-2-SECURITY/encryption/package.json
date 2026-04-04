@@ -1,0 +1,19 @@
+{
+  "name": "@houselevi/security-encryption",
+  "version": "1.0.0",
+  "description": "Encryption and hashing for security layer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "test": "jest"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
+  }
+}

@@ -1,0 +1,9 @@
+﻿{
+  "name": "@houselevi/push-notifications",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "description": "Push notification service for mobile",
+  "dependencies": {
+    "@houselevi/types": "workspace:*"
+  }
+}

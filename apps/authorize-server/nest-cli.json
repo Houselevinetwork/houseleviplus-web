@@ -1,0 +1,11 @@
+{
+  "language": "ts",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "tsConfigPath": "tsconfig.json",
+    "webpack": true,
+    "assets": ["**/*.hbs"],
+    "watchAssets": true
+  }
+}

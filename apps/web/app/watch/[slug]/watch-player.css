@@ -1,0 +1,587 @@
+/* apps/web/app/watch/[slug]/watch-player.css */
+
+/* ─── Page shell ──────────────────────────────────────────────────────────── */
+.wp-page {
+  min-height: 100vh;
+  background: #080808;
+  color: #f0ede8;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.wp-page--loading,
+.wp-page--error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+  color: #888;
+}
+
+.wp-page--error h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: #f0ede8;
+  letter-spacing: 0.06em;
+}
+
+.wp-back-link {
+  color: #D4AF37;
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Player container ────────────────────────────────────────────────────── */
+.wp {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+  cursor: none;
+  user-select: none;
+}
+
+.wp--theater {
+  aspect-ratio: unset;
+  height: 70vh;
+}
+
+.wp--fullscreen {
+  aspect-ratio: unset;
+  width: 100vw;
+  height: 100vh;
+}
+
+.wp--controls-visible {
+  cursor: default;
+}
+
+/* Video element */
+.wp__video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+/* ─── Gradient overlays ──────────────────────────────────────────────────── */
+.wp__gradient-top {
+  position: absolute;
+  inset: 0;
+  height: 30%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.wp__gradient-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45%;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.wp--controls-visible .wp__gradient-top,
+.wp--controls-visible .wp__gradient-bottom {
+  opacity: 1;
+}
+
+/* ─── Spinner ────────────────────────────────────────────────────────────── */
+.wp-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.wp-spinner__ring {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(212,175,55,0.2);
+  border-top-color: #D4AF37;
+  border-radius: 50%;
+  animation: wp-spin 0.75s linear infinite;
+}
+@keyframes wp-spin { to { transform: rotate(360deg); } }
+
+/* ─── Nudge indicator ────────────────────────────────────────────────────── */
+.wp__nudge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 4px;
+  pointer-events: none;
+  animation: wp-nudge 0.9s ease forwards;
+  z-index: 20;
+}
+@keyframes wp-nudge {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  60%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -60%); }
+}
+
+/* ─── Center play indicator ──────────────────────────────────────────────── */
+.wp__center-indicator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 5;
+}
+.wp__center-indicator--visible {
+  opacity: 1;
+}
+.wp__center-indicator svg {
+  width: 72px;
+  height: 72px;
+  color: rgba(255,255,255,0.9);
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6));
+}
+
+/* ─── Top bar ────────────────────────────────────────────────────────────── */
+.wp__topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  z-index: 15;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.wp--controls-visible .wp__topbar {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.wp__meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.wp__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+  line-height: 1;
+}
+.wp__subtitle {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.04em;
+}
+.wp__topbar-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* ─── Controls ───────────────────────────────────────────────────────────── */
+.wp__controls {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0 16px 14px;
+  z-index: 15;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.wp--controls-visible .wp__controls {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* Progress wrap */
+.wp__progress-wrap {
+  padding: 8px 0 6px;
+}
+.wp__progress {
+  position: relative;
+  height: 4px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: height 0.15s;
+}
+.wp__progress:hover {
+  height: 6px;
+}
+.wp__progress__buffered {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: rgba(255,255,255,0.3);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+.wp__progress__played {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: #D4AF37;
+  border-radius: 2px;
+}
+.wp__progress__thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 14px;
+  height: 14px;
+  background: #D4AF37;
+  border-radius: 50%;
+  transition: transform 0.15s;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(212,175,55,0.6);
+}
+.wp__progress:hover .wp__progress__thumb {
+  transform: translate(-50%, -50%) scale(1);
+}
+.wp__progress__hover-time {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Control row */
+.wp__ctrl-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wp__ctrl-left,
+.wp__ctrl-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Buttons */
+.wp__btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+  position: relative;
+}
+.wp__btn:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+.wp__btn--active {
+  color: #D4AF37;
+}
+.wp__btn--play {
+  color: #fff;
+}
+.wp__btn--back {
+  color: rgba(255,255,255,0.85);
+  padding: 6px 10px 6px 6px;
+}
+.wp__btn svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+.wp__btn--play svg {
+  width: 28px;
+  height: 28px;
+}
+.wp__btn--back svg {
+  width: 20px;
+  height: 20px;
+}
+.wp__btn--settings {
+  gap: 4px;
+}
+
+/* Volume */
+.wp__volume-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.wp__volume-slider {
+  position: relative;
+  width: 72px;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  cursor: pointer;
+  opacity: 0;
+  width: 0;
+  transition: width 0.2s, opacity 0.2s;
+}
+.wp__volume-wrap:hover .wp__volume-slider,
+.wp__volume-slider:hover {
+  opacity: 1;
+  width: 72px;
+}
+.wp__volume-slider__fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: #D4AF37;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.wp__volume-slider__thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Time */
+.wp__time {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+.wp__time-sep {
+  color: rgba(255,255,255,0.35);
+  margin: 0 3px;
+}
+
+/* Speed badge */
+.wp__speed-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #D4AF37;
+  letter-spacing: 0.02em;
+}
+
+/* Settings panel */
+.wp__settings-wrap {
+  position: relative;
+}
+.wp__settings-panel {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  background: rgba(14,14,14,0.97);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 8px;
+  min-width: 140px;
+  backdrop-filter: blur(12px);
+  z-index: 30;
+}
+.wp__settings-label {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 8px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 4px;
+}
+.wp__settings-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.83rem;
+  padding: 7px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.wp__settings-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.wp__settings-item--active {
+  color: #D4AF37;
+  font-weight: 600;
+}
+
+/* ─── No media fallback ──────────────────────────────────────────────────── */
+.wp-no-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.wp-no-media__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35;
+}
+.wp-no-media__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Info panel ─────────────────────────────────────────────────────────── */
+.wp-info {
+  background: linear-gradient(to bottom, #0d0d0d 0%, #080808 100%);
+  padding: 40px 0 80px;
+}
+.wp-info__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.wp-info__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 32px;
+  transition: color 0.2s;
+}
+.wp-info__back:hover { color: #D4AF37; }
+.wp-info__back svg { width: 16px; height: 16px; }
+
+.wp-info__header {
+  margin-bottom: 20px;
+}
+.wp-info__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.wp-badge {
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+.wp-badge--type    { background: rgba(212,175,55,0.15); color: #D4AF37; border: 1px solid rgba(212,175,55,0.3); }
+.wp-badge--new     { background: rgba(219,61,59,0.15);  color: #DB3D3B; border: 1px solid rgba(219,61,59,0.3); }
+.wp-badge--premium { background: #D4AF37; color: #000; }
+.wp-badge--year    { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); }
+.wp-badge--genre   { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5); }
+
+.wp-info__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.05em;
+  color: #f0ede8;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+.wp-info__subtitle {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.wp-info__desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+
+.wp-info__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.wp-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.75);
+}
+.wp-meta-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+}
+.wp-meta-link {
+  color: #D4AF37;
+  text-decoration: none;
+}
+.wp-meta-link:hover { text-decoration: underline; }
+
+.wp-info__cast {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ─── Keyboard shortcut hints (shown on first load) ─────────────────────── */
+@media (max-width: 640px) {
+  .wp__volume-wrap .wp__volume-slider { display: none; }
+  .wp__btn--theater { display: none; }
+  .wp-info__meta { gap: 16px; }
+}

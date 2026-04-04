@@ -1,0 +1,120 @@
+.levi-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+}
+
+.levi-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.levi-button--primary {
+  background: var(--levi-black);
+  color: var(--levi-white);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.levi-button--primary:hover:not(:disabled) {
+  background: #1a1a1a;
+  box-shadow: 
+    0 4px 12px rgba(65, 105, 225, 0.3),
+    0 0 20px rgba(65, 105, 225, 0.2);
+  transform: translateY(-1px);
+}
+
+.levi-button--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 6px rgba(65, 105, 225, 0.2),
+    0 0 10px rgba(65, 105, 225, 0.1);
+}
+
+[data-theme="dark"] .levi-button--primary {
+  background: var(--levi-white);
+  color: var(--levi-black);
+}
+
+[data-theme="dark"] .levi-button--primary:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+.levi-button--secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.levi-button--secondary:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(65, 105, 225, 0.1);
+}
+
+.levi-button--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 4px;
+}
+
+.levi-button--ghost:hover:not(:disabled) {
+  background: var(--levi-blue-light);
+  color: var(--accent);
+}
+
+.levi-button--sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  height: 36px;
+}
+
+.levi-button--md {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  height: 44px;
+}
+
+.levi-button--lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  height: 52px;
+}
+
+.levi-button--full-width {
+  width: 100%;
+}
+
+.levi-button--loading {
+  pointer-events: none;
+}
+
+.levi-button__loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.levi-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

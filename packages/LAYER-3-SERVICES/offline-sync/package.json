@@ -1,0 +1,10 @@
+﻿{
+  "name": "@houselevi/offline-sync",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "description": "Offline content synchronization for mobile",
+  "dependencies": {
+    "@houselevi/storage": "workspace:*",
+    "@houselevi/api-sdk": "workspace:*"
+  }
+}

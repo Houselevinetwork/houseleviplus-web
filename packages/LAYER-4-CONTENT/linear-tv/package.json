@@ -1,0 +1,13 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "@houselevi/linear-tv",
+    "description":  "24/7 Linear TV scheduling and EPG",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3"
+                        },
+    "dependencies":  {
+                         "@houselevi/constants":  "workspace:*",
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "main":  "./src/index.ts"
+}

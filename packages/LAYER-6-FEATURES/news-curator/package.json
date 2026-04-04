@@ -1,0 +1,29 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "News aggregation + curation",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/news-curator",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "keywords":  [
+                     "news-curator",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

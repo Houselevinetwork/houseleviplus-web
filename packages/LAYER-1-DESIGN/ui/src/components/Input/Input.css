@@ -1,0 +1,72 @@
+.levi-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.levi-input-wrapper--full-width {
+  width: 100%;
+}
+
+.levi-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.levi-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.levi-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.levi-input:hover:not(:disabled) {
+  border-color: var(--levi-gray-400);
+}
+
+.levi-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+}
+
+.levi-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-secondary);
+}
+
+.levi-input--error {
+  border-color: #EF4444;
+}
+
+.levi-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.levi-input-error {
+  font-size: 0.875rem;
+  color: #EF4444;
+  margin-top: -0.25rem;
+}
+
+[data-theme="dark"] .levi-input {
+  background: var(--bg-secondary);
+  border-color: var(--levi-gray-800);
+}
+
+[data-theme="dark"] .levi-input:hover:not(:disabled) {
+  border-color: var(--levi-gray-700);
+}

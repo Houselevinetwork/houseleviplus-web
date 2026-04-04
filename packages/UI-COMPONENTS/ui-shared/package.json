@@ -1,0 +1,11 @@
+﻿{
+  "name": "@houselevi/ui-shared",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "description": "Headless UI logic - works on ALL platforms",
+  "dependencies": {
+    "@houselevi/auth": "workspace:*",
+    "@houselevi/api-sdk": "workspace:*",
+    "@houselevi/types": "workspace:*"
+  }
+}

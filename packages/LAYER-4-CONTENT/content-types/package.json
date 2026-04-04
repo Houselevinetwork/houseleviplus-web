@@ -1,0 +1,30 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "APIs for all content types",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/content-types",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "@houselevi/api-sdk":  "workspace:*",
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "keywords":  [
+                     "content-types",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

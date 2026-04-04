@@ -1,0 +1,119 @@
+/*
+ * payment/callback/callback.css
+ */
+
+.cb-page {
+  min-height: 100vh;
+  background: #f7f7f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.cb-wrap  { width: 100%; max-width: 480px; text-align: center; }
+
+.cb-logo  {
+  font-size: 1.125rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: #0d0d0d;
+  margin: 0 0 28px;
+}
+
+.cb-logo span { color: #4169E1; }
+
+.cb-card {
+  background: #fff;
+  border: 1px solid #e8e8e6;
+  border-radius: 12px;
+  padding: 40px 36px;
+}
+
+@keyframes cb-spin { to { transform: rotate(360deg); } }
+
+.cb-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #e8e8e6;
+  border-top-color: #4169E1;
+  border-radius: 50%;
+  animation: cb-spin 0.75s linear infinite;
+  margin: 0 auto 24px;
+}
+
+.cb-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 24px;
+  font-weight: 300;
+}
+
+.cb-icon--success { background: rgba(46,125,50,0.1);  color: #2e7d32; }
+.cb-icon--pending { background: rgba(180,83,9,0.1);   color: #b45309; }
+.cb-icon--failed  { background: rgba(198,40,40,0.1);  color: #c62828; }
+
+.cb-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  color: #0d0d0d;
+  margin: 0 0 10px;
+}
+
+.cb-sub {
+  font-size: 0.875rem;
+  color: #888;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.cb-amount {
+  font-size: 0.875rem;
+  color: #3a3a3a;
+  margin: 0 0 16px;
+}
+
+.cb-redirect {
+  font-size: 0.75rem;
+  color: #bbb;
+  margin: 0 0 20px;
+}
+
+.cb-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cb-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: #4169E1;
+  color: #fff;
+}
+
+.cb-btn:hover      { background: #3558c8; }
+.cb-btn--ghost     { background: transparent; color: #888; border: 1px solid #d0d0ce; }
+.cb-btn--ghost:hover { background: #f7f7f5; color: #0d0d0d; }
+
+.cb-support {
+  font-size: 0.75rem;
+  color: #bbb;
+  margin: 16px 0 0;
+}
+
+.cb-support a { color: #4169E1; text-decoration: none; }
+.cb-support a:hover { text-decoration: underline; }

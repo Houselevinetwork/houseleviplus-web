@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!--
+        Adaptive icon safe zone = 72x72 centered (18dp margin each side)
+        All elements WHITE — one cohesive HL+ unit
+
+        Design principles matching DW+ reference:
+        - H and L: identical width (15dp each) so they feel like one word
+        - Stroke thickness: 6dp on all letter strokes — bold but not heavy
+        - Letter gap: 4dp — tight, feels like one word
+        - +  : SUPERSCRIPT — sits at top-right of L, small (12dp tall)
+                thin even arms (3dp stroke each) — not bold, not heavy
+                positioned flush to top of letters like DW+
+
+        Total logo width: 15 + 4 + 15 + 2 + 12 = 48dp
+        Centered at 54: starts at x=30, ends at x=78
+        Letter height: 32dp  y=44→76
+        + height: 14dp       y=38→52  (superscript — above midpoint)
+    -->
+
+    <!-- ══ H ══════════════════════════════════════════════════════════════ -->
+    <!-- Left vertical stroke -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M30,44 L36,44 L36,76 L30,76 Z"/>
+    <!-- Right vertical stroke -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M39,44 L45,44 L45,76 L39,76 Z"/>
+    <!-- Crossbar — centred vertically -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M30,57 L45,57 L45,62 L30,62 Z"/>
+
+    <!-- ══ L ══════════════════════════════════════════════════════════════ -->
+    <!-- Vertical stroke — same width as H strokes -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M49,44 L55,44 L55,76 L49,76 Z"/>
+    <!-- Horizontal base — same total width as H (15dp) -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M49,70 L64,70 L64,76 L49,76 Z"/>
+
+    <!-- ══ + (superscript) ════════════════════════════════════════════════ -->
+    <!--
+        Positioned top-right of L, like DW+:
+        - Sits at y=38 (above the cap height of H and L)
+        - Arms are thin (3dp) and perfectly even — same length each side
+        - Centre of + at x=72, y=46
+        Horizontal arm: x 66→78, y 44→47  (12dp wide, 3dp thick)
+        Vertical arm:   x 70→73, y 38→52  (3dp wide, 14dp tall)
+    -->
+    <!-- Horizontal arm -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M66,44 L78,44 L78,47 L66,47 Z"/>
+    <!-- Vertical arm -->
+    <path android:fillColor="#FFFFFF"
+          android:pathData="M70,38 L73,38 L73,52 L70,52 Z"/>
+
+</vector>

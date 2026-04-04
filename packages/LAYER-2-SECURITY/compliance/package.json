@@ -1,0 +1,29 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "DPA 2019 compliance + auditing",
+    "type":  "module",
+    "types": "./dist/index.d.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/compliance",
+    
+    "main":  "./dist/index.js",
+    "dependencies":  {
+
+                     },
+    "keywords":  [
+                     "compliance",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

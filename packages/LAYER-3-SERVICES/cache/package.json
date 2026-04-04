@@ -1,0 +1,24 @@
+{
+    "scripts":  {
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "Memory cache, storage cache, cache manager",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3"
+                        },
+    "name":  "@houselevi/cache",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+
+                     },
+    "keywords":  [
+                     "cache",
+                     "house-levi"
+                 ]
+}

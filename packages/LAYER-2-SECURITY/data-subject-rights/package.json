@@ -1,0 +1,10 @@
+﻿{
+  "name": "@houselevi/data-subject-rights",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "description": "DPA Section 26 - Data subject rights implementation",
+  "dependencies": {
+    "@houselevi/types": "workspace:*",
+    "@houselevi/compliance": "workspace:*"
+  }
+}

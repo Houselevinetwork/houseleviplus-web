@@ -1,0 +1,14 @@
+{
+  "name": "@houselevi/config",
+  "version": "1.0.0",
+  "description": "Configuration and theming",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "test": "jest"
+  },
+  "license": "MIT"
+}

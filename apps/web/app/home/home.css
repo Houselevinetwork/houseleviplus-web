@@ -1,0 +1,462 @@
+﻿/* ════════════════════════════════════════════════════════════════════════════════
+   HOME PAGE CSS - MINIMALIST DREW DOGGETT AESTHETIC
+   ════════════════════════════════════════════════════════════════════════════════ */
+
+.home-page {
+  background: #ffffff;
+  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SECTION HEADER
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.section-header {
+  text-align: left;
+  margin-bottom: 60px;
+}
+
+.section-header h3 {
+  font-size: 40px;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   EVENTS SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.events-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.event-card {
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.event-card:hover {
+  opacity: 0.8;
+}
+
+.event-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.event-info h4 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+}
+
+.event-date {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 8px 0;
+}
+
+.event-location {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FEATURED ARTISTS SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.featured-artists-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.carousel-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-info h4 {
+  font-size: 32px;
+  font-weight: 300;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.01em;
+}
+
+.carousel-info p {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0 0 32px 0;
+  line-height: 1.8;
+}
+
+.info-button {
+  padding: 12px 32px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.info-button:hover {
+  opacity: 0.8;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.carousel-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.carousel-dots .dot.active {
+  background: #000000;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PARTNERS SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.partners-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.partners-section h3 {
+  font-size: 40px;
+  font-weight: 300;
+  margin: 0 0 80px 0;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 60px;
+  min-height: 120px;
+}
+
+.partner-logo {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   WATCH SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.watch-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.content-carousel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.carousel-card {
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.carousel-card:hover {
+  opacity: 0.8;
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 20px;
+  background: #f5f5f5;
+}
+
+.carousel-card h4 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.play-button,
+.add-button,
+.book-button {
+  padding: 10px 24px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.play-button:hover,
+.add-button:hover,
+.book-button:hover {
+  opacity: 0.8;
+}
+
+.item-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  margin: 8px 0 16px 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SHOP SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.shop-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TRAVEL SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.travel-section {
+  padding: 120px 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   QUOTE SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.quote-section {
+  padding: 120px 60px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fafafa;
+}
+
+.quote-text {
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quote-author {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HL MOOD TV SECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.mood-tv-section {
+  padding: 120px 60px;
+  background: #000000;
+  color: #ffffff;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mood-tv-content h3 {
+  font-size: 48px;
+  font-weight: 300;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+}
+
+.mood-tv-content p {
+  font-size: 15px;
+  margin: 0 0 40px 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cta-button {
+  padding: 14px 40px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.cta-button:hover {
+  opacity: 0.8;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SECTION BUTTON
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.section-button {
+  padding: 12px 32px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  margin: 0 auto;
+  display: block;
+}
+
+.section-button:hover {
+  opacity: 0.8;
+}
+
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 80px 40px;
+  }
+
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .carousel-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .partners-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  .content-carousel {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 20px;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partners-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-carousel {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header h3 {
+    font-size: 28px;
+  }
+
+  .quote-text {
+    font-size: 20px;
+  }
+
+  .mood-tv-content h3 {
+    font-size: 32px;
+  }
+}

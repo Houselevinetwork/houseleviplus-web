@@ -1,0 +1,14 @@
+{
+  "name": "@houselevi/security-audit",
+  "version": "1.0.0",
+  "description": "Audit logging for DPA 2019 compliance",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "test": "jest"
+  },
+  "license": "MIT"
+}

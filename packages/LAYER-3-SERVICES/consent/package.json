@@ -1,0 +1,32 @@
+{
+  "name": "@houselevi/consent",
+  "version": "1.0.0",
+  "description": "DPA 2019 Compliant Consent Service for House Levi+",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "consent",
+    "dpa-2019",
+    "privacy",
+    "terms-of-service",
+    "cookie-policy"
+  ],
+  "author": "Levi",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  }
+}

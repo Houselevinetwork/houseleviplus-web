@@ -1,0 +1,30 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "Order management + fulfillment",
+    "type":  "module",
+    "types": "./dist/index.d.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/orders",
+    "main": "./dist/index.js",
+    "dependencies":  {
+                         "@houselevi/compliance":  "workspace:*",
+                         "@houselevi/types":  "workspace:*"
+                     },
+    "keywords":  [
+                     "orders",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}
+

@@ -1,0 +1,14 @@
+{
+  "name": "@houselevi/security-rate-limit",
+  "version": "1.0.0",
+  "description": "Rate limiting",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "test": "jest"
+  },
+  "license": "MIT"
+}

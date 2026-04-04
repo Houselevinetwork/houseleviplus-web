@@ -1,0 +1,382 @@
+/* =============================================================================
+   apps/levi+/app/dashboard/watch/watch.css
+   Admin Watch page — light theme matching the rest of the levi+ dashboard.
+   All classes are prefixed aw- (admin watch) to avoid any conflict with the
+   web client's watch.css which uses watch-* classes.
+   ============================================================================= */
+
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes shimmer { 0%,100%{ background-position: -200% 0; } 50%{ background-position: 200% 0; } }
+
+/* ─── PAGE SHELL ─────────────────────────────────────────────────────────────── */
+
+.aw-page {
+  padding: 32px 40px 80px;
+  background: #f4f2ef;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* ─── SECTION HEADER ─────────────────────────────────────────────────────────── */
+
+.aw-hosts-section {
+  margin-bottom: 48px;
+}
+
+.aw-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.aw-section-title {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.aw-section-meta {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  color: #999;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ─── HOSTS ROW ──────────────────────────────────────────────────────────────── */
+
+.aw-hosts-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* ─── ADD HOST BUTTON ────────────────────────────────────────────────────────── */
+
+.aw-host-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.aw-host-add-circle {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 2px dashed #c8c4bc;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.aw-host-add:hover .aw-host-add-circle {
+  border-color: #0f1923;
+  color: #0f1923;
+  background: #f0ede8;
+}
+
+.aw-host-add-label {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #bbb;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.aw-host-add:hover .aw-host-add-label {
+  color: #0f1923;
+}
+
+/* ─── HOST CARD ──────────────────────────────────────────────────────────────── */
+
+.aw-host-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.aw-host-avatar-wrap {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.aw-host-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d8d4cc;
+  display: block;
+  transition: border-color 0.2s;
+}
+
+.aw-host-card:hover .aw-host-avatar {
+  border-color: #0f1923;
+}
+
+.aw-host-avatar-placeholder {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d8d4cc, #eae6e0);
+  border: 2px solid #d8d4cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 22px;
+  color: #999;
+  transition: border-color 0.2s;
+}
+
+.aw-host-card:hover .aw-host-avatar-placeholder {
+  border-color: #0f1923;
+}
+
+/* Action buttons — appear on hover over avatar */
+.aw-host-actions {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(15, 25, 35, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.aw-host-card:hover .aw-host-actions {
+  opacity: 1;
+}
+
+.aw-host-action-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.15s;
+  padding: 0;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.aw-host-action-btn:hover {
+  transform: scale(1.15);
+}
+
+.aw-host-action-btn--open:hover   { background: rgba(27, 61, 123, 0.7); }
+.aw-host-action-btn--edit:hover   { background: rgba(180, 130, 0, 0.7); }
+.aw-host-action-btn--delete:hover { background: rgba(160, 41, 30, 0.7); }
+
+/* Active badge (gold star, bottom-right of avatar) */
+.aw-host-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #d8d4cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8960c;
+}
+
+/* Host name below avatar */
+.aw-host-name {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80px;
+  transition: color 0.2s;
+}
+
+.aw-host-card:hover .aw-host-name {
+  color: #111;
+}
+
+/* ─── SKELETON LOADER ────────────────────────────────────────────────────────── */
+
+.aw-skeleton {
+  background: linear-gradient(90deg, #e8e4de 0%, #f0ede8 50%, #e8e4de 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 2px;
+}
+
+/* ─── CONTENT ROWS ───────────────────────────────────────────────────────────── */
+
+.aw-content-row {
+  margin-bottom: 40px;
+}
+
+.aw-row-title {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #555;
+  margin: 0 0 14px;
+}
+
+.aw-row-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.aw-row-scroll::-webkit-scrollbar { display: none; }
+
+/* ─── CONTENT CARD (admin — read-only) ───────────────────────────────────────── */
+
+.aw-card {
+  flex: 0 0 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: default;
+}
+
+.aw-card-thumb {
+  position: relative;
+  width: 120px;
+  height: 180px;   /* 2:3 portrait */
+  border-radius: 2px;
+  overflow: hidden;
+  background: #e8e4de;
+  flex-shrink: 0;
+}
+
+.aw-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aw-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 28px;
+  color: #c8c4bc;
+  text-transform: uppercase;
+}
+
+/* Badges on card (top corners) */
+.aw-card-badge {
+  position: absolute;
+  top: 6px;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 5px;
+  border-radius: 1px;
+}
+
+.aw-card-badge--gold {
+  right: 6px;
+  background: #c8960c;
+  color: #fff;
+}
+
+.aw-card-badge--new {
+  left: 6px;
+  background: #0f1923;
+  color: #fff;
+}
+
+/* Card info */
+.aw-card-info {
+  padding: 0 2px;
+}
+
+.aw-card-title {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.aw-card-sub {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  color: #999;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── EMPTY / LOADING STATE ──────────────────────────────────────────────────── */
+
+.aw-empty {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: #bbb;
+  padding: 40px 0;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .aw-page { padding: 24px 28px 60px; }
+}
+
+@media (max-width: 768px) {
+  .aw-page { padding: 20px 16px 48px; }
+  .aw-section-header { flex-direction: column; align-items: flex-start; }
+  .aw-hosts-row { gap: 14px; }
+}

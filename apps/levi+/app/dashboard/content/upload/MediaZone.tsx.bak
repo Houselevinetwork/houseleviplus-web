@@ -1,0 +1,329 @@
+﻿'use client';
+/**
+ * MediaZone.tsx — Full replacement
+ *
+ * HOW IT WORKS NOW:
+ *
+ *  ≤ 50 MB  →  POST /api/uploads/media          (streamed through NestJS, same as before)
+ *  > 50 MB  →  POST /api/uploads/presigned-media → get a signed PUT URL
+ *              → browser PUTs directly to R2     (NestJS never touches the bytes)
+ *              → on 200, save publicUrl into form state
+ *
+ * ERRORS:
+ *  — Both paths show a human-readable error if anything goes wrong
+ *  — The error is never silently swallowed
+ *  — If the server returns non-JSON (e.g. Cloudflare HTML error page) we surface it
+ */
+
+import { useState, useRef } from 'react';
+
+interface Form {
+  type:          string;
+  title:         string;
+  mediaFile:     File | null;
+  mediaUrl:      string;
+  mediaFileName: string;
+  mediaFileSize: number;
+}
+
+interface Props {
+  form:      Form;
+  setForm:   React.Dispatch<React.SetStateAction<any>>;
+  apiBase:   string;
+  bucketKey: string;
+}
+
+const CONTENT_TYPE_META: { key: string; label: string; accept: string }[] = [
+  { key: 'movie',      label: 'Movie',      accept: 'video/*' },
+  { key: 'tv_episode', label: 'TV Episode', accept: 'video/*' },
+  { key: 'stage_play', label: 'Stage Play', accept: 'video/*' },
+  { key: 'podcast',    label: 'Podcast',    accept: 'audio/*,video/*' },
+  { key: 'reelfilm',   label: 'Short Film', accept: 'video/*' },
+  { key: 'minisode',   label: 'Minisode',   accept: 'video/*' },
+  { key: 'music',      label: 'Music',      accept: 'audio/*,video/*' },
+];
+
+// Files at or below this go through NestJS (fast, simple).
+// Files above go direct to R2 via presigned URL (no server memory, no timeouts).
+const SMALL_FILE_THRESHOLD = 50 * 1024 * 1024; // 50 MB
+
+function fmtSize(bytes: number): string {
+  if (bytes >= 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+
+function ProgressBar({ pct }: { pct: number }) {
+  return (
+    <div style={{ height: 4, background: '#1e2d3d', borderRadius: 2, overflow: 'hidden', marginTop: 8 }}>
+      <div style={{ height: '100%', width: `${pct}%`, background: '#1b3d7b', transition: 'width 0.3s' }} />
+    </div>
+  );
+}
+
+export function MediaZone({ form, setForm, apiBase, bucketKey }: Props) {
+  const [pct,    setPct]    = useState<number | null>(null);
+  const [status, setStatus] = useState('');   // human-readable status line
+  const [err,    setErr]    = useState('');
+  const [drag,   setDrag]   = useState(false);
+  const ref                 = useRef<HTMLInputElement>(null);
+  const ct                  = CONTENT_TYPE_META.find(c => c.key === form.type);
+  const isAudio             = form.type === 'podcast' || form.type === 'music';
+
+  // ── Already uploaded — show success state ────────────────────────────────
+  if (form.mediaUrl) {
+    return (
+      <div style={{ background: '#0a1118', border: '1px solid #1a6e1a', borderRadius: 4, padding: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ color: '#4a8f4a' }}>
+            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14" strokeLinecap="round"/>
+              <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#4a8f4a' }}>Media uploaded</div>
+            <div style={{ fontSize: 11, color: '#4a5e72' }}>
+              {form.mediaFileName || 'File ready'}
+              {form.mediaFileSize > 0 && ` · ${fmtSize(form.mediaFileSize)}`}
+            </div>
+          </div>
+          <button
+            onClick={() => setForm((p: any) => ({ ...p, mediaFile: null, mediaUrl: '', mediaFileName: '', mediaFileSize: 0 }))}
+            style={{ padding: '6px 12px', background: 'none', border: '1px solid #1e2d3d', borderRadius: 2, color: '#8fa0b7', cursor: 'pointer', fontSize: 11 }}
+          >
+            Replace
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── SMALL FILE — stream through NestJS (≤ 50 MB) ─────────────────────────
+  function uploadSmall(file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const token  = localStorage.getItem('admin_token');
+      const safeSlug = (form.title || 'upload').toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 60);
+      const url    = `${apiBase}/api/uploads/media?contentType=${encodeURIComponent(bucketKey)}&slug=${encodeURIComponent(safeSlug)}`;
+
+      const fd  = new FormData();
+      fd.append('file', file);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      xhr.upload.onprogress = e => {
+        if (e.lengthComputable) {
+          const p = Math.round(e.loaded / e.total * 100);
+          setPct(p);
+          setStatus(p < 100 ? `Uploading… ${p}%` : 'Finalising…');
+        }
+      };
+
+      xhr.onload = () => {
+        // Surface non-JSON responses (e.g. Cloudflare HTML error pages)
+        let result: any;
+        try {
+          result = JSON.parse(xhr.responseText);
+        } catch {
+          reject(new Error(
+            `Server returned a non-JSON response (HTTP ${xhr.status}). ` +
+            `This usually means Cloudflare timed out. Try again or use a smaller file.`
+          ));
+          return;
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300 && result?.url) {
+          setForm((p: any) => ({
+            ...p,
+            mediaFile:     file,
+            mediaUrl:      result.url,
+            mediaFileName: file.name,
+            mediaFileSize: file.size,
+          }));
+          resolve();
+        } else {
+          reject(new Error(result?.message || `Upload failed — server responded with HTTP ${xhr.status}`));
+        }
+      };
+
+      xhr.onerror   = () => reject(new Error('Network error — check your connection and try again'));
+      xhr.ontimeout = () => reject(new Error('Upload timed out — the file may be too large for this method'));
+      xhr.send(fd);
+    });
+  }
+
+  // ── LARGE FILE — browser PUTs directly to R2 (> 50 MB) ──────────────────
+  async function uploadLarge(file: File): Promise<void> {
+    const token    = localStorage.getItem('admin_token');
+    const safeSlug = (form.title || 'upload').toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 60);
+
+    // Step 1: ask NestJS for a presigned URL (tiny request, instant)
+    setStatus('Preparing upload…');
+    const presignRes = await fetch(`${apiBase}/api/uploads/presigned-media`, {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        contentType: bucketKey,
+        slug:        safeSlug,
+        fileName:    file.name,
+        fileSize:    file.size,
+        mimeType:    file.type,
+      }),
+    });
+
+    if (!presignRes.ok) {
+      const txt = await presignRes.text();
+      let msg = `Could not get upload URL (HTTP ${presignRes.status})`;
+      try { msg = JSON.parse(txt)?.message || msg; } catch {}
+      throw new Error(msg);
+    }
+
+    const { uploadUrl, publicUrl } = await presignRes.json();
+
+    // Step 2: PUT the file directly from the browser to R2
+    // Use XHR so we get upload progress
+    setStatus('Uploading directly to storage…');
+    await new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', uploadUrl);
+      xhr.setRequestHeader('Content-Type', file.type);
+
+      xhr.upload.onprogress = e => {
+        if (e.lengthComputable) {
+          const p = Math.round(e.loaded / e.total * 100);
+          setPct(p);
+          setStatus(`Uploading… ${p}% of ${fmtSize(file.size)}`);
+        }
+      };
+
+      xhr.onload = () => {
+        // R2 presigned PUT returns 200 with an empty body on success
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve();
+        } else {
+          reject(new Error(
+            `R2 rejected the upload (HTTP ${xhr.status}). ` +
+            `The signed URL may have expired — try again.`
+          ));
+        }
+      };
+
+      xhr.onerror   = () => reject(new Error('Network error during upload to storage'));
+      xhr.ontimeout = () => reject(new Error('Upload timed out'));
+      xhr.send(file);
+    });
+
+    // Step 3: save publicUrl into form state
+    setForm((p: any) => ({
+      ...p,
+      mediaFile:     file,
+      mediaUrl:      publicUrl,
+      mediaFileName: file.name,
+      mediaFileSize: file.size,
+    }));
+  }
+
+  // ── Entry point — picks the right path based on file size ────────────────
+  async function upload(file: File) {
+    setPct(0);
+    setErr('');
+    setStatus('');
+
+    try {
+      if (file.size <= SMALL_FILE_THRESHOLD) {
+        await uploadSmall(file);
+      } else {
+        await uploadLarge(file);
+      }
+      setStatus('');
+    } catch (e: any) {
+      setErr(e.message || 'Upload failed — please try again');
+    } finally {
+      setPct(null);
+    }
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────
+  const isUploading = pct !== null;
+
+  return (
+    <div>
+      {/* Drop zone — disabled while uploading */}
+      <div
+        onClick={() => !isUploading && ref.current?.click()}
+        onDragOver={e => { e.preventDefault(); if (!isUploading) setDrag(true); }}
+        onDragLeave={() => setDrag(false)}
+        onDrop={e => {
+          e.preventDefault(); setDrag(false);
+          if (!isUploading) { const f = e.dataTransfer.files[0]; if (f) upload(f); }
+        }}
+        style={{
+          border:     drag ? '2px dashed #1b3d7b' : '2px dashed #1e2d3d',
+          borderRadius: 4,
+          padding:    '40px 20px',
+          textAlign:  'center',
+          cursor:     isUploading ? 'not-allowed' : 'pointer',
+          background: drag ? 'rgba(27,61,123,0.1)' : 'transparent',
+          opacity:    isUploading ? 0.5 : 1,
+          transition: 'all 0.15s',
+        }}
+      >
+        <div style={{ color: '#4a5e72', marginBottom: 12 }}>
+          <svg width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" strokeLinecap="round"/>
+            <polyline points="17 8 12 3 7 8" strokeLinecap="round"/>
+            <line x1="12" y1="3" x2="12" y2="15" strokeLinecap="round"/>
+          </svg>
+        </div>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#c0ccd8', marginBottom: 4 }}>
+          {isUploading ? 'Upload in progress…' : `Drop ${ct?.label ?? 'file'} here`}
+        </div>
+        <div style={{ fontSize: 11, color: '#4a5e72', marginBottom: 8 }}>
+          {isAudio ? 'MP3, WAV, MP4, MOV' : 'MP4, MOV, MKV, WebM'} — or click to browse
+        </div>
+        <div style={{ fontSize: 10, color: '#2a3e52', letterSpacing: '0.06em' }}>
+          ≤ 50 MB uploads via server · Larger files upload directly to storage · Max 10 GB
+        </div>
+      </div>
+
+      {/* Progress */}
+      {isUploading && (
+        <div style={{ marginTop: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontSize: 11, color: '#8fa0b7' }}>{status}</span>
+            <span style={{ fontSize: 11, color: '#4a7fd4', fontWeight: 700 }}>{pct}%</span>
+          </div>
+          <ProgressBar pct={pct ?? 0} />
+          <div style={{ fontSize: 10, color: '#4a5e72', marginTop: 6 }}>
+            Do not close this tab or navigate away while uploading
+          </div>
+        </div>
+      )}
+
+      {/* Error — never silently swallowed */}
+      {err && (
+        <div style={{ marginTop: 8, padding: '10px 14px', background: 'rgba(224,92,92,0.1)', border: '1px solid rgba(224,92,92,0.3)', borderRadius: 2, fontSize: 12, color: '#e05c5c', lineHeight: 1.5 }}>
+          <strong>Upload failed:</strong> {err}
+          <button
+            onClick={() => setErr('')}
+            style={{ marginLeft: 10, background: 'none', border: 'none', color: '#e05c5c', cursor: 'pointer', fontSize: 11, textDecoration: 'underline' }}
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
+      <input
+        ref={ref}
+        type="file"
+        accept={ct?.accept ?? 'video/*,audio/*'}
+        style={{ display: 'none' }}
+        onChange={e => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ''; }}
+      />
+    </div>
+  );
+}

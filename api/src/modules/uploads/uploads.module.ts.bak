@@ -1,0 +1,25 @@
+// backend/src/modules/uploads/uploads.module.ts
+import { Module } from '@nestjs/common';
+
+import { CloudflareModule } from '../cloudflare/cloudflare.module';
+import { ContentModule } from '../content/content.module';
+import { AuthModule } from '../../user-and-monetization/auth/auth.module';
+import { RoleModule } from '../../user-and-monetization/role/role.module';
+
+import { UploadsService } from './uploads.service';
+import { UploadsController } from './uploads.controller';
+
+@Module({
+  imports: [
+    CloudflareModule,
+    ContentModule,
+    AuthModule,  // ← This now provides JwtModule, PassportModule, JwtAuthGuard, RolesGuard
+    RoleModule,  // ← Provides roles functionality
+    // ❌ REMOVE JwtModule.register() - AuthModule already provides it
+    // ❌ REMOVE ConfigModule - AuthModule already has it
+  ],
+  providers: [UploadsService],
+  controllers: [UploadsController],
+  exports: [UploadsService],
+})
+export class UploadsModule {}

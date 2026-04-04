@@ -1,0 +1,425 @@
+﻿'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import './navbar.css';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+type SubStatus = 'guest' | 'free' | 'premium';
+
+interface NavbarProps {
+  subscriptionStatus?: SubStatus;
+  userInitials?: string;
+  avatarUrl?: string;
+  cartCount?: number;
+  onSignOut?: () => void;
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+const ENT_ITEMS = [
+  { label: 'TV Shows',    path: '/tv-shows' },
+  { label: 'Movies',      path: '/movies' },
+  { label: 'Stage Plays', path: '/stage-plays' },
+  { label: 'Podcast',     path: '/podcasts' },
+  { label: 'Music',       path: '/music' },
+  { label: 'Shorts',      path: '/shorts' },
+];
+
+const NAV_ITEMS = [
+  { label: 'Home', path: '/home' },
+  { label: 'Entertainment', path: '/entertainment', hasDropdown: true },
+  { label: 'All Access', path: '/choose-plan' },
+  { label: 'HL Mood TV', path: '/mood-tv' },
+  { label: 'Sports', path: '/sports' },
+  { label: 'Kids',       path: '/kids' },
+  { label: 'Shop',       path: '/shop' },
+  { label: 'Travel',     path: '/travel' },
+];
+
+// ─── Icons ────────────────────────────────────────────────────────────────────
+const Icon = {
+  Search: () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7" /><path d="M16.5 16.5l4 4" strokeLinecap="round" />
+    </svg>
+  ),
+  Close: () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+    </svg>
+  ),
+  Cart: () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 01-8 0" />
+    </svg>
+  ),
+  Download: () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none" />
+      <line x1="9" y1="7" x2="15" y2="7" strokeLinecap="round" />
+    </svg>
+  ),
+  User: () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" strokeLinecap="round" />
+    </svg>
+  ),
+  Crown: ({ size = 12 }: { size?: number }) => (
+    <svg width={size} height={size} fill="#FFD700" viewBox="0 0 24 24">
+      <path d="M2 19l2-10 5 5 3-8 3 8 5-5 2 10H2z" />
+    </svg>
+  ),
+  Chevron: ({ open }: { open: boolean }) => (
+    <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"
+      style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+};
+
+// ─── Search Overlay ───────────────────────────────────────────────────────────
+function SearchOverlay({ onClose }: { onClose: () => void }) {
+  const [q, setQ] = useState('');
+  const inputRef  = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', esc);
+    return () => window.removeEventListener('keydown', esc);
+  }, [onClose]);
+
+  return (
+    <div className="nav-search-overlay" onClick={onClose}>
+      <div className="nav-search-box" onClick={e => e.stopPropagation()}>
+        <div className="nav-search-inner">
+          <Icon.Search />
+          <input
+            ref={inputRef}
+            className="nav-search-input"
+            placeholder="Search movies, shows, podcasts..."
+            value={q}
+            onChange={e => setQ(e.target.value)}
+          />
+          <button className="nav-icon" onClick={onClose}><Icon.Close /></button>
+        </div>
+        {q.length > 1 && (
+          <p className="nav-search-hint">
+            Press <kbd>Enter</kbd> to search for <strong>"{q}"</strong>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── CTA config ───────────────────────────────────────────────────────────────
+const ctaMap: Record<SubStatus, { label: string; mod: string }> = {
+  guest:   { label: 'Join HL+',    mod: '' },
+  free:    { label: 'Subscribe',   mod: 'nav-cta--subscribe' },
+  premium: { label: 'HL+ Premium', mod: 'nav-cta--premium' },
+};
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+export function Navbar({
+  subscriptionStatus = 'guest',
+  userInitials = 'HL',
+  avatarUrl,
+  cartCount = 0,
+  onSignOut,
+}: NavbarProps) {
+  const router   = useRouter();
+  const pathname = usePathname();
+
+  const [scrolled,    setScrolled]    = useState(false);
+  const [entOpen,     setEntOpen]     = useState(false);
+  const [mobileOpen,  setMobileOpen]  = useState(false);
+  const [searchOpen,  setSearchOpen]  = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [mobileEnt,   setMobileEnt]   = useState(false);
+
+  const entRef     = useRef<HTMLDivElement>(null);
+  const accountRef = useRef<HTMLDivElement>(null);
+  const isLoggedIn = subscriptionStatus !== 'guest';
+  const cta        = ctaMap[subscriptionStatus];
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = searchOpen || mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [searchOpen, mobileOpen]);
+
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      if (entRef.current     && !entRef.current.contains(e.target as Node))     setEntOpen(false);
+      if (accountRef.current && !accountRef.current.contains(e.target as Node)) setAccountOpen(false);
+    };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false); setEntOpen(false); setAccountOpen(false);
+  }, [pathname]);
+
+  const go = (path: string) => router.push(path);
+
+  const handleCtaClick = () => {
+    if (subscriptionStatus === 'premium') return;
+    go(subscriptionStatus === 'free' ? '/subscribe' : '/choose-plan');
+  };
+
+  return (
+    <>
+      <header className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
+        <div className="nav-wrap">
+
+          {/* Logo */}
+          <button onClick={() => go('/')} className="nav-logo">
+            HOUSE LEVI<span className="nav-logo-plus">+</span>
+          </button>
+
+          {/* ── Desktop Nav ── */}
+          <nav className="nav-desktop">
+            {/* Home Link */}
+            <button onClick={() => go('/home')}
+              className={`nav-link${pathname === '/home' ? ' nav-link--active' : ''}`}>
+              Home
+            </button>
+
+            {/* Entertainment Dropdown */}
+            <div ref={entRef} className="nav-dropdown">
+              <button
+                className={`nav-link nav-link--dropdown${ENT_ITEMS.some(i => pathname === i.path) ? ' nav-link--active' : ''}`}
+                onClick={() => setEntOpen(o => !o)}
+              >
+                Entertainment <Icon.Chevron open={entOpen} />
+              </button>
+              {entOpen && (
+                <div className="nav-dropdown-menu">
+                  <button className="nav-dropdown-item nav-dropdown-item--all"
+                    onClick={() => { go('/entertainment'); setEntOpen(false); }}>
+                    All Entertainment →
+                  </button>
+                  <div className="nav-dropdown-divider" />
+                  {ENT_ITEMS.map(item => (
+                    <button key={item.path}
+                      className={`nav-dropdown-item${pathname === item.path ? ' nav-dropdown-item--active' : ''}`}
+                      onClick={() => { go(item.path); setEntOpen(false); }}>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Other Nav Items */}
+            {NAV_ITEMS.slice(2).map(item => (
+              <button key={item.path} onClick={() => go(item.path)}
+                className={`nav-link${pathname === item.path ? ' nav-link--active' : ''}`}>
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* ── Desktop Right ── */}
+          <div className="nav-right">
+            <button className="nav-icon" title="Search" onClick={() => setSearchOpen(true)}>
+              <Icon.Search />
+            </button>
+            <button className="nav-icon nav-icon--labeled" title="Download App" onClick={() => go('/download')}>
+              <Icon.Download />
+              <span className="nav-icon-label">App</span>
+            </button>
+            <button className="nav-icon nav-cart" title="Cart" onClick={() => go('/cart')}>
+              <Icon.Cart />
+              {cartCount > 0 && <span className="nav-cart-badge">{cartCount}</span>}
+            </button>
+
+            <div ref={accountRef} className="nav-account-wrap">
+              <button className="nav-icon nav-account-btn"
+                title={isLoggedIn ? 'My Account' : 'Sign In'}
+                onClick={() => setAccountOpen(o => !o)}>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="nav-avatar-img" />
+                ) : isLoggedIn ? (
+                  <div className="nav-avatar-initials">
+                    {userInitials}
+                    {subscriptionStatus === 'premium' && (
+                      <span className="nav-crown"><Icon.Crown size={10} /></span>
+                    )}
+                  </div>
+                ) : (
+                  <Icon.User />
+                )}
+              </button>
+              {accountOpen && (
+                <div className="nav-account-menu">
+                  {isLoggedIn ? (
+                    <>
+                      <div className="nav-account-header">
+                        <div className="nav-account-avatar">{userInitials}</div>
+                        <div>
+                          <p className="nav-account-name">My Account</p>
+                          <p className="nav-account-tier">
+                            {subscriptionStatus === 'premium' ? '👑 Premium Member' : 'Free Plan'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="nav-account-divider" />
+                      {[
+                        { label: 'Profile',      path: '/dashboard/account' },
+                        { label: 'My Watchlist', path: '/watchlist' },
+                        { label: 'Downloads',    path: '/downloads' },
+                        { label: 'Settings',     path: '/settings' },
+                      ].map(({ label, path }) => (
+                        <button key={path} className="nav-account-item"
+                          onClick={() => { go(path); setAccountOpen(false); }}>
+                          {label}
+                        </button>
+                      ))}
+                      {subscriptionStatus !== 'premium' && (
+                        <button className="nav-account-item nav-account-item--upgrade"
+                          onClick={() => { go('/subscribe'); setAccountOpen(false); }}>
+                          ✦ Upgrade to Premium
+                        </button>
+                      )}
+                      <div className="nav-account-divider" />
+                      <button className="nav-account-item nav-account-item--danger"
+                        onClick={() => { setAccountOpen(false); onSignOut?.(); }}>
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className="nav-account-item"
+                        onClick={() => { go('/login'); setAccountOpen(false); }}>Sign In</button>
+                      <button className="nav-account-item nav-account-item--upgrade"
+                        onClick={() => { go('/choose-plan'); setAccountOpen(false); }}>
+                        Join HL+
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <button className={`nav-cta ${cta.mod}`} onClick={handleCtaClick}
+              disabled={subscriptionStatus === 'premium'}>
+              {subscriptionStatus === 'premium' && <Icon.Crown size={12} />}
+              {cta.label}
+            </button>
+          </div>
+
+          {/* ── Mobile Actions — search + menu + CTA (moved to right) ── */}
+          <div className="nav-mobile-actions">
+            <button className="nav-icon" onClick={() => setSearchOpen(true)} aria-label="Search">
+              <Icon.Search />
+            </button>
+            <button className="nav-mobile-btn" onClick={() => setMobileOpen(o => !o)}>
+              {mobileOpen ? 'Close' : 'Menu'}
+            </button>
+            {/* CTA moved to last on mobile/tablet */}
+            <button
+              className={`nav-cta nav-cta--mobile ${cta.mod}`}
+              onClick={handleCtaClick}
+              disabled={subscriptionStatus === 'premium'}
+            >
+              {subscriptionStatus === 'premium' && <Icon.Crown size={11} />}
+              {cta.label}
+            </button>
+          </div>
+        </div>
+
+        {/* ── Mobile Menu ── */}
+        {mobileOpen && (
+          <>
+            <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />
+            <div className="nav-mobile-menu">
+              <div className="nav-mobile-section">
+                <button className="nav-mobile-link"
+                  onClick={() => { go('/home'); setMobileOpen(false); }}>
+                  Home
+                </button>
+              </div>
+
+              <div className="nav-mobile-section">
+                <button className="nav-mobile-section-toggle" onClick={() => setMobileEnt(o => !o)}>
+                  <span>Entertainment</span>
+                  <Icon.Chevron open={mobileEnt} />
+                </button>
+                {mobileEnt && (
+                  <div className="nav-mobile-sub">
+                    <button className="nav-mobile-link nav-mobile-link--sub"
+                      onClick={() => { go('/entertainment'); setMobileOpen(false); }}>
+                      All Entertainment
+                    </button>
+                    {ENT_ITEMS.map(item => (
+                      <button key={item.path} className="nav-mobile-link nav-mobile-link--sub"
+                        onClick={() => { go(item.path); setMobileOpen(false); }}>
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {NAV_ITEMS.slice(2).map(item => (
+                <button key={item.path} className="nav-mobile-link"
+                  onClick={() => { go(item.path); setMobileOpen(false); }}>
+                  {item.label}
+                </button>
+              ))}
+
+              <div className="nav-mobile-utils">
+                <button className="nav-mobile-util" onClick={() => { go('/cart'); setMobileOpen(false); }}>
+                  <Icon.Cart /> Cart {cartCount > 0 && `(${cartCount})`}
+                </button>
+                <button className="nav-mobile-util" onClick={() => { go('/download'); setMobileOpen(false); }}>
+                  <Icon.Download /> Get App
+                </button>
+              </div>
+
+              <div className="nav-mobile-divider" />
+
+              {isLoggedIn ? (
+                <>
+                  <button className="nav-mobile-link" onClick={() => { go('/dashboard/account'); setMobileOpen(false); }}>My Account</button>
+                  <button className="nav-mobile-link" onClick={() => { go('/watchlist'); setMobileOpen(false); }}>Watchlist</button>
+                  {subscriptionStatus !== 'premium' && (
+                    <button className="nav-mobile-link nav-mobile-link--upgrade"
+                      onClick={() => { go('/subscribe'); setMobileOpen(false); }}>
+                      ✦ Upgrade to Premium
+                    </button>
+                  )}
+                  <button className="nav-mobile-link nav-mobile-link--danger"
+                    onClick={() => { setMobileOpen(false); onSignOut?.(); }}>
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="nav-mobile-link" onClick={() => { go('/login'); setMobileOpen(false); }}>Sign In</button>
+                  <button className="nav-mobile-link nav-mobile-link--upgrade"
+                    onClick={() => { go('/choose-plan'); setMobileOpen(false); }}>
+                    Join HL+
+                  </button>
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </header>
+
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+    </>
+  );
+}

@@ -1,0 +1,30 @@
+{
+    "scripts":  {
+                    "test":  "jest",
+                    "build":  "tsc",
+                    "dev":  "tsc --watch",
+                    "type-check":  "tsc --noEmit"
+                },
+    "description":  "Admin user operations",
+    "type":  "module",
+    "types":  "./src/index.ts",
+    "version":  "1.0.0",
+    "devDependencies":  {
+                            "typescript":  "^5.8.3",
+                            "jest":  "^29.0.0",
+                            "@types/jest":  "^29.0.0"
+                        },
+    "name":  "@houselevi/user-management",
+    "private":  true,
+    "main":  "./src/index.ts",
+    "dependencies":  {
+                         "@houselevi/types":  "workspace:*",
+                         "@houselevi/compliance":  "workspace:*"
+                     },
+    "keywords":  [
+                     "user-management",
+                     "house-levi",
+                     "streaming",
+                     "security"
+                 ]
+}

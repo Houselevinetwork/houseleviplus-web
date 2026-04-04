@@ -1,0 +1,11 @@
+{
+  "name": "@houselevi/travel-api",
+  "version": "1.0.0",
+  "description": "Shared travel types and API client for HouseLevi+ (web, iOS, Android)",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {}
+}

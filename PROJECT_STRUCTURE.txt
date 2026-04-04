@@ -1,0 +1,93 @@
+﻿# HOUSE LEVI+ PROJECT STRUCTURE REPORT
+Generated: 2026-02-26 20:22:29
+
+## APPS (Frontend Applications)
+### mobile
+
+### tv
+
+### web
+  - Has: app/
+
+### web+
+  - Has: src/
+
+## PACKAGES (Shared Code)
+
+### LAYER-1-DESIGN
+  - ui
+
+### LAYER-1-PRIMITIVES
+  - analytics
+  - config
+  - constants
+  - types
+  - utils
+
+### LAYER-2-SECURITY
+  - audit-logger
+  - compliance
+  - data-subject-rights
+  - device-manager
+  - encryption
+  - fraud-detection
+  - rate-limiter
+  - session-manager
+
+### LAYER-3-SERVICES
+  - api-sdk
+  - auth
+  - cache
+  - consent
+  - drm
+  - networking
+  - offline-sync
+  - payment
+  - push-notifications
+  - storage
+
+### LAYER-4-CONTENT
+  - content-types
+  - linear-tv
+  - recommendation-engine
+  - streaming-service
+  - video-player-web
+
+### LAYER-5-COMMERCE
+  - shop
+  - ticketing
+  - travel-api
+
+### LAYER-6-FEATURES
+  - contact-management
+  - live-streaming
+  - news-curator
+  - notifications
+  - user-experiences
+
+### LAYER-7-ADMIN
+  - content-management
+  - financial-reporting
+  - user-management
+
+### UI-COMPONENTS
+  - ui-admin
+  - ui-android
+  - ui-ios
+  - ui-native
+  - ui-native-tv
+  - ui-shared
+  - ui-web
+
+## API (Backend)
+  - commerce-and-transactions
+  - common
+  - config
+  - core
+  - linear-tv
+  - modules
+  - scripts
+  - shared
+  - travel
+  - user-and-monetization
+

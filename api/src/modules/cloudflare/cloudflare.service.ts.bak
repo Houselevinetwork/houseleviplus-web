@@ -1,0 +1,224 @@
+// backend/src/modules/cloudflare/cloudflare.service.ts
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CloudflareR2Service, ContentTypeBucket } from './cloudflare-r2.service';
+import { CloudflareStreamService } from './cloudflare-stream.service';
+
+export type StorageMethod = 'r2' | 'stream';
+
+@Injectable()
+export class CloudflareService {
+  private readonly logger = new Logger(CloudflareService.name);
+
+  constructor(
+    private r2Service: CloudflareR2Service,
+    private streamService: CloudflareStreamService,
+    private configService: ConfigService,
+  ) {}
+
+  /**
+   * Route upload session creation based on storage method
+   * R2: Generate presigned URL
+   * Stream: Generate upload token
+   */
+  async createUploadSession(
+    contentType: ContentTypeBucket,
+    storageMethod: StorageMethod = 'r2',
+    fileName: string = 'upload',
+  ): Promise<{
+    uploadUrl: string;
+    method: 'PUT' | 'POST';
+    headers?: Record<string, string>;
+    expiresIn: number;
+    cloudflareKey?: string;
+    uploadToken?: string;
+  }> {
+    this.logger.log(
+      `Creating upload session: ${contentType} via ${storageMethod}`,
+    );
+
+    if (storageMethod === 'r2') {
+      return await this.r2Service.generatePresignedUploadUrl(
+        contentType,
+        fileName,
+      );
+    } else if (storageMethod === 'stream') {
+      const result = await this.streamService.createUploadToken({
+        name: fileName,
+      });
+      return {
+        uploadUrl: result.uploadUrl,
+        method: 'POST',
+        expiresIn: result.expiresIn,
+        uploadToken: result.uploadToken,
+      };
+    }
+
+    throw new Error(`Unknown storage method: ${storageMethod}`);
+  }
+
+  /**
+   * Get public URL for R2 stored files
+   */
+  getR2PublicUrl(
+    contentType: ContentTypeBucket,
+    cloudflareKey: string,
+  ): string {
+    return this.r2Service.getPublicUrl(contentType, cloudflareKey);
+  }
+
+  /**
+   * Get R2 object metadata
+   */
+  async getR2Metadata(
+    contentType: ContentTypeBucket,
+    cloudflareKey: string,
+  ) {
+    return await this.r2Service.getObjectMetadata(contentType, cloudflareKey);
+  }
+
+  /**
+   * Delete from R2
+   */
+  async deleteFromR2(
+    contentType: ContentTypeBucket,
+    cloudflareKey: string,
+  ): Promise<void> {
+    return await this.r2Service.deleteObject(contentType, cloudflareKey);
+  }
+
+  /**
+   * Check if R2 object exists
+   */
+  async r2ObjectExists(
+    contentType: ContentTypeBucket,
+    cloudflareKey: string,
+  ): Promise<boolean> {
+    return await this.r2Service.objectExists(contentType, cloudflareKey);
+  }
+
+  /**
+   * Get Stream video info
+   */
+  async getStreamVideoInfo(videoId: string) {
+    return await this.streamService.getVideoInfo(videoId);
+  }
+
+  /**
+   * Delete from Stream
+   */
+  async deleteFromStream(videoId: string): Promise<void> {
+    return await this.streamService.deleteVideo(videoId);
+  }
+
+  /**
+   * Get Stream video status
+   */
+  async getStreamVideoStatus(videoId: string) {
+    return await this.streamService.getVideoStatus(videoId);
+  }
+
+  /**
+   * Upload image to R2
+   * Used for custom posters, backdrops, and logos
+   * Handles buffer directly to Cloudflare R2 storage
+   */
+  async uploadImageToR2(
+    contentType: ContentTypeBucket,
+    filename: string,
+    buffer: Buffer,
+    mimeType: string,
+  ): Promise<string> {
+    try {
+      this.logger.log(`Uploading image to R2: ${filename}`);
+
+      // Ensure buffer is a proper Buffer object
+      if (!Buffer.isBuffer(buffer)) {
+        throw new Error('Invalid buffer provided for upload');
+      }
+
+      // Log buffer size for debugging
+      this.logger.debug(`Buffer size: ${buffer.length} bytes`);
+
+      // Use R2Service to upload - pass buffer directly
+      const key = `images/${filename}`;
+      await this.r2Service.uploadObject(
+        contentType,
+        key,
+        buffer, // Pass buffer directly - R2Service will handle it
+        mimeType,
+      );
+
+      const publicUrl = this.r2Service.getPublicUrl(contentType, key);
+      this.logger.log(`✅ Image uploaded to R2: ${publicUrl}`);
+
+      return publicUrl;
+    } catch (error) {
+      this.logger.error(`Failed to upload image to R2: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+
+  /**
+   * Upload trailer to Cloudflare Stream
+   */
+  async uploadTrailerToStream(file: any): Promise<{
+    streamId: string;
+    playbackUrl: string;
+    duration?: number;
+  }> {
+    try {
+      this.logger.log(`Uploading trailer to Stream: ${file.originalname}`);
+
+      const accountId = this.configService.get<string>('CLOUDFLARE_ACCOUNT_ID');
+      const apiToken = this.configService.get<string>('CLOUDFLARE_STREAM_API_TOKEN');
+
+      if (!accountId || !apiToken) {
+        throw new Error('Cloudflare Stream credentials not configured');
+      }
+
+      const FormData = require('form-data');
+      const formData = new FormData();
+
+      formData.append('file', file.buffer, {
+        filename: file.originalname,
+        contentType: file.mimetype,
+      });
+      formData.append('requireSignedURLs', 'false');
+
+      const fetch = require('node-fetch');
+      const response = await fetch.default(
+        `https://api.cloudflare.com/client/v4/accounts/${accountId}/stream`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiToken}`,
+            ...formData.getHeaders(),
+          },
+          body: formData,
+        },
+      );
+
+      const result = await response.json();
+
+      if (!result.success || !result.result?.uid) {
+        throw new Error(result.errors?.[0]?.message || 'Failed to upload trailer');
+      }
+
+      const streamId = result.result.uid;
+      const customerCode = this.configService.get<string>('CLOUDFLARE_STREAM_CUSTOMER_CODE') || '7a488e9b77e6c8630472a07003c7d8e4';
+      const playbackUrl = `https://customer-${customerCode}.cloudflarestream.com/${streamId}/manifest/video.m3u8`;
+
+      this.logger.log(`✅ Trailer uploaded to Stream: ${streamId}`);
+
+      return {
+        streamId,
+        playbackUrl,
+        duration: result.result.duration,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to upload trailer to Stream: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
+}
