@@ -1,14 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@houselevi/auth', '@houselevi/ui', '@houselevi/shop', '@houselevi/travel-api'],
   reactStrictMode: true,
-  swcMinify: true,
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  env: {
-    NEXT_PUBLIC_AUTHORIZE_SERVER_URL: process.env.NEXT_PUBLIC_AUTHORIZE_SERVER_URL || 'http://localhost:3002',
-  },
+  transpilePackages: ['@houselevi/auth', '@houselevi/ui', '@houselevi/shop', '@houselevi/travel-api'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '**.r2.dev', pathname: '/**' },
@@ -22,6 +15,4 @@ const nextConfig = {
     ],
   },
 }
-
 module.exports = nextConfig
-
