@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@houselevi/auth', '@houselevi/ui', '@houselevi/shop'],
+  transpilePackages: ['@houselevi/auth', '@houselevi/ui', '@houselevi/shop', '@houselevi/travel-api'],
   reactStrictMode: true,
   swcMinify: true,
   eslint: {
@@ -24,3 +24,4 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+

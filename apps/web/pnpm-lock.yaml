@@ -14,6 +14,9 @@ importers:
       '@houselevi/shop':
         specifier: file:../../packages/LAYER-5-COMMERCE/shop
         version: file:../../packages/LAYER-5-COMMERCE/shop
+      '@houselevi/travel-api':
+        specifier: file:../../packages/LAYER-5-COMMERCE/travel-api
+        version: file:../../packages/LAYER-5-COMMERCE/travel-api
       '@houselevi/ui':
         specifier: file:../../packages/LAYER-1-DESIGN/ui
         version: file:../../packages/LAYER-1-DESIGN/ui(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -245,6 +248,9 @@ packages:
 
   '@houselevi/shop@file:../../packages/LAYER-5-COMMERCE/shop':
     resolution: {directory: ../../packages/LAYER-5-COMMERCE/shop, type: directory}
+
+  '@houselevi/travel-api@file:../../packages/LAYER-5-COMMERCE/travel-api':
+    resolution: {directory: ../../packages/LAYER-5-COMMERCE/travel-api, type: directory}
 
   '@houselevi/ui@file:../../packages/LAYER-1-DESIGN/ui':
     resolution: {directory: ../../packages/LAYER-1-DESIGN/ui, type: directory}
@@ -2916,6 +2922,8 @@ snapshots:
       react: 19.2.3
 
   '@houselevi/shop@file:../../packages/LAYER-5-COMMERCE/shop': {}
+
+  '@houselevi/travel-api@file:../../packages/LAYER-5-COMMERCE/travel-api': {}
 
   '@houselevi/ui@file:../../packages/LAYER-1-DESIGN/ui(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:

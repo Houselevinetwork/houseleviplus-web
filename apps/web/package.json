@@ -29,7 +29,7 @@
                          "tailwind-merge":  "^2.6.0",
                          "zustand":  "^4.4.0",
                          "react-hot-toast":  "^2.4.1",
-                         "@houselevi/travel-api":  "workspace:*"
+                         "@houselevi/travel-api": "file:../../packages/LAYER-5-COMMERCE/travel-api"
                      },
     "devDependencies":  {
                             "@tailwindcss/postcss":  "^4.1.18",
@@ -45,3 +45,4 @@
                             "typescript":  "^5.8.3"
                         }
 }
+
