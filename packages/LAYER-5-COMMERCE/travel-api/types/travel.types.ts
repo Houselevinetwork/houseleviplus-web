@@ -11,6 +11,8 @@ export interface TravelPackage {
   continent: Continent;
   description: string;
   imageUrl: string | null;
+  heroImageUrl?: string;
+  heroImageAlt?: string;
   departureDate: string;
   returnDate: string;
   totalSpots: number;
