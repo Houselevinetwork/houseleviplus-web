@@ -13,6 +13,10 @@ export interface TravelPackage {
   imageUrl: string | null;
   heroImageUrl?: string;
   heroImageAlt?: string;
+  tagline?: string;
+  taglineColor?: string;
+  highlights?: string[];
+  duration?: string;
   departureDate: string;
   returnDate: string;
   totalSpots: number;
@@ -21,6 +25,7 @@ export interface TravelPackage {
   slug: string;
   status: 'active' | 'draft' | 'full' | 'archived' | 'sold_out';
   createdAt?: string;
+  [key: string]: any;
 }
 
 export interface TravelTestimonial {
