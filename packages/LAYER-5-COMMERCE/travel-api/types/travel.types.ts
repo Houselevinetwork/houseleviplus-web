@@ -1,23 +1,17 @@
-/**
- * Location: packages/LAYER-5-COMMERCE/travel-api/types/travel.types.ts
- */
-
-// ── Hero ───────────────────────────────────────────────────────
 export interface TravelHeroConfig {
   imageUrl: string;
-  ctaLabel: string; // default: 'View Upcoming Journeys'
+  ctaLabel: string;
 }
 
-// ── Package ────────────────────────────────────────────────────
 export type Continent = 'Africa' | 'Europe' | 'Asia' | 'Australia' | 'Americas';
 
 export interface TravelPackage {
   id: string;
-  destination: string;         // e.g. "Kenya, East Africa"
+  destination: string;
   continent: Continent;
   description: string;
   imageUrl: string | null;
-  departureDate: string;       // ISO date string
+  departureDate: string;
   returnDate: string;
   totalSpots: number;
   spotsRemaining: number;
@@ -27,7 +21,6 @@ export interface TravelPackage {
   createdAt?: string;
 }
 
-// ── Testimonial ───────────────────────────────────────────────
 export interface TravelTestimonial {
   id: string;
   author: string;
@@ -39,7 +32,6 @@ export interface TravelTestimonial {
   createdAt?: string;
 }
 
-// ── Note from Levi ────────────────────────────────────────────
 export interface NoteFromLevi {
   id?: string;
   body: string;
@@ -47,7 +39,6 @@ export interface NoteFromLevi {
   updatedAt?: string;
 }
 
-// ── DTOs ──────────────────────────────────────────────────────
 export interface CreateInquiryDto {
   name: string;
   email: string;
@@ -61,8 +52,11 @@ export interface CreateInquiryDto {
 
 export interface CreateCustomInquiryDto {
   name: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone?: string;
+  whatsapp?: string;
   destination: string;
   continent: Continent;
   travelDate?: string;
