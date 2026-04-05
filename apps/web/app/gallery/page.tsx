@@ -302,7 +302,7 @@ export default function GalleryPage() {
       {/* Coffee modal */}
       {showCoffee && (
         <BuyCoffeeModal
-          onBuyNow={() => { window.open(COFFEE_URL, '_blank'); setShowCoffee(false); }}
+          }
           onNextTime={() => setShowCoffee(false)}
         />
       )}

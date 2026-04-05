@@ -8,20 +8,20 @@ export type Continent = 'Africa' | 'Europe' | 'Asia' | 'Australia' | 'Americas';
 export interface TravelPackage {
   id: string;
   destination: string;
-  continent: Continent;
+  continent?: Continent;
   description: string;
-  imageUrl: string | null;
+  imageUrl?: string | null;
   heroImageUrl?: string;
   heroImageAlt?: string;
   tagline?: string;
   taglineColor?: string;
   highlights?: string[];
   duration?: string;
-  departureDate: string;
-  returnDate: string;
-  totalSpots: number;
+  departureDate?: string;
+  returnDate?: string;
+  totalSpots?: number;
   spotsRemaining: number;
-  priceUSD: number;
+  priceUSD?: number;
   slug: string;
   status: 'active' | 'draft' | 'full' | 'archived' | 'sold_out';
   createdAt?: string;
@@ -30,13 +30,17 @@ export interface TravelPackage {
 
 export interface TravelTestimonial {
   id: string;
-  author: string;
-  destination: string;
-  body: string;
-  rating: number;
+  author?: string;
+  clientName?: string;
+  destination?: string;
+  body?: string;
+  quote?: string;
+  imageUrl?: string;
+  rating?: number;
   packageId?: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status?: 'pending' | 'approved' | 'rejected';
   createdAt?: string;
+  [key: string]: any;
 }
 
 export interface NoteFromLevi {
@@ -88,14 +92,20 @@ export interface CreateCustomInquiryDto {
 }
 
 export interface SubmitTestimonialDto {
-  author: string;
-  destination: string;
+  author?: string;
+  clientName?: string;
+  clientEmail?: string;
+  destination?: string;
   packageId?: string;
-  body: string;
-  rating: number;
+  packageSlug?: string;
+  body?: string;
+  quote?: string;
+  rating?: number;
+  [key: string]: any;
 }
 
 export interface SubscribeDto {
   email: string;
   name?: string;
+  firstName?: string;
 }
