@@ -17,7 +17,7 @@ export interface TravelPackage {
   spotsRemaining: number;
   priceUSD: number;
   slug: string;
-  status: 'active' | 'draft' | 'full' | 'archived';
+  status: 'active' | 'draft' | 'full' | 'archived' | 'sold_out';
   createdAt?: string;
 }
 
