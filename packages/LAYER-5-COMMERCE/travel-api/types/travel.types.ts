@@ -51,7 +51,7 @@ export interface CreateInquiryDto {
 }
 
 export interface CreateCustomInquiryDto {
-  name: string;
+  name?: string;
   firstName?: string;
   lastName?: string;
   email: string;
@@ -66,6 +66,7 @@ export interface CreateCustomInquiryDto {
   groupSize?: number;
   budget?: string;
   notes?: string;
+  message?: string;
   [key: string]: any;
 }
 
