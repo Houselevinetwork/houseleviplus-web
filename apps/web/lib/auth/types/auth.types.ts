@@ -22,9 +22,9 @@ export interface EmailCheckResult {
   firstName?: string;
 }
 
-export interface OTPRequestResponse { success: boolean; message?: string; }
-export interface OTPVerifyResponse { success: boolean; token?: string; user?: any; }
+export interface OTPRequestResponse { success: boolean; message?: string; expiresIn?: number; canResendIn?: number; [key: string]: any; }
+export interface OTPVerifyResponse { success: boolean; token?: string; user?: any; [key: string]: any; }
 export interface UserData { id: string; email: string; firstName?: string; lastName?: string; isPremium?: boolean; subscriptionStatus?: string; [key: string]: any; }
 export interface RefreshTokenResponse { token: string; }
-export interface SignupRequest { email: string; password: string; firstName?: string; lastName?: string; }
-export interface SignupResponse { success: boolean; token?: string; user?: any; }
+export interface SignupRequest { email: string; password: string; firstName?: string; lastName?: string; [key: string]: any; }
+export interface SignupResponse { success: boolean; token?: string; user?: any; [key: string]: any; }
