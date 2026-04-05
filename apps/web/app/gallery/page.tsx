@@ -301,9 +301,7 @@ export default function GalleryPage() {
 
       {/* Coffee modal */}
       {showCoffee && (
-        <BuyCoffeeModal
-          onNextTime={() => setShowCoffee(false)}
-        />
+        <BuyCoffeeModal onClose={() => setShowCoffee(false)} />
       )}
 
       <style>{`
