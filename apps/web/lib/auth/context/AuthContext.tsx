@@ -109,7 +109,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // --- Decode JWT to read the real expiry -------------------------------------
-  // No library needed — JWT payload is just base64.
+  // No library needed â€” JWT payload is just base64.
 
   const getTokenExpiryMs = useCallback((token: string): number | null => {
     try {
@@ -171,7 +171,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const storedRefreshToken = getRefreshToken();
 
     if (!storedRefreshToken) {
-      console.warn('?? No refresh token — user must log in again');
+      console.warn('?? No refresh token â€” user must log in again');
       return false;
     }
 
@@ -185,7 +185,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (response.status === 401) {
-        console.warn('?? Refresh token expired — user must log in again');
+        console.warn('?? Refresh token expired â€” user must log in again');
         return false;
       }
 
@@ -215,7 +215,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const token = getAccessToken();
 
     if (!token) {
-      console.log('?? No access token — skipping profile fetch');
+      console.log('?? No access token â€” skipping profile fetch');
       setUser(null);
       setIsLoading(false);
       return;
@@ -233,7 +233,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       // Token expired ? try to refresh silently
       if (response.status === 401) {
-        console.warn('?? Access token rejected (401) — attempting refresh');
+        console.warn('?? Access token rejected (401) â€” attempting refresh');
         const refreshed = await refreshAccessToken();
 
         if (refreshed) {
@@ -255,7 +255,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           }
         }
 
-        // Refresh failed — clear everything
+        // Refresh failed â€” clear everything
         await clearAuthData();
         setIsLoading(false);
         return;
@@ -362,7 +362,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (hasRefreshToken) {
           // Token missing from storage but refresh token present ? silent re-login
-          console.log('?? No access token — attempting silent login via refresh token');
+          console.log('?? No access token â€” attempting silent login via refresh token');
           const ok = await refreshAccessToken();
           if (ok) {
             await refreshUserData();
@@ -375,7 +375,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
 
         // No tokens at all
-        console.log('?? No tokens found — guest session');
+        console.log('?? No tokens found â€” guest session');
         setIsLoading(false);
       } catch (error) {
         console.error('? Auth init error:', error);

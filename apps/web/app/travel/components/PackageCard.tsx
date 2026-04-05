@@ -37,7 +37,7 @@ export default function PackageCard({ pkg, wide, onInquire }: Props) {
       {/* Content */}
       <div style={{ padding: "32px 0 16px", textAlign: "center" }}>
         <p style={{ fontFamily: "'Julius Sans One', sans-serif", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(18,18,18,0.4)", marginBottom: 10 }}>
-          {pkg.continent}{dep ? ` · ${dep}` : ""}
+          {pkg.continent}{dep ? ` Â· ${dep}` : ""}
         </p>
         <h3 style={{ fontFamily: '"Frank Ruhl Libre", serif', fontSize: "clamp(22px,2.3vw,33px)", fontWeight: 500, color: "#121212", margin: "0 0 12px", lineHeight: 1.07 }}>
           {pkg.destination}

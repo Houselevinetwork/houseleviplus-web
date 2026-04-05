@@ -37,7 +37,7 @@ function toCache(key: string, data: unknown, ttlSeconds = 30): void {
 }
 
 // -- Auth token helper ------------------------------------------
-// Safe for both browser and SSR/Node — avoids referencing `window` directly
+// Safe for both browser and SSR/Node â€” avoids referencing `window` directly
 function getToken(): string {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

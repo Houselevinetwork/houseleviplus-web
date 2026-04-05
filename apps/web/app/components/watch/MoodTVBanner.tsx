@@ -40,7 +40,7 @@ export function MoodTVBanner() {
 
   const handleClick = () => {
     if (!isAuthenticated) {
-      setShowAuthModal(true); // âœ… modal, not redirect
+      setShowAuthModal(true); // Ã¢Å“â€¦ modal, not redirect
     } else {
       router.push('/live-tv');
     }
@@ -72,12 +72,12 @@ export function MoodTVBanner() {
                 <>
                   <div className="moodtv-banner__now-title">{nowPlaying.title}</div>
                   <div className="moodtv-banner__now-time">
-                    {nowPlaying.startTime} â€“ {nowPlaying.endTime}
+                    {nowPlaying.startTime} Ã¢â‚¬â€œ {nowPlaying.endTime}
                   </div>
                 </>
               ) : (
                 <div className="moodtv-banner__now-title" style={{ color: '#555', fontSize: 14 }}>
-                  Loading scheduleâ€¦
+                  Loading scheduleÃ¢â‚¬Â¦
                 </div>
               )}
             </div>
@@ -94,11 +94,11 @@ export function MoodTVBanner() {
         </div>
       </div>
 
-      {/* âœ… Auth prompt modal */}
+      {/* Ã¢Å“â€¦ Auth prompt modal */}
       <AuthPromptModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        contentTitle="HL Live TV â€” 24/7 Live"
+        contentTitle="HL Live TV Ã¢â‚¬â€ 24/7 Live"
         moodTV
       />
     </>

@@ -12,7 +12,7 @@ export default function QuoteStrip({ quotes }: { quotes: Quote[] }) {
           </p>
           <div style={{ marginTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
             <div style={{ width: 80, height: 1, background: "#d8d4cc" }} />
-            <span style={{ fontFamily: "Lato, sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(18,18,18,0.55)" }}>— {q.author}</span>
+            <span style={{ fontFamily: "Lato, sans-serif", fontSize: 13, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(18,18,18,0.55)" }}>â€” {q.author}</span>
           </div>
         </div>
       ))}

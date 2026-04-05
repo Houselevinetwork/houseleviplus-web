@@ -2,7 +2,7 @@
 /**
  * Location: apps/web/app/components/watch/WatchHero.tsx
  *
- * Auth gate on "Watch Now" â€” shows AuthPromptModal for guests
+ * Auth gate on "Watch Now" Ã¢â‚¬â€ shows AuthPromptModal for guests
  * instead of hard redirect.
  */
 
@@ -31,12 +31,12 @@ export function WatchHero({ item }: WatchHeroProps) {
   );
 
   const handleWatch = () => {
-    // Guest â†’ modal
+    // Guest Ã¢â€ â€™ modal
     if (!isAuthenticated) {
       setShowAuthModal(true);
       return;
     }
-    // Free user + premium content â†’ upgrade
+    // Free user + premium content Ã¢â€ â€™ upgrade
     if (item.isPremium && !userIsPremium) {
       router.push('/choose-plans');
       return;

@@ -25,7 +25,7 @@ export default function PackageGrid({ packages, onInquire }: Props) {
           Upcoming Travel Opportunities
         </h2>
 
-        {/* Continent filter — sits under the title */}
+        {/* Continent filter â€” sits under the title */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 8 }}>
           <span style={{ fontFamily: "'Julius Sans One', sans-serif", fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(18,18,18,0.35)", marginRight: 8 }}>
             Travel by Continent
@@ -49,13 +49,13 @@ export default function PackageGrid({ packages, onInquire }: Props) {
         </div>
       </div>
 
-      {/* Package cards — responsive grid */}
+      {/* Package cards â€” responsive grid */}
       <div style={{ maxWidth: 1440, margin: "0 auto", padding: "clamp(20px, 5vw, 80px) clamp(20px, 5vw, 128px)" }}>
         {filtered.length === 0 && (
           <p style={{ textAlign: "center", fontFamily: "Lato, sans-serif", fontSize: 14, color: "#bbb", fontStyle: "italic", padding: "60px 0" }}>
             {filter === "All"
-              ? "No upcoming journeys yet — check back soon."
-              : `No ${filter} packages at the moment — check back soon or enquire below.`}
+              ? "No upcoming journeys yet â€” check back soon."
+              : `No ${filter} packages at the moment â€” check back soon or enquire below.`}
           </p>
         )}
         {filtered.length > 0 && (

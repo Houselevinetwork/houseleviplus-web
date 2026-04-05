@@ -3,7 +3,7 @@
  * Location: apps/web/app/components/watch/ContentCard.tsx
  *
  * Auth gate uses AuthPromptModal (Netflix-style) instead of hard redirect.
- * Page stays visible behind modal â€” builds desire, improves conversion.
+ * Page stays visible behind modal Ã¢â‚¬â€ builds desire, improves conversion.
  */
 
 import { useState } from 'react';
@@ -42,19 +42,19 @@ export function ContentCard({ item, variant = 'portrait', showInfo = true }: Con
   const userIsPremium = user?.isPremium && user?.subscriptionStatus === 'ACTIVE';
 
   const handleClick = () => {
-    // Guest â†’ show modal (page stays visible behind it)
+    // Guest Ã¢â€ â€™ show modal (page stays visible behind it)
     if (!isAuthenticated) {
       setShowAuthModal(true);
       return;
     }
 
-    // Free user + premium content â†’ upgrade
+    // Free user + premium content Ã¢â€ â€™ upgrade
     if (item.isPremium && !userIsPremium) {
       router.push('/choose-plans');
       return;
     }
 
-    // Authenticated and allowed â†’ go to player
+    // Authenticated and allowed Ã¢â€ â€™ go to player
     router.push(`/watch/${item.slug ?? item._id}`);
   };
 
@@ -145,7 +145,7 @@ export function ContentCard({ item, variant = 'portrait', showInfo = true }: Con
         )}
       </div>
 
-      {/* Auth prompt modal â€” renders over the page, not a redirect */}
+      {/* Auth prompt modal Ã¢â‚¬â€ renders over the page, not a redirect */}
       <AuthPromptModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}

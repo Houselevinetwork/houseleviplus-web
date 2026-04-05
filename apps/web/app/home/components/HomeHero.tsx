@@ -20,7 +20,7 @@ interface HomeConfig {
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
-// 4 Ken Burns variants — random per image for variety
+// 4 Ken Burns variants â€” random per image for variety
 const KB_ANIMATIONS = [
   'kenBurns0', // zoom in, pan top-left
   'kenBurns1', // zoom in, pan top-right
@@ -40,7 +40,7 @@ export default function HomeHero() {
   });
   const [activeEvent, setActiveEvent] = useState<string>('all');
 
-  // 3-layer state — the key to zero black screen
+  // 3-layer state â€” the key to zero black screen
   const [layers, setLayers] = useState({ prev: '', current: '', next: '' });
   const [currentIdx, setCurrentIdx]   = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -121,7 +121,7 @@ export default function HomeHero() {
     setKbVariant(Math.floor(Math.random() * KB_ANIMATIONS.length));
     setIsTransitioning(true);
 
-    // Update layers — prev fades out, current becomes new image, next preloads
+    // Update layers â€” prev fades out, current becomes new image, next preloads
     setLayers({
       prev:    imgs[prevIdx],
       current: imgs[nextIdx],
@@ -165,7 +165,7 @@ export default function HomeHero() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* -- LAYER 1: PREV — fades out -------------------------------- */}
+      {/* -- LAYER 1: PREV â€” fades out -------------------------------- */}
       {layers.prev && (
         <div style={{
           position: 'absolute', inset: 0, zIndex: 1,
@@ -177,7 +177,7 @@ export default function HomeHero() {
         }} />
       )}
 
-      {/* -- LAYER 2: CURRENT — Ken Burns ----------------------------- */}
+      {/* -- LAYER 2: CURRENT â€” Ken Burns ----------------------------- */}
       <div
         key={`${layers.current}-${kbVariant}`}
         style={{
@@ -193,7 +193,7 @@ export default function HomeHero() {
         }}
       />
 
-      {/* -- LAYER 3: NEXT — preloaded, invisible ---------------------- */}
+      {/* -- LAYER 3: NEXT â€” preloaded, invisible ---------------------- */}
       {layers.next && (
         <div style={{
           position: 'absolute', inset: 0, zIndex: 0,
@@ -203,7 +203,7 @@ export default function HomeHero() {
         }} />
       )}
 
-      {/* -- Gradient overlay — cinematic dark-to-dark ----------------- */}
+      {/* -- Gradient overlay â€” cinematic dark-to-dark ----------------- */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 3,
         background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.5) 75%, rgba(0,0,0,0.85) 100%)',
@@ -257,7 +257,7 @@ export default function HomeHero() {
         </div>
       )}
 
-      {/* -- Event name label — fades in on tab switch ----------------- */}
+      {/* -- Event name label â€” fades in on tab switch ----------------- */}
       <div style={{
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%, -50%)',

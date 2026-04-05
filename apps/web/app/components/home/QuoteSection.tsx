@@ -29,7 +29,7 @@ export function QuoteSection() {
     <section className="quote-section">
       <div className="quote-container">
         <blockquote className="quote-text">"{quote.text}"</blockquote>
-        <p className="quote-author">— {quote.author}</p>
+        <p className="quote-author">â€” {quote.author}</p>
       </div>
     </section>
   );

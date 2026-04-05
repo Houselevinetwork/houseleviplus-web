@@ -58,7 +58,7 @@ export function PackageInquiryModal({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose} aria-label="Close">Ã—</button>
+        <button className="modal__close" onClick={onClose} aria-label="Close">Ãƒâ€”</button>
 
         {success ? (
           <div className="modal__success">

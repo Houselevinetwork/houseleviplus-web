@@ -7,7 +7,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 type Status = 'verifying' | 'completed' | 'failed';
 
-// âœ… STEP 1: Extract component that uses useSearchParams (required for Next.js 13+)
+// Ã¢Å“â€¦ STEP 1: Extract component that uses useSearchParams (required for Next.js 13+)
 function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -111,7 +111,7 @@ function AuthCallbackContent() {
               }}
             />
             <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
-              Completing sign inâ€¦
+              Completing sign inÃ¢â‚¬Â¦
             </h1>
             <p style={{ fontSize: '16px', color: '#666666', lineHeight: '1.5' }}>
               Please wait while we verify your account.
@@ -140,13 +140,13 @@ function AuthCallbackContent() {
                 fontSize: '32px',
               }}
             >
-              âœ“
+              Ã¢Å“â€œ
             </div>
             <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
               Sign in successful!
             </h1>
             <p style={{ fontSize: '16px', color: '#666666', lineHeight: '1.5', marginBottom: '30px' }}>
-              Welcome back! Redirecting you nowâ€¦
+              Welcome back! Redirecting you nowÃ¢â‚¬Â¦
             </p>
             <button
               onClick={() => router.push('/home')}
@@ -161,7 +161,7 @@ function AuthCallbackContent() {
                 cursor: 'pointer',
               }}
             >
-              Go to home â†’
+              Go to home Ã¢â€ â€™
             </button>
           </div>
         )}
@@ -182,7 +182,7 @@ function AuthCallbackContent() {
                 fontSize: '32px',
               }}
             >
-              âœ•
+              Ã¢Å“â€¢
             </div>
             <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
               Sign in failed
@@ -236,7 +236,7 @@ function AuthCallbackContent() {
   );
 }
 
-// âœ… STEP 2: Wrap in Suspense in the main export (required for useSearchParams)
+// Ã¢Å“â€¦ STEP 2: Wrap in Suspense in the main export (required for useSearchParams)
 export default function AuthCallbackPage() {
   return (
     <Suspense

@@ -22,7 +22,7 @@ export default function QuoteSection() {
   return (
     <section className="quote-section">
       <blockquote className="quote-text">&ldquo;{quote}&rdquo;</blockquote>
-      {author && <p className="quote-author">— {author}</p>}
+      {author && <p className="quote-author">â€” {author}</p>}
     </section>
   );
 }

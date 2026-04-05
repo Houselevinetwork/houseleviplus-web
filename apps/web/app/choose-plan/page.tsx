@@ -61,7 +61,7 @@ export default function ChoosePlanPage() {
     <div className="cp-container">
       <main className="cp-page">
 
-        {/* â”€â”€ Header: title left Â· banner right â”€â”€ */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Header: title left Ã‚Â· banner right Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <section className="cp-header">
 
           {/* Left: Pricing + step */}
@@ -78,7 +78,7 @@ export default function ChoosePlanPage() {
               </svg>
               <div className="cp-banner-copy">
                 <span className="cp-banner-headline">Not ready to subscribe?</span>
-                <span className="cp-banner-sub">Explore free content â€” no card needed.</span>
+                <span className="cp-banner-sub">Explore free content Ã¢â‚¬â€ no card needed.</span>
               </div>
             </div>
             <button className="cp-banner-cta" onClick={() => router.push('/entertainment')}>
@@ -88,7 +88,7 @@ export default function ChoosePlanPage() {
 
         </section>
 
-        {/* â”€â”€ Cards Grid â”€â”€ */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬ Cards Grid Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <section className="cp-grid">
           {plans.map((plan) => (
             <article
@@ -149,7 +149,7 @@ export default function ChoosePlanPage() {
                 onClick={() => handleSelect(plan)}
                 disabled={selecting !== null}
               >
-                {selecting === plan.id ? 'Please waitâ€¦' : plan.ctaText}
+                {selecting === plan.id ? 'Please waitÃ¢â‚¬Â¦' : plan.ctaText}
               </button>
             </article>
           ))}

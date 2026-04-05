@@ -27,42 +27,42 @@ function AuthCallbackContent() {
         return;
       }
 
-      console.log('Ã¢ÂœÂ… Token received from authorize-ui');
+      console.log('ÃƒÂ¢Ã‚Å“Ã‚â€¦ Token received from authorize-ui');
 
-      // Ã¢ÂœÂ… CRITICAL: Store token in localStorage (persists across sessions)
+      // ÃƒÂ¢Ã‚Å“Ã‚â€¦ CRITICAL: Store token in localStorage (persists across sessions)
       localStorage.setItem('token', code);
-      console.log('Ã°ÂŸÂ’Â¾ Token stored in localStorage');
+      console.log('ÃƒÂ°Ã‚Å¸Ã‚â€™Ã‚Â¾ Token stored in localStorage');
 
-      // Ã¢ÂœÂ… Also store as accessToken for compatibility
+      // ÃƒÂ¢Ã‚Å“Ã‚â€¦ Also store as accessToken for compatibility
       sessionStorage.setItem('accessToken', code);
-      console.log('Ã°ÂŸÂ’Â¾ Token stored in sessionStorage');
+      console.log('ÃƒÂ°Ã‚Å¸Ã‚â€™Ã‚Â¾ Token stored in sessionStorage');
 
-      // Ã¢ÂœÂ… Try to refresh user data (validates token and loads user info)
+      // ÃƒÂ¢Ã‚Å“Ã‚â€¦ Try to refresh user data (validates token and loads user info)
       try {
         if (refreshUserData && typeof refreshUserData === 'function') {
-          console.log('Ã°ÂŸÂ‘Â¤ Refreshing user data...');
+          console.log('ÃƒÂ°Ã‚Å¸Ã‚â€˜Ã‚Â¤ Refreshing user data...');
           await refreshUserData();
-          console.log('Ã¢ÂœÂ… User data loaded successfully');
+          console.log('ÃƒÂ¢Ã‚Å“Ã‚â€¦ User data loaded successfully');
         } else {
-          console.log('Ã¢ÂšÂ Ã¯Â¸Â refreshUserData not available');
+          console.log('ÃƒÂ¢Ã‚Å¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â refreshUserData not available');
         }
       } catch (refreshError: any) {
-        // Ã¢ÂœÂ… Don't fail callback if user data refresh fails
+        // ÃƒÂ¢Ã‚Å“Ã‚â€¦ Don't fail callback if user data refresh fails
         // Token is still stored and valid
-        console.warn('Ã¢ÂšÂ Ã¯Â¸Â Could not refresh user data:', refreshError.message);
-        console.log('Ã¢Â„Â¹Ã¯Â¸Â Continuing with stored token anyway');
+        console.warn('ÃƒÂ¢Ã‚Å¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Could not refresh user data:', refreshError.message);
+        console.log('ÃƒÂ¢Ã‚â€žÃ‚Â¹ÃƒÂ¯Ã‚Â¸Ã‚Â Continuing with stored token anyway');
       }
 
-      // Ã¢ÂœÂ… Set status to completed
+      // ÃƒÂ¢Ã‚Å“Ã‚â€¦ Set status to completed
       setStatus('completed');
 
-      // Ã¢ÂœÂ… Redirect to home after 1.5 seconds
+      // ÃƒÂ¢Ã‚Å“Ã‚â€¦ Redirect to home after 1.5 seconds
       setTimeout(() => {
-        console.log('Ã°ÂŸÂšÂ€ Redirecting to /home');
+        console.log('ÃƒÂ°Ã‚Å¸Ã‚Å¡Ã‚â‚¬ Redirecting to /home');
         router.push('/home');
       }, 1500);
     } catch (err: any) {
-      console.error('Ã¢ÂÂŒ Callback error:', err);
+      console.error('ÃƒÂ¢Ã‚ÂÃ‚Å’ Callback error:', err);
       setStatus('failed');
       setError(err.message || 'An error occurred during sign in. Please try again.');
     }
@@ -106,7 +106,7 @@ function AuthCallbackContent() {
             marginBottom: '12px', 
             color: '#fff' 
           }}>
-            Completing sign inÃ¢Â€Â¦
+            Completing sign inÃƒÂ¢Ã‚â‚¬Ã‚Â¦
           </h1>
           <p style={{ 
             fontSize: '16px', 
@@ -154,7 +154,7 @@ function AuthCallbackContent() {
             margin: '0 auto 30px', 
             fontSize: '32px' 
           }}>
-            Ã¢ÂœÂ“
+            ÃƒÂ¢Ã‚Å“Ã‚â€œ
           </div>
           <h1 style={{ 
             fontSize: '28px', 
@@ -169,7 +169,7 @@ function AuthCallbackContent() {
             color: '#999', 
             marginBottom: '30px' 
           }}>
-            Welcome back! Redirecting you nowÃ¢Â€Â¦
+            Welcome back! Redirecting you nowÃƒÂ¢Ã‚â‚¬Ã‚Â¦
           </p>
         </div>
       </main>
@@ -209,7 +209,7 @@ function AuthCallbackContent() {
           margin: '0 auto 30px', 
           fontSize: '32px' 
         }}>
-          Ã¢ÂœÂ•
+          ÃƒÂ¢Ã‚Å“Ã‚â€¢
         </div>
         <h1 style={{ 
           fontSize: '28px', 
