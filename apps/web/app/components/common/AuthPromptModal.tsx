@@ -6,11 +6,11 @@
  * visible + dimmed). Never redirects without user consent.
  *
  * Props:
- *   isOpen        — controls visibility
- *   onClose       — called when user dismisses
- *   contentTitle  — name of what they tried to watch (optional)
- *   isPremium     — true → "Premium Content" copy
- *   moodTV        — true → "Live TV" copy
+ *   isOpen        â€” controls visibility
+ *   onClose       â€” called when user dismisses
+ *   contentTitle  â€” name of what they tried to watch (optional)
+ *   isPremium     â€” true â†’ "Premium Content" copy
+ *   moodTV        â€” true â†’ "Live TV" copy
  */
 
 import { useEffect, useRef } from 'react';
@@ -233,7 +233,7 @@ export function AuthPromptModal({
           </div>
 
           <p className="apm-free-note">
-            Free to join · No credit card required · Cancel anytime
+            Free to join Â· No credit card required Â· Cancel anytime
           </p>
 
         </div>

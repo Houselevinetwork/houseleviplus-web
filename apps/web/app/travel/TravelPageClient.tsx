@@ -52,7 +52,7 @@ export default function TravelPageClient() {
       <TravelHero />
       <PackageGrid packages={packages} onInquire={setSelectedPkg} />
 
-      {/* Quote — standalone section between packages and custom travel */}
+      {/* Quote â€” standalone section between packages and custom travel */}
       <div style={{ background: "#fff", borderTop: "1px solid #eeebe6", borderBottom: "1px solid #eeebe6" }}>
         <div style={{ maxWidth: 780, margin: "0 auto", padding: "72px 128px", textAlign: "center" }}>
           <p style={{ fontFamily: '"Frank Ruhl Libre", serif', fontSize: "clamp(16px,1.5vw,22px)", fontStyle: "italic", fontWeight: 400, letterSpacing: "0.06em", lineHeight: 1.7, color: "#121212", margin: "0 0 24px" }}>
@@ -60,7 +60,7 @@ export default function TravelPageClient() {
           </p>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
             <div style={{ width: 60, height: 1, background: "#d8d4cc" }} />
-            <span style={{ fontFamily: "Lato, sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(18,18,18,0.45)" }}>— Saint Augustine</span>
+            <span style={{ fontFamily: "Lato, sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(18,18,18,0.45)" }}>â€” Saint Augustine</span>
           </div>
         </div>
       </div>

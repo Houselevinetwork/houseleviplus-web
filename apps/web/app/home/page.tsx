@@ -12,22 +12,22 @@ import './home.css';
 export default function HomePage() {
   return (
     <main className="home-page">
-      {/* 1. Hero ï¿½ cinematic gallery slideshow */}
+      {/* 1. Hero Ã¯Â¿Â½ cinematic gallery slideshow */}
       <HomeHero />
 
-      {/* 2. Upcoming Events ï¿½ API-driven, Book a Seat + Pay for Ticket */}
+      {/* 2. Upcoming Events Ã¯Â¿Â½ API-driven, Book a Seat + Pay for Ticket */}
       <UpcomingEvents />
 
-      {/* 3. Featured Artists ï¿½ API-driven carousel */}
+      {/* 3. Featured Artists Ã¯Â¿Â½ API-driven carousel */}
       <FeaturedArtists />
 
-      {/* 4. Partners ï¿½ API-driven logo strip */}
+      {/* 4. Partners Ã¯Â¿Â½ API-driven logo strip */}
       <PartnersSection />
 
-      {/* 5. Cross-promo ï¿½ Watch / Shop / Travel slideshows */}
+      {/* 5. Cross-promo Ã¯Â¿Â½ Watch / Shop / Travel slideshows */}
       <CrossPromo />
 
-      {/* 6. Quote ï¿½ API-driven */}
+      {/* 6. Quote Ã¯Â¿Â½ API-driven */}
       <QuoteSection />
 
       {/* 7. HL Live TV */}

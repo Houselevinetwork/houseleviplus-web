@@ -24,7 +24,7 @@ function getToken(): string {
   );
 }
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface ContentDetail {
   _id:              string;
   title:            string;
@@ -53,7 +53,7 @@ interface ContentDetail {
   viewCount?:       number;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmtTime(s: number): string {
   if (!isFinite(s) || s < 0) return '0:00';
   const h = Math.floor(s / 3600);
@@ -64,7 +64,7 @@ function fmtTime(s: number): string {
 }
 function clamp(v: number, min: number, max: number) { return Math.max(min, Math.min(max, v)); }
 
-// ─── SVG Icons ────────────────────────────────────────────────────────────────
+// â”€â”€â”€ SVG Icons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const Icons = {
   Play:       () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>,
   Pause:      () => <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>,
@@ -85,7 +85,7 @@ const Icons = {
   Lock:       () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" strokeLinecap="round"/></svg>,
 };
 
-// ─── Spinner ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Spinner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Spinner() {
   return (
     <div className="wp-spinner">
@@ -94,9 +94,9 @@ function Spinner() {
   );
 }
 
-// ═════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // VIDEO PLAYER
-// ═════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 interface PlayerProps {
   src:       string;
   mimeType?: string;
@@ -279,7 +279,7 @@ function VideoPlayer({ src, mimeType, poster, title, subtitle, onBack }: PlayerP
     );
   }
 
-  // ── Audio-only mode ─────────────────────────────────────────────────────────
+  // â”€â”€ Audio-only mode â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (audioOnly) {
     return (
       <div className="wp" ref={containerRef} style={{ minHeight: 280, background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
@@ -346,11 +346,11 @@ function VideoPlayer({ src, mimeType, poster, title, subtitle, onBack }: PlayerP
           const code = v.error?.code ?? 0;
           const msgs: Record<number, string> = {
             1: 'Playback was aborted.',
-            2: 'A network error occurred — check your connection.',
+            2: 'A network error occurred â€” check your connection.',
             3: 'The video could not be decoded.',
             4: 'This video format is not supported by your browser.',
           };
-          setVideoError(msgs[code] || 'Playback failed — please try again.');
+          setVideoError(msgs[code] || 'Playback failed â€” please try again.');
           setLoading(false);
         }}
       />
@@ -423,7 +423,7 @@ function VideoPlayer({ src, mimeType, poster, title, subtitle, onBack }: PlayerP
             <div className="wp__settings-wrap">
               <button className="wp__btn wp__btn--settings" onClick={e => { e.stopPropagation(); setShowSettings(s => !s); }}>
                 <Icons.Settings />
-                {speed !== 1 && <span className="wp__speed-badge">{speed}×</span>}
+                {speed !== 1 && <span className="wp__speed-badge">{speed}Ã—</span>}
               </button>
               {showSettings && (
                 <div className="wp__settings-panel" onClick={e => e.stopPropagation()}>
@@ -432,7 +432,7 @@ function VideoPlayer({ src, mimeType, poster, title, subtitle, onBack }: PlayerP
                     <button key={s}
                       className={`wp__settings-item ${speed === s ? 'wp__settings-item--active' : ''}`}
                       onClick={() => setPlaybackSpeed(s)}>
-                      {s === 1 ? 'Normal' : `${s}×`}
+                      {s === 1 ? 'Normal' : `${s}Ã—`}
                     </button>
                   ))}
                 </div>
@@ -461,9 +461,9 @@ function VideoPlayer({ src, mimeType, poster, title, subtitle, onBack }: PlayerP
   );
 }
 
-// ═════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WATCH PAGE
-// ═════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function WatchPage() {
   const { slug } = useParams() as { slug: string };
   const router   = useRouter();
@@ -511,7 +511,7 @@ export default function WatchPage() {
             }
           } catch { /* fall through to storage.originalUrl */ }
         }
-        // Free content or failed premium fetch — use raw URL
+        // Free content or failed premium fetch â€” use raw URL
         setResolvedUrl(data.storage?.originalUrl ?? '');
         setResolvedMime(data.storage?.mimeType ?? '');
       })
@@ -522,7 +522,7 @@ export default function WatchPage() {
   if (loading) return (
     <div className="wp-page wp-page--loading">
       <Spinner />
-      <p>Loading…</p>
+      <p>Loadingâ€¦</p>
     </div>
   );
 
@@ -530,7 +530,7 @@ export default function WatchPage() {
     <div className="wp-page wp-page--error">
       <h2>Content not found</h2>
       <p>{error}</p>
-      <Link href="/watch" className="wp-back-link">← Back to Watch</Link>
+      <Link href="/watch" className="wp-back-link">â† Back to Watch</Link>
     </div>
   );
 
@@ -539,7 +539,7 @@ export default function WatchPage() {
   const mimeType  = resolvedMime || content.storage?.mimeType || '';
   const poster    = content.images?.backdrop || content.images?.poster || content.storage?.thumbnail;
 
-  // Audio-only mode is opt-in via toggle — not auto-detected by type.
+  // Audio-only mode is opt-in via toggle â€” not auto-detected by type.
   // Podcasts and music may be video files and should play in the video player by default.
   const genre     = Array.isArray(content.metadata?.genre)
     ? content.metadata!.genre.join(', ')
@@ -551,10 +551,10 @@ export default function WatchPage() {
   } as Record<string, string>)[content.type] ?? content.type;
 
   const subtitle = content.series?.title
-    ? `${content.series.title}${content.season ? ` · S${content.season}` : ''}${content.episode ? ` E${content.episode}` : ''}`
+    ? `${content.series.title}${content.season ? ` Â· S${content.season}` : ''}${content.episode ? ` E${content.episode}` : ''}`
     : content.hostName ?? '';
 
-  // ── Premium gate — no URL means user isn't subscribed ─────────────────────
+  // â”€â”€ Premium gate â€” no URL means user isn't subscribed â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const showPremiumGate = !videoSrc && content.isPremium;
 
   return (
@@ -650,7 +650,7 @@ export default function WatchPage() {
           {cast.length > 0 && (
             <div className="wp-info__cast">
               <span className="wp-meta-label">Starring</span>
-              <span>{cast.join(' · ')}</span>
+              <span>{cast.join(' Â· ')}</span>
             </div>
           )}
         </div>

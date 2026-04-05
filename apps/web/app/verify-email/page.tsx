@@ -46,7 +46,7 @@ export default function VerifyEmailPage() {
       setStatus('success');
       setMessage('Account created successfully!');
 
-      // ✅ FIXED: Redirect to home page (/) instead of /choose-plan
+      // âœ… FIXED: Redirect to home page (/) instead of /choose-plan
       setTimeout(() => {
         window.location.href = '/';
       }, 2000);
@@ -87,7 +87,7 @@ export default function VerifyEmailPage() {
           {/* SUCCESS STATE */}
           {status === 'success' && (
             <div className="login-form">
-              <div className="verify-success-icon">✓</div>
+              <div className="verify-success-icon">âœ“</div>
               
               <h2 className="login-title">Welcome to House Levi+!</h2>
               
@@ -104,7 +104,7 @@ export default function VerifyEmailPage() {
           {/* ERROR STATE */}
           {status === 'error' && (
             <div className="login-form">
-              <div className="verify-error-icon">✕</div>
+              <div className="verify-error-icon">âœ•</div>
               
               <h2 className="login-title">Verification Failed</h2>
               
@@ -113,7 +113,7 @@ export default function VerifyEmailPage() {
               </p>
               
               <a href="/login" className="btn-text">
-                ← Back to login
+                â† Back to login
               </a>
             </div>
           )}

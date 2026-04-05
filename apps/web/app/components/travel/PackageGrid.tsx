@@ -36,14 +36,14 @@ export function PackageGrid({ packages, loading, onInquire }: PackageGridProps) 
 
   return (
     <div className="package-grid">
-      {/* Featured / hero package — full width */}
+      {/* Featured / hero package â€” full width */}
       <PackageCard
         package={featured}
         onInquire={onInquire}
         layout="featured"
       />
 
-      {/* Remaining packages — 2-column grid */}
+      {/* Remaining packages â€” 2-column grid */}
       {remaining.length > 0 && (
         <div className="package-grid__secondary">
           {remaining.map(pkg => (

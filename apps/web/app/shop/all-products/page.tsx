@@ -4,17 +4,17 @@
  * Location: apps/web/app/shop/all-products/page.tsx
  *
  * All products page with filtering and pagination.
- * All data from API — no hardcoded products or categories.
+ * All data from API â€” no hardcoded products or categories.
  * 
  * Fetches from:
- * - GET /api/commerce/products → all products
- * - GET /api/commerce/collections → categories for filtering
+ * - GET /api/commerce/products â†’ all products
+ * - GET /api/commerce/collections â†’ categories for filtering
  */
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-// ── Types ──────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Product {
   id: string;
   name: string;
@@ -38,7 +38,7 @@ interface AllProductsData {
   collections: Collection[];
 }
 
-// ── API ────────────────────────────────────────────────────────
+// â”€â”€ API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
 async function fetchAllProductsData(): Promise<AllProductsData> {
@@ -73,7 +73,7 @@ async function fetchAllProductsData(): Promise<AllProductsData> {
   }
 }
 
-// ── Helpers ────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SaleBadge() {
   return (
     <div style={{
@@ -101,9 +101,9 @@ const ArrowLeft = () => (
   </svg>
 );
 
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  PAGE
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function AllProductsPage() {
   const [data, setData]           = useState<AllProductsData | null>(null);
   const [loading, setLoading]     = useState(true);
@@ -155,7 +155,7 @@ export default function AllProductsPage() {
   const SORT_OPTIONS = [
     'Featured', 'Best Selling',
     'Price: Low to High', 'Price: High to Low',
-    'Newest', 'Alphabetical A–Z',
+    'Newest', 'Alphabetical Aâ€“Z',
   ];
 
   return (
@@ -233,7 +233,7 @@ export default function AllProductsPage() {
         {/* Error Banner */}
         {error && (
           <div style={{ background: '#fee2e2', color: '#991b1b', padding: '16px 20px', textAlign: 'center', fontFamily: 'Lato', fontSize: 13, letterSpacing: '0.6px' }}>
-            {error} — <button onClick={() => window.location.reload()} style={{ background: 'none', border: 'none', color: '#991b1b', textDecoration: 'underline', cursor: 'pointer', fontSize: 13 }}>Retry</button>
+            {error} â€” <button onClick={() => window.location.reload()} style={{ background: 'none', border: 'none', color: '#991b1b', textDecoration: 'underline', cursor: 'pointer', fontSize: 13 }}>Retry</button>
           </div>
         )}
 

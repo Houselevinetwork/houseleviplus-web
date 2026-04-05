@@ -1,5 +1,5 @@
 // apps/web/app/travel/types.ts
-// Single source of truth — all travel components import from here
+// Single source of truth â€” all travel components import from here
 
 export type Continent = "Africa" | "Europe" | "Asia" | "Australia" | "Americas";
 

@@ -46,7 +46,7 @@ export default function InquiryModal({ isOpen, destination, spotsRemaining, onCl
               </div>
             )}
           </div>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#bbb", fontSize: 24, lineHeight: 1, padding: 4 }}>×</button>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#bbb", fontSize: 24, lineHeight: 1, padding: 4 }}>Ã—</button>
         </div>
 
         {done ? (
@@ -70,7 +70,7 @@ export default function InquiryModal({ isOpen, destination, spotsRemaining, onCl
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button onClick={onClose} style={{ padding: "10px 20px", background: "none", border: "1px solid #d8d4cc", cursor: "pointer", fontFamily: "Lato, sans-serif", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#999" }}>Cancel</button>
               <button onClick={submit} disabled={loading} style={{ padding: "10px 28px", background: loading ? "#999" : "#121212", border: "none", cursor: loading ? "not-allowed" : "pointer", fontFamily: "Lato, sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#fff" }}>
-                {loading ? "Sending…" : "Submit Inquiry"}
+                {loading ? "Sendingâ€¦" : "Submit Inquiry"}
               </button>
             </div>
           </div>

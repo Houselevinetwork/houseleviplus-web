@@ -106,8 +106,8 @@ export function Footer() {
         {/* -- Bottom bar -- */}
         <div className="footer-bottom">
           <p className="footer-copy">
-            ï¿½ 2026 House Levi Network. All rights reserved.
-            <span className="footer-sep" aria-hidden>ï¿½</span>
+            Ã¯Â¿Â½ 2026 House Levi Network. All rights reserved.
+            <span className="footer-sep" aria-hidden>Ã¯Â¿Â½</span>
             <button onClick={() => router.push('/cookies')} className="footer-cookie-link">
               ?? Cookie Policy
             </button>

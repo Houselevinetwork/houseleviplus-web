@@ -46,7 +46,7 @@ export function TestimonialsSection({
         </div>
       )}
 
-      {/* Guest CTA — guests who have traveled submit their review */}
+      {/* Guest CTA â€” guests who have traveled submit their review */}
       <div className="testimonials-section__submit">
         <p className="testimonials-section__submit-copy">
           Traveled with Levi? We&rsquo;d love to hear about your experience.
@@ -62,7 +62,7 @@ export function TestimonialsSection({
   );
 }
 
-// ── Individual testimonial card ────────────────────────────────────────────
+// â”€â”€ Individual testimonial card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface TestimonialCardProps {
   testimonial: TravelTestimonial;

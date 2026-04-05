@@ -65,7 +65,7 @@ const GENRE_PALETTE: Record<string, { bg: string; accent: string }> = {
   default: { bg: '#0f1923', accent: '#3a5a7c' },
 };
 
-/* -- Volume icon — DailyWire+ style: solid filled speaker + arc waves -- */
+/* -- Volume icon â€” DailyWire+ style: solid filled speaker + arc waves -- */
 function VolumeIcon({ muted, volume }: { muted: boolean; volume: number }) {
   if (muted || volume === 0) {
     // Muted: solid speaker + X cross
@@ -121,7 +121,7 @@ export function VideoPlayer({
   const [eatClock,      setEatClock]      = useState('');
 
   /*
-   * fsContainerRef — this is what gets requestFullscreen().
+   * fsContainerRef â€” this is what gets requestFullscreen().
    * It wraps BOTH the video AND the floating schedule overlay,
    * so the schedule is always visible even in fullscreen.
    */
@@ -193,7 +193,7 @@ export function VideoPlayer({
   }, []);
 
   /*
-   * Fullscreen the fsContainerRef — which contains video + schedule overlay.
+   * Fullscreen the fsContainerRef â€” which contains video + schedule overlay.
    * So in fullscreen the schedule is still floating at the bottom.
    */
   const toggleFullscreen = () => {
@@ -222,9 +222,9 @@ export function VideoPlayer({
         -------------------------------------------------
         FULLSCREEN CONTAINER
         This single div is fullscreened. It contains:
-          • The video (fills 100% of the container)
-          • All overlays (live badge, up-next, program info,
-            controls bar, schedule) — always visible,
+          â€¢ The video (fills 100% of the container)
+          â€¢ All overlays (live badge, up-next, program info,
+            controls bar, schedule) â€” always visible,
             both in normal mode AND in fullscreen.
         -------------------------------------------------
       */}
@@ -246,7 +246,7 @@ export function VideoPlayer({
             onWaiting={() => setIsBuffering(true)}
             onPlaying={() => setIsBuffering(false)}
             onEnded={handleEnded}
-            onError={() => setVideoError('Could not load video — check R2 CORS policy')}
+            onError={() => setVideoError('Could not load video â€” check R2 CORS policy')}
           />
         ) : (
           <div className="moodtv-video-placeholder" style={{ background: palette.bg }}>
@@ -295,16 +295,16 @@ export function VideoPlayer({
           </div>
         )}
 
-        {/* Up next — last 60 s */}
+        {/* Up next â€” last 60 s */}
         {showUpNext && nextBlock && (
           <div className="moodtv-upnext">
             <div className="moodtv-upnext-label">Up next in {secondsToHHMM(blockRemaining)}</div>
             <div className="moodtv-upnext-title">{nextBlock.metadata.title}</div>
-            <div className="moodtv-upnext-time">{nextBlock.startTime} – {nextBlock.endTime}</div>
+            <div className="moodtv-upnext-time">{nextBlock.startTime} â€“ {nextBlock.endTime}</div>
           </div>
         )}
 
-        {/* Program info — bottom-left, above schedule */}
+        {/* Program info â€” bottom-left, above schedule */}
         {block && (
           <div className="moodtv-program-info">
             {block.name && (
@@ -319,7 +319,7 @@ export function VideoPlayer({
           </div>
         )}
 
-        {/* Controls bar — fades with showControls */}
+        {/* Controls bar â€” fades with showControls */}
         <div className={`moodtv-controls-bar${showControls ? ' moodtv-controls-bar--visible' : ''}`}>
           <div className="moodtv-progress-wrap">
             <ProgressBar
@@ -352,7 +352,7 @@ export function VideoPlayer({
         {/*
           -------------------------------------------------
           FLOATING SCHEDULE OVERLAY
-          Always present — in both normal and fullscreen mode.
+          Always present â€” in both normal and fullscreen mode.
           Transparent gradient so video shows through.
           -------------------------------------------------
         */}
@@ -368,9 +368,9 @@ export function VideoPlayer({
                   className="schedule-carousel-btn schedule-carousel-btn--left"
                   onClick={() => scrollCarousel('left')}
                   aria-label="Scroll left"
-                >‹</button>
+                >â€¹</button>
 
-                {/* NOW PLAYING — always pinned to far left */}
+                {/* NOW PLAYING â€” always pinned to far left */}
                 {nowPlayingBlock && (
                   <div className="schedule-now-pin">
                     <div className="schedule-card schedule-card--playing">
@@ -379,7 +379,7 @@ export function VideoPlayer({
                         <span>PLAYING NOW</span>
                       </div>
                       <div className="schedule-card-time">
-                        {nowPlayingBlock.startTime} – {nowPlayingBlock.endTime}
+                        {nowPlayingBlock.startTime} â€“ {nowPlayingBlock.endTime}
                       </div>
                       <h3 className="schedule-card-title">
                         {nowPlayingBlock.metadata.title || nowPlayingBlock.name}
@@ -394,7 +394,7 @@ export function VideoPlayer({
                 <div className="schedule-carousel-track" ref={carouselRef}>
                   {upcomingBlocks.map((b) => (
                     <div key={b._id} className="schedule-card">
-                      <div className="schedule-card-time">{b.startTime} – {b.endTime}</div>
+                      <div className="schedule-card-time">{b.startTime} â€“ {b.endTime}</div>
                       <h3 className="schedule-card-title">{b.metadata.title || b.name}</h3>
                       <p className="schedule-card-show">{b.name}</p>
                     </div>
@@ -405,7 +405,7 @@ export function VideoPlayer({
                   className="schedule-carousel-btn schedule-carousel-btn--right"
                   onClick={() => scrollCarousel('right')}
                   aria-label="Scroll right"
-                >›</button>
+                >â€º</button>
               </div>
             </div>
           </div>

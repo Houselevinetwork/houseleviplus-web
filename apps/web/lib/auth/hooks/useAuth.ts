@@ -149,10 +149,10 @@ export function useAuth(): UseAuthReturn {
             const hasSubscription = user.isPremium && user.subscriptionStatus === 'ACTIVE';
 
             if (!hasSubscription) {
-              // No active subscription → redirect to choose-plan
+              // No active subscription â†’ redirect to choose-plan
               window.location.href = '/choose-plan';
             } else {
-              // Has subscription → show greeting, then redirect to entertainment
+              // Has subscription â†’ show greeting, then redirect to entertainment
               setStep('greeting');
               setTimeout(() => {
                 window.location.href = '/entertainment';

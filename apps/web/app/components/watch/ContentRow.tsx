@@ -25,10 +25,10 @@ export function ContentRow({ title, items, cardVariant = 'portrait', useEpisodeC
     <div className="watch-section">
       <div className="watch-section__header">
         <h2 className="watch-section__title">{title}</h2>
-        {seeAllHref && <a href={seeAllHref} className="watch-section__see-all">See All →</a>}
+        {seeAllHref && <a href={seeAllHref} className="watch-section__see-all">See All â†’</a>}
       </div>
       <div className="content-row-wrap">
-        <button className="row-scroll-btn row-scroll-btn--left" onClick={() => scroll('left')} aria-label="Scroll left">‹</button>
+        <button className="row-scroll-btn row-scroll-btn--left" onClick={() => scroll('left')} aria-label="Scroll left">â€¹</button>
         <div className="content-row" ref={rowRef}>
           {items.map(item =>
             useEpisodeCard
@@ -36,7 +36,7 @@ export function ContentRow({ title, items, cardVariant = 'portrait', useEpisodeC
               : <ContentCard key={item._id} item={item} variant={cardVariant} />
           )}
         </div>
-        <button className="row-scroll-btn row-scroll-btn--right" onClick={() => scroll('right')} aria-label="Scroll right">›</button>
+        <button className="row-scroll-btn row-scroll-btn--right" onClick={() => scroll('right')} aria-label="Scroll right">â€º</button>
       </div>
     </div>
   );

@@ -9,15 +9,15 @@ interface NoteFromLeviSectionProps {
   loading: boolean;
 }
 
-// Default copy — admin can override via web+ panel
+// Default copy â€” admin can override via web+ panel
 const DEFAULT_NOTE = `Travel, Curated.
 
 My work is shaped by wilderness, light, and the art of arrival.
 
-From the private conservancies of Kenya and the volcanic highlands of Rwanda to the deserts of Namibia, the waterways of Botswana, and the quiet islands of the Indian Ocean — Seychelles, Mauritius, Zanzibar, Madagascar — each journey begins long before departure.
+From the private conservancies of Kenya and the volcanic highlands of Rwanda to the deserts of Namibia, the waterways of Botswana, and the quiet islands of the Indian Ocean â€” Seychelles, Mauritius, Zanzibar, Madagascar â€” each journey begins long before departure.
 
 I do not lead tours.
-I curate movement across Africa and beyond — with precision, discretion, and a deep understanding of place.
+I curate movement across Africa and beyond â€” with precision, discretion, and a deep understanding of place.
 
 This is House Levi.`;
 
@@ -52,7 +52,7 @@ export function NoteFromLeviSection({ note, loading }: NoteFromLeviSectionProps)
             className="note-from-levi__signature"
           />
         ) : (
-          <p className="note-from-levi__signature-text">— Levi</p>
+          <p className="note-from-levi__signature-text">â€” Levi</p>
         )}
       </div>
     </section>

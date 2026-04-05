@@ -52,11 +52,11 @@ export default function BuyCoffeeModal({ onClose }: Props) {
         body: JSON.stringify({
           userId:       user?._id || user?.id || 'guest',
           planId:       `donation-${selected}`,
-          planName:     `HL+ Team Support — KES ${selected}`,
+          planName:     `HL+ Team Support â€” KES ${selected}`,
           billingCycle: 'once',
           amount:       selected,
           currency:     'KES',
-          description:  `Support the HL+ Team — KES ${selected} donation`,
+          description:  `Support the HL+ Team â€” KES ${selected} donation`,
           callbackUrl:  `${WEB_URL}/payment/callback`,
           email:        user?.email       || '',
           phoneNumber:  user?.phoneNumber || '',
@@ -109,7 +109,7 @@ export default function BuyCoffeeModal({ onClose }: Props) {
             color: 'rgba(0,0,0,0.35)', lineHeight: 1,
           }}
         >
-          ×
+          Ã—
         </button>
 
         <p style={{
@@ -207,7 +207,7 @@ export default function BuyCoffeeModal({ onClose }: Props) {
           fontSize: 10, color: 'rgba(0,0,0,0.3)',
           margin: '16px 0 0', lineHeight: 1.6,
         }}>
-          Secured by Pesapal · PCI-DSS certified
+          Secured by Pesapal Â· PCI-DSS certified
         </p>
       </div>
     </div>

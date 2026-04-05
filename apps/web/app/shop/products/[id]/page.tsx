@@ -28,7 +28,7 @@ interface Product {
   variants: Variant[];
 }
 
-// ── Cart helpers ────────────────────────────────────────────
+// â”€â”€ Cart helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function addToCart(product: Product, variant: Variant | null, qty: number) {
   try {
     const raw   = localStorage.getItem('hl_cart');
@@ -54,7 +54,7 @@ function addToCart(product: Product, variant: Variant | null, qty: number) {
   } catch { return false; }
 }
 
-// ── Icons ──────────────────────────────────────────────────
+// â”€â”€ Icons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const ArrowL = () => <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M6 1L1 5.5L6 10M14 5.5H1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
 const CheckIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B5E20" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>;
 const CartIcon  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>;
@@ -211,7 +211,7 @@ export default function ProductPage() {
         {/* Main grid */}
         <div className="product-grid" style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 60px 80px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
 
-          {/* ── Left: Images ─────────────────────────────── */}
+          {/* â”€â”€ Left: Images â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div>
             {loading ? (
               <Skel w="100%" h={560} r={1} />
@@ -239,7 +239,7 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* ── Right: Info ──────────────────────────────── */}
+          {/* â”€â”€ Right: Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div style={{ paddingTop: 8 }}>
             {loading ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -248,7 +248,7 @@ export default function ProductPage() {
             ) : error ? (
               <div style={{ fontFamily: 'Lato', fontSize: 14, color: '#a0291e', padding: 20 }}>
                 <p style={{ marginBottom: 16 }}>{error}</p>
-                <Link href="/shop" style={{ color: '#1b3d7b', textDecoration: 'underline' }}>← Back to Shop</Link>
+                <Link href="/shop" style={{ color: '#1b3d7b', textDecoration: 'underline' }}>â† Back to Shop</Link>
               </div>
             ) : product ? (
               <>
@@ -278,7 +278,7 @@ export default function ProductPage() {
                 {product.variants?.length > 1 && (
                   <div style={{ marginBottom: 24 }}>
                     <label style={{ fontFamily: 'Lato', fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(18,18,18,0.6)', display: 'block', marginBottom: 10 }}>
-                      {selectedVariant ? `${selectedVariant.title} — KSh ${selectedVariant.price.toLocaleString()}` : 'Select Option'}
+                      {selectedVariant ? `${selectedVariant.title} â€” KSh ${selectedVariant.price.toLocaleString()}` : 'Select Option'}
                     </label>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                       {product.variants.map((v, i) => (
@@ -293,7 +293,7 @@ export default function ProductPage() {
                 <div style={{ marginBottom: 24 }}>
                   <label style={{ fontFamily: 'Lato', fontSize: 11, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(18,18,18,0.6)', display: 'block', marginBottom: 10 }}>Quantity</label>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #d8d4cc', width: 120 }}>
-                    <button className="qty-btn" onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 40, height: 44, background: '#fff', border: 'none', cursor: 'pointer', fontSize: 18, color: '#121212', transition: 'background 0.15s' }}>−</button>
+                    <button className="qty-btn" onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 40, height: 44, background: '#fff', border: 'none', cursor: 'pointer', fontSize: 18, color: '#121212', transition: 'background 0.15s' }}>âˆ’</button>
                     <span style={{ flex: 1, textAlign: 'center', fontFamily: 'Lato', fontSize: 14, color: '#121212' }}>{qty}</span>
                     <button className="qty-btn" onClick={() => setQty(q => q + 1)} style={{ width: 40, height: 44, background: '#fff', border: 'none', cursor: 'pointer', fontSize: 18, color: '#121212', transition: 'background 0.15s' }}>+</button>
                   </div>

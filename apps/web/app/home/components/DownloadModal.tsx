@@ -48,7 +48,7 @@ export default function DownloadModal({ imageUrl, onClose, onSuccess }: Props) {
             color: 'rgba(0,0,0,0.35)', lineHeight: 1,
           }}
         >
-          ×
+          Ã—
         </button>
 
         <p style={{
@@ -70,7 +70,7 @@ export default function DownloadModal({ imageUrl, onClose, onSuccess }: Props) {
           fontSize: 14, color: 'rgba(0,0,0,0.6)',
           lineHeight: 1.75, margin: '0 0 32px',
         }}>
-          No password needed — just your email address.
+          No password needed â€” just your email address.
           We&apos;ll send a one-time code and you&apos;re in instantly.
         </p>
 

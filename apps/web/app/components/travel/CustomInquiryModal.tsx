@@ -50,7 +50,7 @@ export function CustomInquiryModal({ isOpen, onClose, onSubmit }: CustomInquiryM
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose} aria-label="Close">×</button>
+        <button className="modal__close" onClick={onClose} aria-label="Close">Ã—</button>
 
         {success ? (
           <div className="modal__success">
@@ -127,7 +127,7 @@ export function CustomInquiryModal({ isOpen, onClose, onSubmit }: CustomInquiryM
                   type="text"
                   value={form.budget}
                   onChange={set('budget')}
-                  placeholder="e.g. $10,000–$15,000"
+                  placeholder="e.g. $10,000â€“$15,000"
                 />
               </div>
 

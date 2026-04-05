@@ -63,7 +63,7 @@ export function SubmitTestimonialModal({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose} aria-label="Close">×</button>
+        <button className="modal__close" onClick={onClose} aria-label="Close">Ã—</button>
 
         {success ? (
           <div className="modal__success">
@@ -126,7 +126,7 @@ export function SubmitTestimonialModal({
                     value={form.clientEmail}
                     onChange={set('clientEmail')}
                     required
-                    placeholder="For verification only — not published"
+                    placeholder="For verification only â€” not published"
                   />
                 </div>
               </div>

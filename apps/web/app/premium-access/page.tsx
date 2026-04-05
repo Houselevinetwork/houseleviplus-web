@@ -3,9 +3,9 @@
  * Location: apps/web/app/premium-access/page.tsx
  *
  * CHANGES IN THIS VERSION:
- *   1. PremiumCard now links to /watch/[slug] ï¿½ full player experience
+ *   1. PremiumCard now links to /watch/[slug] Ã¯Â¿Â½ full player experience
  *   2. Single click on card navigates to watch page (primary behaviour)
- *   3. Inline overlay player kept as fallback ï¿½ triggered via a secondary
+ *   3. Inline overlay player kept as fallback Ã¯Â¿Â½ triggered via a secondary
  *      "Play here" button on the card for users who don't want to leave the page
  *   4. mimeType now read from play response and passed to inline VideoPlayer
  *   5. handlePlay reads d.playUrl (controller returns playUrl not url)
@@ -81,7 +81,7 @@ function PremiumHero({ badge }: { badge?: string }) {
         </div>
         <h1 className="premium-hero__title">Exclusive Content</h1>
         <p className="premium-hero__subtitle">
-          Premium originals, exclusive series and live events ï¿½ all in one place.
+          Premium originals, exclusive series and live events Ã¯Â¿Â½ all in one place.
         </p>
         {badge && <div className="premium-hero__badge">{badge}</div>}
       </div>
@@ -181,7 +181,7 @@ function PremiumCard({ item, isLoading, onWatchPage, onPlayInline }: {
         </div>
       </div>
 
-      {/* Secondary "Play here" button ï¿½ inline overlay fallback */}
+      {/* Secondary "Play here" button Ã¯Â¿Â½ inline overlay fallback */}
       <button
         onClick={e => { e.stopPropagation(); onPlayInline(); }}
         title="Play here without leaving this page"
@@ -218,7 +218,7 @@ function VideoPlayer({ url, mimeType, onClose, onError }: {
       3: 'The media could not be decoded.',
       4: 'This format is not supported by your browser.',
     };
-    onError(msgs[code] || 'Playback error ï¿½ please try again.');
+    onError(msgs[code] || 'Playback error Ã¯Â¿Â½ please try again.');
   };
 
   return (
@@ -227,13 +227,13 @@ function VideoPlayer({ url, mimeType, onClose, onError }: {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '12px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>
-          Playing inline ï¿½ <a href="#" onClick={e => { e.preventDefault(); onClose(); }}
+          Playing inline Ã¯Â¿Â½ <a href="#" onClick={e => { e.preventDefault(); onClose(); }}
             style={{ color: '#D4AF37', textDecoration: 'none' }}>
             open full player ?
           </a>
         </span>
         <button onClick={onClose} style={{ background: 'none', border: 'none',
-          color: '#fff', fontSize: 28, cursor: 'pointer', lineHeight: 1 }}>ï¿½</button>
+          color: '#fff', fontSize: 28, cursor: 'pointer', lineHeight: 1 }}>Ã¯Â¿Â½</button>
       </div>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center',
         justifyContent: 'center', padding: '0 40px' }}>
@@ -265,7 +265,7 @@ export default function PremiumAccessPage() {
   const [playMimeType,   setPlayMimeType]   = useState<string>('');
   const [playError,      setPlayError]      = useState('');
 
-  // Premium check ï¿½ tolerant of both 'ACTIVE' and 'active'
+  // Premium check Ã¯Â¿Â½ tolerant of both 'ACTIVE' and 'active'
   const userIsPremium = isAuthenticated &&
     user?.isPremium === true &&
     user?.subscriptionStatus?.toUpperCase() === 'ACTIVE';
@@ -281,7 +281,7 @@ export default function PremiumAccessPage() {
       });
 
       if (res.status === 403) {
-        // SubscriptionGuard blocking ï¿½ fall back to fetching all and filtering
+        // SubscriptionGuard blocking Ã¯Â¿Â½ fall back to fetching all and filtering
         res = await fetch(`${API}/api/content?limit=40`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -332,11 +332,11 @@ export default function PremiumAccessPage() {
 
       if (res.ok) {
         const d = await res.json();
-        // Controller returns playUrl ï¿½ also accept url/originalUrl as fallbacks
+        // Controller returns playUrl Ã¯Â¿Â½ also accept url/originalUrl as fallbacks
         const mediaUrl = d.playUrl || d.url || d.originalUrl || '';
         if (mediaUrl) {
           setPlayUrl(mediaUrl);
-          // mimeType now returned from controller ï¿½ critical for correct playback
+          // mimeType now returned from controller Ã¯Â¿Â½ critical for correct playback
           setPlayMimeType(d.mimeType || '');
           return;
         }
@@ -438,7 +438,7 @@ export default function PremiumAccessPage() {
           {playError}
           <button onClick={() => setPlayError('')} style={{ marginLeft: 8,
             background: 'none', border: 'none', color: '#fff',
-            cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>ï¿½</button>
+            cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>Ã¯Â¿Â½</button>
         </div>
       )}
 

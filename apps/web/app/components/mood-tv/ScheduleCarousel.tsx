@@ -18,7 +18,7 @@ interface ScheduleCarouselProps {
 export function ScheduleCarousel({ schedule, currentBlockIndex = 0 }: ScheduleCarouselProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Current block pinned first — upcoming scroll right only
+  // Current block pinned first â€” upcoming scroll right only
   const current  = schedule[currentBlockIndex];
   const upcoming = [
     ...schedule.slice(currentBlockIndex + 1),
@@ -49,7 +49,7 @@ export function ScheduleCarousel({ schedule, currentBlockIndex = 0 }: ScheduleCa
           ))}
         </div>
 
-        {/* Only right scroll — can't scroll left past current block */}
+        {/* Only right scroll â€” can't scroll left past current block */}
         <button
           className="schedule-carousel-btn schedule-carousel-btn--right"
           onClick={() => scrollContainerRef.current?.scrollBy({ left: 450, behavior: 'smooth' })}

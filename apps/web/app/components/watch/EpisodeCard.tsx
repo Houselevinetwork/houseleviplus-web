@@ -32,7 +32,7 @@ export function EpisodeCard({ item, showProgress }: EpisodeCardProps) {
       <div className="episode-card__info">
         {item.showName && <div className="episode-card__show">{item.showName}</div>}
         <div className="episode-card__title">{item.title}</div>
-        <div className="episode-card__meta">{item.year}{item.genre ? ` · ${item.genre}` : ''}</div>
+        <div className="episode-card__meta">{item.year}{item.genre ? ` Â· ${item.genre}` : ''}</div>
         {showProgress && typeof item.progressPercent === 'number' && (
           <div className="episode-card__progress-bar">
             <div className="episode-card__progress-fill" style={{ width: `${item.progressPercent}%` }} />

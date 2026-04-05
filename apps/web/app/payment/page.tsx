@@ -155,7 +155,7 @@ export default function PaymentPage() {
           </div>
         </div>
 
-        {/* ─── STEP 1: LEGAL DISCLOSURE ─── */}
+        {/* â”€â”€â”€ STEP 1: LEGAL DISCLOSURE â”€â”€â”€ */}
         {step === 'disclosure' && (
           <section className="pay-section">
             <p className="pay-eyebrow">Step 1 of 2</p>
@@ -181,7 +181,7 @@ export default function PaymentPage() {
                     ))}
                   </ul>
                   <p className="pay-read-more">
-                    <a href="/terms" target="_blank">Read full Billing Terms →</a>
+                    <a href="/terms" target="_blank">Read full Billing Terms â†’</a>
                   </p>
                 </div>
 
@@ -194,15 +194,15 @@ export default function PaymentPage() {
                     ))}
                   </ul>
                   <p className="pay-read-more">
-                    <a href="/privacy" target="_blank">Read full Privacy Policy →</a>
-                    {' · '}
-                    <a href="/dpa" target="_blank">Data Processing Agreement →</a>
+                    <a href="/privacy" target="_blank">Read full Privacy Policy â†’</a>
+                    {' Â· '}
+                    <a href="/dpa" target="_blank">Data Processing Agreement â†’</a>
                   </p>
                 </div>
 
                 {/* Plan Features */}
                 <div className="pay-block pay-block--blue">
-                  <h2>What's included — {plan.planName}</h2>
+                  <h2>What's included â€” {plan.planName}</h2>
                   <ul>
                     {plan.features?.map((f: string, i: number) => (
                       <li key={i}>{f}</li>
@@ -234,13 +234,13 @@ export default function PaymentPage() {
                 disabled={!agreed || !legalSummaries}
                 onClick={() => setStep('method')}
               >
-                Continue to Payment →
+                Continue to Payment â†’
               </button>
             </div>
           </section>
         )}
 
-        {/* ─── STEP 2: PAYMENT METHOD ─── */}
+        {/* â”€â”€â”€ STEP 2: PAYMENT METHOD â”€â”€â”€ */}
         {step === 'method' && (
           <section className="pay-section">
             <p className="pay-eyebrow">Step 2 of 2</p>
@@ -252,26 +252,26 @@ export default function PaymentPage() {
                 className={`pay-method ${method === 'card' ? 'pay-method--active' : ''}`}
                 onClick={() => setMethod('card')}
               >
-                <span className="pay-method-icon">💳</span>
+                <span className="pay-method-icon">ðŸ’³</span>
                 <div className="pay-method-body">
                   <strong>Card</strong>
-                  <span>Visa · Mastercard · American Express</span>
-                  <span className="pay-tag pay-tag--green">✓ Recommended — enables auto-renewal</span>
+                  <span>Visa Â· Mastercard Â· American Express</span>
+                  <span className="pay-tag pay-tag--green">âœ“ Recommended â€” enables auto-renewal</span>
                 </div>
-                <span className="pay-radio">{method === 'card' ? '●' : '○'}</span>
+                <span className="pay-radio">{method === 'card' ? 'â—' : 'â—‹'}</span>
               </button>
 
               <button
                 className={`pay-method ${method === 'mpesa' ? 'pay-method--active' : ''}`}
                 onClick={() => setMethod('mpesa')}
               >
-                <span className="pay-method-icon">📱</span>
+                <span className="pay-method-icon">ðŸ“±</span>
                 <div className="pay-method-body">
                   <strong>M-Pesa</strong>
-                  <span>Lipa Na M-Pesa · STK Push to your number</span>
-                  <span className="pay-tag pay-tag--amber">⚠ Manual renewal — reminders will be sent</span>
+                  <span>Lipa Na M-Pesa Â· STK Push to your number</span>
+                  <span className="pay-tag pay-tag--amber">âš  Manual renewal â€” reminders will be sent</span>
                 </div>
-                <span className="pay-radio">{method === 'mpesa' ? '●' : '○'}</span>
+                <span className="pay-radio">{method === 'mpesa' ? 'â—' : 'â—‹'}</span>
               </button>
 
             </div>
@@ -297,24 +297,24 @@ export default function PaymentPage() {
                 disabled={!method || loading}
                 onClick={handlePay}
               >
-                {loading ? 'Redirecting to Pesapal…' : `Pay ${plan.displayPrice} securely →`}
+                {loading ? 'Redirecting to Pesapalâ€¦' : `Pay ${plan.displayPrice} securely â†’`}
               </button>
               <button className="pay-btn pay-btn--ghost" onClick={() => setStep('disclosure')}>
-                ← Back
+                â† Back
               </button>
             </div>
 
             <p className="pay-secure">
-              🔒 Secured by Pesapal · PCI-DSS certified · House Levi+ never stores your card details
+              ðŸ”’ Secured by Pesapal Â· PCI-DSS certified Â· House Levi+ never stores your card details
             </p>
           </section>
         )}
 
-        {/* ─── PROCESSING ─── */}
+        {/* â”€â”€â”€ PROCESSING â”€â”€â”€ */}
         {step === 'processing' && (
           <section className="pay-section pay-section--center">
             <div className="pay-spinner pay-spinner--lg" />
-            <h2 className="pay-proc-title">Redirecting to Pesapal…</h2>
+            <h2 className="pay-proc-title">Redirecting to Pesapalâ€¦</h2>
             <p className="pay-proc-sub">Please do not close this window or press back.</p>
           </section>
         )}
