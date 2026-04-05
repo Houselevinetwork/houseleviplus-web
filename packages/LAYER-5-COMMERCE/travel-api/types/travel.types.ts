@@ -49,14 +49,22 @@ export interface NoteFromLevi {
 }
 
 export interface CreateInquiryDto {
-  name: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone?: string;
+  country?: string;
+  numberOfTravelers?: number;
+  isPhotographer?: boolean;
+  message?: string;
+  hearAboutUs?: string;
   packageId: string;
   packageSlug: string;
   travelDate?: string;
   groupSize?: number;
   notes?: string;
+  [key: string]: any;
 }
 
 export interface CreateCustomInquiryDto {
