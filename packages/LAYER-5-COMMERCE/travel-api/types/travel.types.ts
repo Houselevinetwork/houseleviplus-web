@@ -57,13 +57,16 @@ export interface CreateCustomInquiryDto {
   email: string;
   phone?: string;
   whatsapp?: string;
-  destination: string;
-  continent: Continent;
+  destination?: string;
+  desiredDestination?: string;
+  desiredDates?: string;
+  continent?: Continent;
   travelDate?: string;
   duration?: string;
   groupSize?: number;
   budget?: string;
   notes?: string;
+  [key: string]: any;
 }
 
 export interface SubmitTestimonialDto {
