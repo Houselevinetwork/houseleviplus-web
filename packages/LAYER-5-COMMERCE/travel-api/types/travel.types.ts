@@ -37,6 +37,7 @@ export interface NoteFromLevi {
   body?: string;
   bodyText?: string;
   imageUrl?: string;
+  signatureImageUrl?: string;
   updatedAt?: string;
 }
 
