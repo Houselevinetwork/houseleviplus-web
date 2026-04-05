@@ -63,7 +63,7 @@ export function useSession() {
     };
 
     localStorage.setItem('auth_token', response.token);
-    localStorage.setItem('refresh_token', response.refreshToken);
+    localStorage.setItem('refresh_token', response.refreshToken ?? '');
     return response;
   }, []);
 

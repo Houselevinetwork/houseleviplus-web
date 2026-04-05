@@ -15,12 +15,14 @@ export const API_ENDPOINTS = {
   COLLECTIONS:            '/api/commerce/collections',   // ? fixes TS2339
 
   // -- Cart endpoints -----------------------------------------
+  CART_CLEAR:             '/api/commerce/cart/clear',
   CART:                   '/api/commerce/cart',
   CART_ADD_ITEM:          '/api/commerce/cart/items',
   CART_UPDATE_ITEM:       (itemId: string)          => `/api/commerce/cart/items/${itemId}`,
   CART_REMOVE_ITEM:       (itemId: string)          => `/api/commerce/cart/items/${itemId}`,
 
   // -- Order endpoints ----------------------------------------
+  CREATE_ORDER:           '/api/commerce/orders',
   ORDERS:                 '/api/commerce/orders',
   ORDER_BY_ID:            (id: string)              => `/api/commerce/orders/${id}`,
 

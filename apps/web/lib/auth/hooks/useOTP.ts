@@ -35,7 +35,7 @@ export function useOTP() {
 
         setOtpSent(true);
         setCanResend(false);
-        setResendTimer(response.canResendIn);
+        setResendTimer(response.canResendIn ?? 60);
 
         const interval = setInterval(() => {
           setResendTimer((prev) => {
