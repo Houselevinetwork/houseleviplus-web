@@ -34,7 +34,8 @@ export interface TravelTestimonial {
 
 export interface NoteFromLevi {
   id?: string;
-  body: string;
+  body?: string;
+  bodyText?: string;
   imageUrl?: string;
   updatedAt?: string;
 }
