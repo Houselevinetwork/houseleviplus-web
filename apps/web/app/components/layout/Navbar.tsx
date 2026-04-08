@@ -191,7 +191,7 @@ export function Navbar() {
   const redirectToLogin = useCallback(() => {
     const state = Math.random().toString(36).substring(2, 15);
     const nonce = Math.random().toString(36).substring(2, 15);
-    window.location.href = `http://localhost:3003/login?state=${state}&nonce=${nonce}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || "https://authorize.houselevi.com"}/login?state=${state}&nonce=${nonce}`;
   }, []);
 
   const handleMoodTVClick = useCallback((closeMobile = false) => {

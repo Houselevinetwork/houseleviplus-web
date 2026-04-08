@@ -173,6 +173,9 @@ export class CloudflareR2Service {
     return bucket;
   }
 
+  // ✅ FIXED: No Content-Type in PutObjectCommand or returned headers.
+  // Locking Content-Type in the signature causes a SignatureDoesNotMatch
+  // error when the browser sends the actual file mime type in the PUT request.
   async generatePresignedUploadUrl(
     contentType: ContentTypeBucket,
     fileName: string = 'upload',
@@ -187,13 +190,23 @@ export class CloudflareR2Service {
     try {
       const bucket        = this.getBucketForContentType(contentType);
       const cloudflareKey = `${contentType}/${Date.now()}-${fileName}`;
-      const putCommand    = new PutObjectCommand({ Bucket: bucket, Key: cloudflareKey });
-      const uploadUrl     = await getSignedUrl(this.s3Client, putCommand, { expiresIn });
+
+      // Do NOT include ContentType in PutObjectCommand — the presigned URL
+      // signature must NOT lock to a specific Content-Type so the browser
+      // can PUT with the actual file mime type without a signature mismatch.
+      const putCommand = new PutObjectCommand({
+        Bucket: bucket,
+        Key:    cloudflareKey,
+      });
+
+      const uploadUrl = await getSignedUrl(this.s3Client, putCommand, { expiresIn });
+
       this.logger.debug(`Generated presigned URL for ${contentType}: ${cloudflareKey}`);
+
       return {
         uploadUrl,
-        method:  'PUT',
-        headers: { 'Content-Type': 'application/octet-stream' },
+        method:        'PUT',
+        headers:       {}, // No Content-Type — browser sets its own
         expiresIn,
         cloudflareKey,
       };

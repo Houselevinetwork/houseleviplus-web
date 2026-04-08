@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import "./page.css";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
