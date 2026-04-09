@@ -494,7 +494,7 @@ export function Navbar() {
         isOpen={showMoodModal}
         onClose={() => setShowMoodModal(false)}
         contentTitle="HL Live TV - 24/7 Live"
-        LiveTV
+        moodTV
       />
     </>
   );
