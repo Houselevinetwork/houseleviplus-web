@@ -10,7 +10,7 @@ interface Props {
 const AUTH_UI_URL =
   process.env.NEXT_PUBLIC_AUTHORIZE_SERVER_URL ||
   process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL     ||
-  'http://localhost:3003';
+  'https://authorize.houselevi.com';
 
 function redirectToLogin() {
   const state = Math.random().toString(36).substring(2, 15);

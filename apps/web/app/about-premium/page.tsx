@@ -17,8 +17,8 @@ import { useState } from 'react';
 import { useAuthContext } from '@houselevi/auth';
 import { useRouter } from 'next/navigation';
 
-const GO_PREMIUM = process.env.NEXT_PUBLIC_GOPREMIUM_URL   ?? 'http://localhost:3004';
-const AUTH_URL   = process.env.NEXT_PUBLIC_AUTHORIZE_SERVER_URL ?? 'http://localhost:3003';
+const GO_PREMIUM = process.env.NEXT_PUBLIC_GOPREMIUM_URL   ?? 'https://gopremium.houselevi.com';
+const AUTH_URL   = process.env.NEXT_PUBLIC_AUTHORIZE_SERVER_URL ?? 'https://authorize.houselevi.com';
 
 function redirectToLogin(planId: string) {
   const state = Math.random().toString(36).substring(2, 15);

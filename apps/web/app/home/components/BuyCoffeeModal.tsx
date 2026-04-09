@@ -6,8 +6,8 @@ interface Props {
   onClose: () => void;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.houselevi.com';
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || 'https://houselevi.com';
 
 const AMOUNTS = [
   { label: 'KES 200',  value: 200,  desc: 'A quick coffee' },

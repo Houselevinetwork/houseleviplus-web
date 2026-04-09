@@ -11,7 +11,7 @@ interface Artist {
   socialLinks: { instagram: string; twitter: string; website: string };
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 export default function FeaturedArtists() {
   const [artists, setArtists]   = useState<Artist[]>([]);

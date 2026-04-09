@@ -19,7 +19,7 @@ interface GalleryImage {
   originalName: string;
 }
 
-const API        = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API        = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 const COFFEE_URL = 'https://buymeacoffee.com/houselevi';
 
 export default function GalleryPage() {

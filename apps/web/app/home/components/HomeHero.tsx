@@ -18,7 +18,7 @@ interface HomeConfig {
   kenBurnsEffect: boolean;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 // 4 Ken Burns variants â€” random per image for variety
 const KB_ANIMATIONS = [

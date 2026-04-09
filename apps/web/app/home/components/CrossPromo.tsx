@@ -7,7 +7,7 @@ interface WatchItem  { _id: string; title: string; thumbnailUrl?: string; type?:
 interface ShopItem   { _id: string; name: string; images?: string[]; price?: number; }
 interface TravelItem { id?: string; _id?: string; title?: string; destination?: string; images?: string[]; priceFrom?: number; }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 function SectionRow({ title, subtitle, href, children }: {
   title: string; subtitle: string; href: string; children: React.ReactNode;

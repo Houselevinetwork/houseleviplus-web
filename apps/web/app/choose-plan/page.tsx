@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 
-const API_URL = 'http://localhost:4000';
+const API_URL = 'https://api.houselevi.com';
 
 interface Plan {
   id: string;

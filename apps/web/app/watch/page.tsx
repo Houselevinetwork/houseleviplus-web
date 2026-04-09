@@ -15,7 +15,7 @@ import { ContentItem }  from '../components/watch/ContentCard';
 import { Host }         from '../components/watch/HostsRow';
 import './watch.css';
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 // Fetch with optional JWT token for authenticated endpoints
 async function fetchJSON<T>(path: string, fallback: T, token?: string): Promise<T> {

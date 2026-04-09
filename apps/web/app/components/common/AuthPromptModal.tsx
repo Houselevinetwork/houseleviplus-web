@@ -26,7 +26,7 @@ interface AuthPromptModalProps {
 function redirectToAuth(intent: 'login' | 'signup', returnTo: string) {
   const state = Math.random().toString(36).substring(2, 15);
   const nonce = Math.random().toString(36).substring(2, 15);
-  const base  = process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'http://localhost:3003';
+  const base  = process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'https://authorize.houselevi.com';
   window.location.href =
     `${base}/login?state=${state}&nonce=${nonce}&intent=${intent}&returnTo=${encodeURIComponent(returnTo)}`;
 }

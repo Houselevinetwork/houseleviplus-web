@@ -22,13 +22,13 @@ interface MoodTVBlock {
   metadata:  { title: string; description: string; genre: string };
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 /** Redirect guest to authorize-ui login */
 function redirectToLogin() {
   const state = Math.random().toString(36).substring(2, 15);
   const nonce = Math.random().toString(36).substring(2, 15);
-  const base  = process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'http://localhost:3003';
+  const base  = process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'https://authorize.houselevi.com';
   window.location.href = `${base}/login?state=${state}&nonce=${nonce}&returnTo=${encodeURIComponent('/mood-tv')}`;
 }
 
