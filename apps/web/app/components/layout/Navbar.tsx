@@ -19,7 +19,7 @@ const NAV_ITEMS = [
 ];
 
 const GO_PREMIUM_URL =
-  process.env.NEXT_PUBLIC_GOPREMIUM_URL || 'http://localhost:3004';
+  process.env.NEXT_PUBLIC_GOPREMIUM_URL || 'https://gopremium.houselevi.com';
 
 function redirectToGoPremium() {
   const token =
@@ -493,8 +493,8 @@ export function Navbar() {
       <AuthPromptModal
         isOpen={showMoodModal}
         onClose={() => setShowMoodModal(false)}
-        contentTitle="HL Mood TV - 24/7 Live"
-        moodTV
+        contentTitle="HL Live TV - 24/7 Live"
+        LiveTV
       />
     </>
   );
