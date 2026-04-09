@@ -1,27 +1,26 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useAuthContext } from '@houselevi/auth';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.houselevi.com';
 
 type Status = 'verifying' | 'completed' | 'failed';
 
-// Ã¢Å“â€¦ STEP 1: Extract component that uses useSearchParams (required for Next.js 13+)
 function AuthCallbackContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { refreshUserData } = useAuthContext();
   const [status, setStatus] = useState<Status>('verifying');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    exchangeCodeForToken();
-  }, [searchParams]);
+    handleCallback();
+  }, []);
 
-  const exchangeCodeForToken = async () => {
+  const handleCallback = async () => {
     try {
       const code = searchParams.get('code');
-      const state = searchParams.get('state');
 
       if (!code) {
         setStatus('failed');
@@ -29,43 +28,50 @@ function AuthCallbackContent() {
         return;
       }
 
-      // Call your backend API to exchange code for token
-      const response = await fetch('/api/auth/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, state }),
-      });
+      // Store token in localStorage — matches what authcontext reads
+      localStorage.setItem('token', code);
+      localStorage.setItem('accessToken', code);
+      sessionStorage.setItem('accessToken', code);
 
-      if (!response.ok) {
-        const data = await response.json();
-        setStatus('failed');
-        setError(data.error || 'Failed to complete sign in. Please try again.');
-        return;
+      // Store user info if available in the token
+      try {
+        const payload = JSON.parse(atob(code.split('.')[1]));
+        if (payload.userId) {
+          // Fetch full user profile from API
+          const response = await fetch(`${API_URL}/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${code}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const userData = data.user || data;
+            localStorage.setItem('user', JSON.stringify(userData));
+          }
+        }
+      } catch {
+        // Token decode failed — still continue, authcontext will handle it
       }
 
-      const data = await response.json();
-
-      // Store token in localStorage
-      if (data.access_token) {
-        localStorage.setItem('token', data.access_token);
-      }
-
-      // Optional: Store user info if returned
-      if (data.user) {
-        localStorage.setItem('user', JSON.stringify(data.user));
-      }
-
-      // Optional: Store refresh token if available
-      if (data.refresh_token) {
-        localStorage.setItem('refresh_token', data.refresh_token);
+      // Refresh auth context so Navbar updates immediately
+      try {
+        if (refreshUserData && typeof refreshUserData === 'function') {
+          await refreshUserData();
+        }
+      } catch {
+        // Don't fail if refresh fails — token is stored, full reload will fix it
       }
 
       setStatus('completed');
 
-      // Small delay to ensure token is stored before redirect
+      // Full page reload forces AuthProvider to reinitialize with the new token
+      // router.push() would NOT reinitialize AuthProvider — that's why Navbar stays as guest
       setTimeout(() => {
-        router.push('/home');
-      }, 500);
+        window.location.href = '/home';
+      }, 1500);
+
     } catch (err: any) {
       setStatus('failed');
       setError(err.message || 'An error occurred during sign in. Please try again.');
@@ -79,21 +85,14 @@ function AuthCallbackContent() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        background: '#ffffff',
+        background: '#000000',
         fontFamily: 'system-ui, -apple-system, sans-serif',
       }}
     >
       <div style={{ textAlign: 'center', maxWidth: '500px', padding: '40px 20px' }}>
-        {/* Logo */}
-        <p
-          style={{
-            fontSize: '24px',
-            fontWeight: 700,
-            marginBottom: '60px',
-            color: '#000000',
-          }}
-        >
-          HOUSE LEVI<span style={{ color: '#0066ff' }}>+</span>
+
+        <p style={{ fontSize: '24px', fontWeight: 700, marginBottom: '60px', color: '#ffffff' }}>
+          HOUSE LEVI<span style={{ color: '#4169e1' }}>+</span>
         </p>
 
         {/* VERIFYING */}
@@ -103,24 +102,20 @@ function AuthCallbackContent() {
               style={{
                 width: '50px',
                 height: '50px',
-                border: '3px solid #f0f0f0',
-                borderTop: '3px solid #0066ff',
+                border: '3px solid #333',
+                borderTop: '3px solid #ffffff',
                 borderRadius: '50%',
                 margin: '0 auto 30px',
                 animation: 'spin 1s linear infinite',
               }}
             />
-            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
-              Completing sign inÃ¢â‚¬Â¦
+            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#ffffff' }}>
+              Completing sign in...
             </h1>
-            <p style={{ fontSize: '16px', color: '#666666', lineHeight: '1.5' }}>
+            <p style={{ fontSize: '16px', color: '#999999', lineHeight: '1.5' }}>
               Please wait while we verify your account.
             </p>
-            <style>{`
-              @keyframes spin {
-                to { transform: rotate(360deg); }
-              }
-            `}</style>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         )}
 
@@ -140,19 +135,19 @@ function AuthCallbackContent() {
                 fontSize: '32px',
               }}
             >
-              Ã¢Å“â€œ
+              ✓
             </div>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#ffffff' }}>
               Sign in successful!
             </h1>
-            <p style={{ fontSize: '16px', color: '#666666', lineHeight: '1.5', marginBottom: '30px' }}>
-              Welcome back! Redirecting you nowÃ¢â‚¬Â¦
+            <p style={{ fontSize: '16px', color: '#999999', lineHeight: '1.5', marginBottom: '30px' }}>
+              Welcome back! Redirecting you now...
             </p>
             <button
-              onClick={() => router.push('/home')}
+              onClick={() => { window.location.href = '/home'; }}
               style={{
                 padding: '12px 24px',
-                background: '#000000',
+                background: '#4169e1',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '8px',
@@ -161,7 +156,7 @@ function AuthCallbackContent() {
                 cursor: 'pointer',
               }}
             >
-              Go to home Ã¢â€ â€™
+              Go to Home →
             </button>
           </div>
         )}
@@ -182,27 +177,20 @@ function AuthCallbackContent() {
                 fontSize: '32px',
               }}
             >
-              Ã¢Å“â€¢
+              ✕
             </div>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#000000' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', color: '#ffffff' }}>
               Sign in failed
             </h1>
-            <p style={{ fontSize: '16px', color: '#c62828', lineHeight: '1.5', marginBottom: '30px' }}>
+            <p style={{ fontSize: '16px', color: '#ff6b6b', lineHeight: '1.5', marginBottom: '30px' }}>
               {error || 'Something went wrong. Please try again.'}
             </p>
-            <div
-              style={{
-                display: 'flex',
-                gap: '12px',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
-                onClick={() => router.push('/home')}
+                onClick={() => { window.location.href = 'https://authorize.houselevi.com/login'; }}
                 style={{
                   padding: '12px 24px',
-                  background: '#000000',
+                  background: '#4169e1',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '8px',
@@ -211,22 +199,22 @@ function AuthCallbackContent() {
                   cursor: 'pointer',
                 }}
               >
-                Try again
+                Try Again
               </button>
               <button
-                onClick={() => router.push('/home')}
+                onClick={() => { window.location.href = '/home'; }}
                 style={{
                   padding: '12px 24px',
                   background: 'transparent',
-                  color: '#0066ff',
-                  border: '1px solid #0066ff',
+                  color: '#4169e1',
+                  border: '1px solid #4169e1',
                   borderRadius: '8px',
                   fontSize: '16px',
                   fontWeight: '600',
                   cursor: 'pointer',
                 }}
               >
-                Go home
+                Go Home
               </button>
             </div>
           </div>
@@ -236,7 +224,6 @@ function AuthCallbackContent() {
   );
 }
 
-// Ã¢Å“â€¦ STEP 2: Wrap in Suspense in the main export (required for useSearchParams)
 export default function AuthCallbackPage() {
   return (
     <Suspense
@@ -247,29 +234,25 @@ export default function AuthCallbackPage() {
             alignItems: 'center',
             justifyContent: 'center',
             minHeight: '100vh',
-            background: '#ffffff',
+            background: '#000000',
           }}
         >
           <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, marginBottom: '40px', color: '#000000' }}>
-              HOUSE LEVI<span style={{ color: '#0066ff' }}>+</span>
+            <p style={{ fontSize: '24px', fontWeight: 700, marginBottom: '40px', color: '#ffffff' }}>
+              HOUSE LEVI<span style={{ color: '#4169e1' }}>+</span>
             </p>
             <div
               style={{
                 width: '50px',
                 height: '50px',
-                border: '3px solid #f0f0f0',
-                borderTop: '3px solid #0066ff',
+                border: '3px solid #333',
+                borderTop: '3px solid #ffffff',
                 borderRadius: '50%',
                 margin: '0 auto',
                 animation: 'spin 1s linear infinite',
               }}
             />
-            <style>{`
-              @keyframes spin {
-                to { transform: rotate(360deg); }
-              }
-            `}</style>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         </main>
       }
