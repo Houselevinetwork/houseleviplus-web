@@ -1,7 +1,7 @@
 // apps/web/components/travel/TestimonialsSection.tsx
 'use client';
 
-import type { TravelTestimonial } from '@houselevi/travel-api';
+import type { TravelTestimonial } from '../../lib/types/travel.types';
 
 interface TestimonialsSectionProps {
   testimonials: TravelTestimonial[];

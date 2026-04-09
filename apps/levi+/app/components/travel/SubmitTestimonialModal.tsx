@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { TravelPackage, SubmitTestimonialDto } from '@houselevi/travel-api';
+import type { TravelPackage, SubmitTestimonialDto } from '../../lib/types/travel.types';
 
 interface SubmitTestimonialModalProps {
   isOpen: boolean;

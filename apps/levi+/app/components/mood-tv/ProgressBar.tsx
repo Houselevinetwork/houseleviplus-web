@@ -1,4 +1,4 @@
-﻿interface ProgressBarProps {
+interface ProgressBarProps {
   currentTime: number;
   duration: number;
   showHandle?: boolean;

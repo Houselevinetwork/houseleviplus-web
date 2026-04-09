@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 /**
  * Location: apps/levi+/app/dashboard/content/upload/page.tsx
  */
@@ -42,7 +42,7 @@ interface Form {
   mediaFileSize:  number;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+const API = process.env.NEXT_PUBLIC_API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
 const BUCKET_KEY: Record<string, string> = {
   tv_episode: 'tv_episode',

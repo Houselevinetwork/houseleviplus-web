@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 export default function TravelHero() {
   return (
     <section style={{ position: "relative", width: "100%", height: "100vh", minHeight: 600, background: "#000", overflow: "hidden" }}>

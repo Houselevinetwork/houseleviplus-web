@@ -1,7 +1,7 @@
 // apps/web/components/travel/NoteFromLeviSection.tsx
 'use client';
 
-import type { NoteFromLevi } from '@houselevi/travel-api';
+import type { NoteFromLevi } from '../../lib/types/travel.types';
 import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from 'react';
 
 interface NoteFromLeviSectionProps {

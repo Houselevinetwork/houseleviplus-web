@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuthContext } from '@houselevi/auth';
+import { useAuthContext } from '../../lib/auth';
 
 type SubStatus = 'guest' | 'free' | 'premium';
 

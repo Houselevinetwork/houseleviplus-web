@@ -1,4 +1,4 @@
-﻿export function BrandingSection() {
+export function BrandingSection() {
   return (
     <div className="branding-section">
       <div className="branding-logo">

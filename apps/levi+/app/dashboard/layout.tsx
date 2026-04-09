@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 // Location: apps/levi+/app/dashboard/layout.tsx
 // This layout wraps ALL dashboard pages with sidebar + navbar

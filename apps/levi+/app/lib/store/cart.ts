@@ -1,5 +1,5 @@
-﻿import { create } from 'zustand';
-import { ICart, ICartItem } from '@houselevi/shop';
+import { create } from 'zustand';
+import { ICart, ICartItem } from '../../lib/shop/types';
 
 interface CartStore {
   cart: ICart | null;

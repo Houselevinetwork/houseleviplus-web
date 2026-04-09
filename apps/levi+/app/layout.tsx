@@ -1,8 +1,8 @@
-﻿'use client';
+'use client';
 
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { AuthProvider } from '@houselevi/auth'
+import { AuthProvider } from './lib/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 

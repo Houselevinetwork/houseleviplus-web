@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { CreateCustomInquiryDto } from '@houselevi/travel-api';
+import type { CreateCustomInquiryDto } from '../../lib/types/travel.types';
 
 interface CustomInquiryModalProps {
   isOpen: boolean;

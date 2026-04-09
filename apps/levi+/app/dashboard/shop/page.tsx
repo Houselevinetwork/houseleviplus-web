@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 /**
  * Location: apps/levi+/app/dashboard/shop/page.tsx

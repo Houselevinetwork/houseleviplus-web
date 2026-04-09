@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
-import type { TravelPackage, CreateInquiryDto } from "@houselevi/travel-api";
+import type { TravelPackage, CreateInquiryDto } from "../../../lib/types/travel.types";
 interface Props { isOpen: boolean; pkg: TravelPackage; onClose: () => void; onSubmit: (d: Omit<CreateInquiryDto, "packageId" | "packageSlug">) => Promise<void>; }
 export default function InquiryModal({ isOpen, pkg, onClose, onSubmit }: Props) {
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", message: "" });

@@ -1,4 +1,6 @@
 'use client';
+export const runtime = 'edge';
+
 /**
  * Location: apps/levi+/app/dashboard/watch/hosts/[slug]/page.tsx
  *

@@ -1,4 +1,4 @@
-﻿interface ScheduleCardProps {
+interface ScheduleCardProps {
   startTime: string;
   endTime: string;
   title: string;

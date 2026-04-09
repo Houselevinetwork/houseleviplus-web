@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 /**
  * Location: apps/web/app/components/mood-tv/VideoPlayer.tsx
  *          AND apps/levi+/app/components/mood-tv/VideoPlayer.tsx

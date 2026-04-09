@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { SubscribeDto } from '@houselevi/travel-api';
+import type { SubscribeDto } from '../../lib/types/travel.types';
 
 interface TravelNewsletterFooterProps {
   onSubscribe: (data: SubscribeDto) => Promise<void>;

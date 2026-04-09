@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 /**
  * Location: apps/levi+/app/dashboard/mood-tv/page.tsx
  */

@@ -1,7 +1,7 @@
 // apps/web/components/travel/PackageGrid.tsx
 'use client';
 
-import type { TravelPackage } from '@houselevi/travel-api';
+import type { TravelPackage } from '../../lib/types/travel.types';
 import { PackageCard } from './PackageCard';
 
 interface PackageGridProps {

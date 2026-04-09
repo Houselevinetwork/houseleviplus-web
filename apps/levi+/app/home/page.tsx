@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { LoginSection } from '../components/login/LoginSection';
 import { HostsSection } from '../components/home/HostsSection';
@@ -10,7 +10,7 @@ import { SportsSection } from '../components/home/SportsSection';
 import { ShopSection } from '../components/home/ShopSection';
 import { TravelSection } from '../components/home/TravelSection';
 import { QuoteSection } from '../components/home/QuoteSection';
-import { useAuthContext } from '@houselevi/auth';
+import { useAuthContext } from '../lib/auth';
 
 import './page.css';
 

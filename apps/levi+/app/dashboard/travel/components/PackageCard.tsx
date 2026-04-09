@@ -1,5 +1,5 @@
-﻿"use client";
-import type { TravelPackage } from "@houselevi/travel-api";
+"use client";
+import type { TravelPackage } from "../../../lib/types/travel.types";
 interface Props { pkg: TravelPackage; wide?: boolean; onInquire: (p: TravelPackage) => void; }
 export default function PackageCard({ pkg, wide, onInquire }: Props) {
   return (

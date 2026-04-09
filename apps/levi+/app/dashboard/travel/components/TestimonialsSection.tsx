@@ -1,5 +1,5 @@
-﻿"use client";
-import type { TravelTestimonial } from "@houselevi/travel-api";
+"use client";
+import type { TravelTestimonial } from "../../../lib/types/travel.types";
 export default function TestimonialsSection({ testimonials }: { testimonials: TravelTestimonial[] }) {
   return (
     <section>

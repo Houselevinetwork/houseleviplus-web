@@ -1,28 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { Db } from 'mongodb';
 
-/**
- * Database Service
- * 
- * Provides:
- * - Health check endpoints
- * - Connection status monitoring
- * - Database utilities
- * 
- * Netflix-Grade: Real-time connection monitoring
- * DPA 2019: Database access auditing
- */
 @Injectable()
 export class DatabaseService {
   constructor(
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
-  /**
-   * Check if database is connected and responsive
-   * Used by /health endpoint
-   */
   async isHealthy(): Promise<{
     connected: boolean;
     responseTime: number;
@@ -32,12 +18,10 @@ export class DatabaseService {
     const startTime = Date.now();
 
     try {
-      // Check if connection and db exist
       if (!this.connection || !this.connection.db) {
         throw new Error('Database connection not initialized');
       }
 
-      // Ping database
       await this.connection.db.admin().ping();
 
       const responseTime = Date.now() - startTime;
@@ -59,10 +43,6 @@ export class DatabaseService {
     }
   }
 
-  /**
-   * Get connection statistics
-   * Netflix-Grade: Monitor connection pool usage
-   */
   getConnectionStats() {
     return {
       readyState: this.getReadyStateText(),
@@ -72,9 +52,6 @@ export class DatabaseService {
     };
   }
 
-  /**
-   * Get readable connection state
-   */
   private getReadyStateText(): string {
     const states: Record<number, string> = {
       0: 'disconnected',
@@ -85,34 +62,23 @@ export class DatabaseService {
     return states[this.connection.readyState] || 'unknown';
   }
 
-  /**
-   * Graceful shutdown
-   * Netflix-Grade: Ensure all operations complete before closing
-   * DPA Compliance: Prevent data loss
-   */
   async gracefulShutdown(): Promise<void> {
-    console.log('🔒 Closing database connections...');
+    console.log('Closing database connections...');
     await this.connection.close();
-    console.log('✅ Database connections closed gracefully');
+    console.log('Database connections closed gracefully');
   }
 
-  /**
-   * Get database instance (for advanced operations)
-   */
-  getDatabase() {
-    return this.connection.db;
+  getDatabase(): Db {
+    if (!this.connection.db) {
+      throw new Error('Database not yet connected');
+    }
+    return this.connection.db as Db;
   }
 
-  /**
-   * Get connection instance (for event listeners)
-   */
-  getConnection() {
+  getConnection(): Connection {
     return this.connection;
   }
 
-  /**
-   * Check if database is connected
-   */
   isConnected(): boolean {
     return this.connection.readyState === 1;
   }

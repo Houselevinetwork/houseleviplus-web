@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
-import { travelApi } from "@houselevi/travel-api";
+import { travelApi } from "../../../lib/types/travel.types";
 export default function TravelFooter() {
   const [email, setEmail] = useState(""); const [done, setDone] = useState(false);
   const submit = async () => { if (!email) return; await travelApi.subscribe({ firstName: "", email }).catch(() => {}); setDone(true); };

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 export default function CustomTravelSection() {
   return (
     <section style={{ textAlign: "center", padding: "0 128px 80px" }}>

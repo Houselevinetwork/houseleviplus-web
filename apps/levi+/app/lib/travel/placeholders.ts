@@ -1,7 +1,7 @@
-﻿// apps/web/app/lib/travel/placeholders.ts
+// apps/web/app/lib/travel/placeholders.ts
 // Dev placeholders. heroImage.url = placeholder until admin uploads a real image.
 // When admin uploads via backend, API returns the real URL  no code changes needed.
-import type { TravelPackage, TravelTestimonial } from "@houselevi/travel-api";
+import type { TravelPackage, TravelTestimonial } from "../../lib/types/travel.types";
 
 export const PLACEHOLDER_QUOTES = [
   { id: "1", text: "Huge thank you to Drew for the trip of a lifetime!", author: "SUSANNE E." },

@@ -1,8 +1,8 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@houselevi/auth';
-import { useAuthContext } from '@houselevi/auth';
+import { useAuth } from '../../lib/auth';
+import { useAuthContext } from '../../lib/auth';
 import { HeroCarousel } from './HeroCarousel';
 import { BrandPanel } from './BrandPanel';
 import { useHeroCarousel } from '../../lib/hooks/useHeroCarousel';
@@ -78,7 +78,7 @@ export function LoginSection() {
     useHeroCarousel();
 
   const handleSignup = async () => {
-    await handleSignupRequest();
+    await handleSignupRequest({ preventDefault: () => {} } as React.FormEvent);
     setEmailSent(true);
   };
 

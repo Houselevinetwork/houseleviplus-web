@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 interface Quote { id: string; text: string; author: string; }
 export default function QuoteStrip({ quotes }: { quotes: Quote[] }) {
   return (
