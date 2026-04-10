@@ -5,10 +5,10 @@ export const runtime = 'edge';
 /**
  * Location: apps/web/app/watch/[slug]/page.tsx
  *
- * FIX: fetch now calls /api/content/watch/:slug (public OptionalJwtAuthGuard)
- *      instead of /api/content/:slug (protected JwtAuthGuard + SubscriptionGuard).
- * FIX: response is extracted from data.data (formatForWatch shape), not data.item.
- * FIX: videoUrl is mapped from storage.originalUrl (as returned by formatForWatch).
+ * FIX 1: fetch now calls /api/content/watch/:slug (public OptionalJwtAuthGuard)
+ *         instead of /api/content/:slug (protected JwtAuthGuard + SubscriptionGuard).
+ * FIX 2: response extracted from data.data (formatForWatch shape), not data.item.
+ * FIX 3: videoUrl correctly resolved from storage.originalUrl.
  */
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -29,15 +29,16 @@ interface StorageInfo {
 }
 
 interface ContentItem {
-  _id:             string;
-  title:           string;
-  type:            string;
-  slug?:           string;
-  description?:    string;
-  thumbnailUrl?:   string;
-  posterUrl?:      string;
-  isPremium?:      boolean;
-  isNew?:          boolean;
+  _id:              string;
+  title:            string;
+  type:             string;
+  slug?:            string;
+  description?:     string;
+  thumbnailUrl?:    string;
+  posterUrl?:       string;
+  isPremium?:       boolean;
+  isNew?:           boolean;
+  isNewContent?:    boolean;
   displayDuration?: string;
   hostName?:        string;
   hostSlug?:        string | null;
@@ -55,9 +56,9 @@ export default function WatchSlugPage() {
   const { slug } = useParams() as { slug: string };
   const router   = useRouter();
 
-  const [content,  setContent]  = useState<ContentItem | null>(null);
-  const [loading,  setLoading]  = useState(true);
-  const [error,    setError]    = useState('');
+  const [content, setContent] = useState<ContentItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState('');
 
   useEffect(() => {
     if (!slug) return;
@@ -74,7 +75,7 @@ export default function WatchSlugPage() {
 
         const json = await res.json();
 
-        // formatForWatch returns { success, data: { ... } }
+        // formatForWatch returns { success: true, data: { ... } }
         const raw: ContentItem = json.data ?? json.item ?? json;
 
         setContent(raw);
@@ -86,64 +87,72 @@ export default function WatchSlugPage() {
     })();
   }, [slug]);
 
-  // ─── Loading ────────────────────────────────────────────────────────────────
+  // ─── Loading ─────────────────────────────────────────────────────────────────
 
   if (loading) return (
     <div className="wp-page wp-page--loading">
       <div className="wp-spinner">
         <div className="wp-spinner__ring" />
       </div>
-      <style>{`@keyframes wp-spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
-  // ─── Error ──────────────────────────────────────────────────────────────────
+  // ─── Error ───────────────────────────────────────────────────────────────────
 
   if (error || !content) return (
     <div className="wp-page wp-page--error">
       <h2>Content not found</h2>
       <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', margin: 0 }}>
-        {error === '401' ? 'You need to be signed in to view this.' : 'This content may have moved or been removed.'}
+        {error === '401'
+          ? 'You need to be signed in to view this.'
+          : 'This content may have moved or been removed.'}
       </p>
       <button
         onClick={() => router.push('/watch')}
         className="wp-back-link"
-        style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', padding: '10px 24px', cursor: 'pointer', fontSize: 13, marginTop: 8 }}
+        style={{
+          background: 'none',
+          border: '1px solid rgba(255,255,255,0.15)',
+          padding: '10px 24px',
+          cursor: 'pointer',
+          fontSize: 13,
+          marginTop: 8,
+        }}
       >
         ← Back to Watch
       </button>
     </div>
   );
 
-  // ─── Resolve video URL from storage (formatForWatch returns storage object) ─
+  // ─── Resolve media ────────────────────────────────────────────────────────────
 
-  const videoUrl =
-    content.storage?.originalUrl ||
-    content.storage?.cloudflareStreamId
-      ? undefined   // Cloudflare Stream uses an iframe/HLS, handle separately
-      : undefined;
+  const videoUrl           = content.storage?.originalUrl || '';
+  const cloudflareStreamId = content.storage?.cloudflareStreamId || '';
+  const thumbnailUrl       =
+    content.thumbnailUrl    ||
+    content.posterUrl       ||
+    content.storage?.thumbnail ||
+    '';
 
-  const cloudflareStreamId = content.storage?.cloudflareStreamId;
-  const thumbnailUrl       = content.thumbnailUrl || content.posterUrl || content.storage?.thumbnail || '';
-
-  // ─── Player ─────────────────────────────────────────────────────────────────
+  // ─── Page ─────────────────────────────────────────────────────────────────────
 
   return (
     <div className="wp-page">
 
       {/* ── Media area ── */}
       {videoUrl ? (
-        <div className="wp" style={{ maxHeight: '75vh' }}>
+        <div className="wp">
           <video
             className="wp__video"
             src={videoUrl}
             controls
             autoPlay
-            poster={thumbnailUrl}
+            playsInline
+            poster={thumbnailUrl || undefined}
           />
         </div>
       ) : cloudflareStreamId ? (
-        <div className="wp" style={{ maxHeight: '75vh' }}>
+        <div className="wp">
           <iframe
             src={`https://iframe.cloudflarestream.com/${cloudflareStreamId}`}
             style={{ width: '100%', height: '100%', border: 'none' }}
@@ -155,7 +164,11 @@ export default function WatchSlugPage() {
       ) : (
         <div className="wp-no-media">
           {thumbnailUrl && (
-            <img src={thumbnailUrl} alt={content.title} className="wp-no-media__poster" />
+            <img
+              src={thumbnailUrl}
+              alt={content.title}
+              className="wp-no-media__poster"
+            />
           )}
           <div className="wp-no-media__overlay">No video available</div>
         </div>
@@ -167,18 +180,30 @@ export default function WatchSlugPage() {
 
           <Link href="/watch" className="wp-info__back">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M15 18l-6-6 6-6"/>
+              <path d="M15 18l-6-6 6-6" />
             </svg>
             Back to Watch
           </Link>
 
           <div className="wp-info__header">
             <div className="wp-info__badges">
-              {content.type  && <span className="wp-badge wp-badge--type">{content.type.replace('_', ' ')}</span>}
-              {content.isNew && <span className="wp-badge wp-badge--new">New</span>}
-              {content.isPremium && <span className="wp-badge wp-badge--premium">Premium</span>}
-              {content.year  && <span className="wp-badge wp-badge--year">{content.year}</span>}
-              {content.genre && <span className="wp-badge wp-badge--genre">{content.genre}</span>}
+              {content.type && (
+                <span className="wp-badge wp-badge--type">
+                  {content.type.replace(/_/g, ' ')}
+                </span>
+              )}
+              {(content.isNew || content.isNewContent) && (
+                <span className="wp-badge wp-badge--new">New</span>
+              )}
+              {content.isPremium && (
+                <span className="wp-badge wp-badge--premium">Premium</span>
+              )}
+              {content.year && (
+                <span className="wp-badge wp-badge--year">{content.year}</span>
+              )}
+              {content.genre && (
+                <span className="wp-badge wp-badge--genre">{content.genre}</span>
+              )}
             </div>
 
             <h1 className="wp-info__title">{content.title}</h1>
@@ -235,6 +260,7 @@ export default function WatchSlugPage() {
 
         </div>
       </div>
+
     </div>
   );
 }
