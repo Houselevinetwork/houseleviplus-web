@@ -4,6 +4,11 @@ export const runtime = 'edge';
 
 /**
  * Location: apps/web/app/watch/[slug]/page.tsx
+ *
+ * FIX: fetch now calls /api/content/watch/:slug (public OptionalJwtAuthGuard)
+ *      instead of /api/content/:slug (protected JwtAuthGuard + SubscriptionGuard).
+ * FIX: response is extracted from data.data (formatForWatch shape), not data.item.
+ * FIX: videoUrl is mapped from storage.originalUrl (as returned by formatForWatch).
  */
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -12,113 +17,223 @@ import './watch-player.css';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'https://api.houselevi.com';
 
+interface StorageInfo {
+  originalUrl?:        string;
+  thumbnail?:          string;
+  duration?:           number;
+  mimeType?:           string;
+  cloudflareStreamId?: string;
+  cloudflareKey?:      string;
+  provider?:           string;
+  size?:               number;
+}
+
 interface ContentItem {
-  _id: string;
-  title: string;
-  type: string;
-  videoUrl?: string;
-  thumbnailUrl?: string;
-  description?: string;
-  isPremium?: boolean;
-  duration?: number;
+  _id:             string;
+  title:           string;
+  type:            string;
+  slug?:           string;
+  description?:    string;
+  thumbnailUrl?:   string;
+  posterUrl?:      string;
+  isPremium?:      boolean;
+  isNew?:          boolean;
   displayDuration?: string;
-  slug?: string;
-  hostId?: string;
-  hostName?: string;
+  hostName?:        string;
+  hostSlug?:        string | null;
+  year?:            number | null;
+  genre?:           string;
+  viewCount?:       number;
+  storage?:         StorageInfo;
+  metadata?:        Record<string, any>;
+  series?:          any;
+  season?:          number | null;
+  episode?:         number | null;
 }
 
 export default function WatchSlugPage() {
   const { slug } = useParams() as { slug: string };
-  const router = useRouter();
-  const [content, setContent] = useState<ContentItem | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const router   = useRouter();
+
+  const [content,  setContent]  = useState<ContentItem | null>(null);
+  const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState('');
 
   useEffect(() => {
     if (!slug) return;
+
     (async () => {
       setLoading(true);
+      setError('');
+
       try {
-        const res = await fetch(`${API}/api/content/${slug}`);
+        // ✅ Public endpoint — no auth required for free content
+        const res = await fetch(`${API}/api/content/watch/${slug}`);
+
         if (!res.ok) throw new Error(`${res.status}`);
-        const data = await res.json();
-        setContent(data.item ?? data);
+
+        const json = await res.json();
+
+        // formatForWatch returns { success, data: { ... } }
+        const raw: ContentItem = json.data ?? json.item ?? json;
+
+        setContent(raw);
       } catch (e: any) {
-        setError(e.message);
+        setError(e.message ?? 'Unknown error');
       } finally {
         setLoading(false);
       }
     })();
   }, [slug]);
 
+  // ─── Loading ────────────────────────────────────────────────────────────────
+
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" style={{ animation: 'spin 1s linear infinite' }}>
-        <circle cx="12" cy="12" r="10" strokeOpacity="0.2" />
-        <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
-      </svg>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    <div className="wp-page wp-page--loading">
+      <div className="wp-spinner">
+        <div className="wp-spinner__ring" />
+      </div>
+      <style>{`@keyframes wp-spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 
+  // ─── Error ──────────────────────────────────────────────────────────────────
+
   if (error || !content) return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', gap: 16 }}>
-      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)' }}>Content not found</p>
-      <button onClick={() => router.push('/watch')} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '10px 24px', cursor: 'pointer', fontSize: 13 }}>
-        Back to Watch
+    <div className="wp-page wp-page--error">
+      <h2>Content not found</h2>
+      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+        {error === '401' ? 'You need to be signed in to view this.' : 'This content may have moved or been removed.'}
+      </p>
+      <button
+        onClick={() => router.push('/watch')}
+        className="wp-back-link"
+        style={{ background: 'none', border: '1px solid rgba(255,255,255,0.15)', padding: '10px 24px', cursor: 'pointer', fontSize: 13, marginTop: 8 }}
+      >
+        ← Back to Watch
       </button>
     </div>
   );
 
+  // ─── Resolve video URL from storage (formatForWatch returns storage object) ─
+
+  const videoUrl =
+    content.storage?.originalUrl ||
+    content.storage?.cloudflareStreamId
+      ? undefined   // Cloudflare Stream uses an iframe/HLS, handle separately
+      : undefined;
+
+  const cloudflareStreamId = content.storage?.cloudflareStreamId;
+  const thumbnailUrl       = content.thumbnailUrl || content.posterUrl || content.storage?.thumbnail || '';
+
+  // ─── Player ─────────────────────────────────────────────────────────────────
+
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 24px' }}>
-        <nav style={{ marginBottom: 24, fontSize: 12, color: 'rgba(255,255,255,0.4)', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <Link href="/watch" style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>Watch</Link>
-          <span>&rsaquo;</span>
-          <span style={{ color: 'rgba(255,255,255,0.7)' }}>{content.title}</span>
-        </nav>
+    <div className="wp-page">
 
-        {content.videoUrl ? (
-          <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', marginBottom: 24 }}>
-            <video
-              src={content.videoUrl}
-              controls
-              autoPlay
-              style={{ width: '100%', height: '100%', display: 'block' }}
-              poster={content.thumbnailUrl}
-            />
+      {/* ── Media area ── */}
+      {videoUrl ? (
+        <div className="wp" style={{ maxHeight: '75vh' }}>
+          <video
+            className="wp__video"
+            src={videoUrl}
+            controls
+            autoPlay
+            poster={thumbnailUrl}
+          />
+        </div>
+      ) : cloudflareStreamId ? (
+        <div className="wp" style={{ maxHeight: '75vh' }}>
+          <iframe
+            src={`https://iframe.cloudflarestream.com/${cloudflareStreamId}`}
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title={content.title}
+          />
+        </div>
+      ) : (
+        <div className="wp-no-media">
+          {thumbnailUrl && (
+            <img src={thumbnailUrl} alt={content.title} className="wp-no-media__poster" />
+          )}
+          <div className="wp-no-media__overlay">No video available</div>
+        </div>
+      )}
+
+      {/* ── Info panel ── */}
+      <div className="wp-info">
+        <div className="wp-info__inner">
+
+          <Link href="/watch" className="wp-info__back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            Back to Watch
+          </Link>
+
+          <div className="wp-info__header">
+            <div className="wp-info__badges">
+              {content.type  && <span className="wp-badge wp-badge--type">{content.type.replace('_', ' ')}</span>}
+              {content.isNew && <span className="wp-badge wp-badge--new">New</span>}
+              {content.isPremium && <span className="wp-badge wp-badge--premium">Premium</span>}
+              {content.year  && <span className="wp-badge wp-badge--year">{content.year}</span>}
+              {content.genre && <span className="wp-badge wp-badge--genre">{content.genre}</span>}
+            </div>
+
+            <h1 className="wp-info__title">{content.title}</h1>
+
+            {(content.hostName || content.displayDuration) && (
+              <p className="wp-info__subtitle">
+                {content.hostName && <>by {content.hostName}</>}
+                {content.hostName && content.displayDuration && ' · '}
+                {content.displayDuration}
+              </p>
+            )}
           </div>
-        ) : content.thumbnailUrl ? (
-          <div style={{ width: '100%', aspectRatio: '16/9', background: '#111', marginBottom: 24, overflow: 'hidden' }}>
-            <img src={content.thumbnailUrl} alt={content.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+
+          {content.description && (
+            <p className="wp-info__desc">{content.description}</p>
+          )}
+
+          <div className="wp-info__meta">
+            {content.hostName && (
+              <div className="wp-meta-item">
+                <span className="wp-meta-label">Creator</span>
+                {content.hostSlug ? (
+                  <Link href={`/watch/hosts/${content.hostSlug}`} className="wp-meta-link">
+                    {content.hostName}
+                  </Link>
+                ) : (
+                  <span>{content.hostName}</span>
+                )}
+              </div>
+            )}
+            {content.series?.title && (
+              <div className="wp-meta-item">
+                <span className="wp-meta-label">Series</span>
+                <span>{content.series.title}</span>
+              </div>
+            )}
+            {(content.season != null || content.episode != null) && (
+              <div className="wp-meta-item">
+                <span className="wp-meta-label">Episode</span>
+                <span>
+                  {content.season != null && `S${content.season}`}
+                  {content.season != null && content.episode != null && ' · '}
+                  {content.episode != null && `E${content.episode}`}
+                </span>
+              </div>
+            )}
+            {typeof content.viewCount === 'number' && content.viewCount > 0 && (
+              <div className="wp-meta-item">
+                <span className="wp-meta-label">Views</span>
+                <span>{content.viewCount.toLocaleString()}</span>
+              </div>
+            )}
           </div>
-        ) : (
-          <div style={{ width: '100%', aspectRatio: '16/9', background: '#111', marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: 13 }}>No preview available</span>
-          </div>
-        )}
 
-        <h1 style={{ fontSize: 'clamp(20px,3vw,32px)', fontWeight: 400, marginBottom: 12, letterSpacing: '-0.01em' }}>{content.title}</h1>
-
-        {content.hostName && (
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', marginBottom: 16 }}>
-            by {content.hostName}
-            {content.displayDuration && ` • ${content.displayDuration}`}
-          </p>
-        )}
-
-        {content.isPremium && (
-          <div style={{ display: 'inline-block', background: '#D4AF37', color: '#000', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '4px 12px', marginBottom: 16 }}>
-            Premium
-          </div>
-        )}
-
-        {content.description && (
-          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, maxWidth: 720 }}>
-            {content.description}
-          </p>
-        )}
+        </div>
       </div>
     </div>
   );
