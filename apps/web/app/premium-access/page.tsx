@@ -81,7 +81,7 @@ function PremiumHero({ badge }: { badge?: string }) {
         </div>
         <h1 className="premium-hero__title">Exclusive Content</h1>
         <p className="premium-hero__subtitle">
-          Premium originals, exclusive series and live events ÃƒÂ¯Ã‚Â¿Ã‚Â½ all in one place.
+          Premium originals, exclusive series and live events all in one place.
         </p>
         {badge && <div className="premium-hero__badge">{badge}</div>}
       </div>
@@ -227,7 +227,7 @@ function VideoPlayer({ url, mimeType, onClose, onError }: {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '12px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12 }}>
-          Playing inline ÃƒÂ¯Ã‚Â¿Ã‚Â½ <a href="#" onClick={e => { e.preventDefault(); onClose(); }}
+          Playing inline <a href="#" onClick={e => { e.preventDefault(); onClose(); }}
             style={{ color: '#D4AF37', textDecoration: 'none' }}>
             open full player ?
           </a>
@@ -438,7 +438,7 @@ export default function PremiumAccessPage() {
           {playError}
           <button onClick={() => setPlayError('')} style={{ marginLeft: 8,
             background: 'none', border: 'none', color: '#fff',
-            cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>ÃƒÂ¯Ã‚Â¿Ã‚Â½</button>
+            cursor: 'pointer', fontSize: 18, lineHeight: 1 }}></button>
         </div>
       )}
 

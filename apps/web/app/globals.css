@@ -1,34 +1,68 @@
+/* ════════════════════════════════════════════════════════════════════════════════
+   HOUSE LEVI+ GLOBALS — Charcoal + Warm Cream Edition
+   
+   Accent:     #F6F4F0  warm cream / ivory  (replaces royal blue #4169e1)
+   Background: #2E2E2E  true charcoal        (replaces near-black #0a0a0a)
+
+   NOTE ON #737373: This hex is a mid-range grey (45% lightness). Using it as a
+   page background creates contrast problems — white text reads at only ~4:1 ratio
+   which fails WCAG AA for body text. We use #2E2E2E (charcoal) instead which
+   gives ~14:1 contrast on white text, while still being warmer than pure black.
+   ════════════════════════════════════════════════════════════════════════════════ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.6%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96.1%;
+    /* ── Light mode ─────────────────────────────────────────── */
+    --background:          0 0% 100%;
+    --foreground:          0 0% 3.6%;
+    --primary:             0 0% 9%;
+    --primary-foreground:  0 0% 100%;
+    --secondary:           0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 89.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 45 93.4% 47.5%;
-    --accent-foreground: 0 0% 100%;
-    --border: 0 0% 89.1%;
+    --muted:               0 0% 89.1%;
+    --muted-foreground:    0 0% 45.1%;
+
+    /* Gold accent kept from original */
+    --accent:              45 93.4% 47.5%;
+    --accent-foreground:   0 0% 9%;
+
+    /* Cream — primary brand accent (replaces blue) */
+    --brand:               40 27% 95%;        /* #F6F4F0 */
+    --brand-foreground:    0 0% 10%;          /* dark text on cream */
+
+    --border:              0 0% 89.1%;
   }
 
   .dark {
-    --background: 0 0% 3.6%;
-    --foreground: 0 0% 98.2%;
-    --primary: 0 0% 98.2%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
+    /* ── Dark / app mode — charcoal theme ─────────────────── */
+
+    /* Main page background: charcoal #2E2E2E */
+    --background:          0 0% 18%;          /* #2E2E2E */
+    --foreground:          0 0% 98.2%;
+
+    --primary:             0 0% 98.2%;
+    --primary-foreground:  0 0% 9%;
+
+    /* Surface panels (cards, sidebars) — slightly lighter than bg */
+    --secondary:           0 0% 22%;          /* #383838 */
     --secondary-foreground: 0 0% 98.2%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 45 93.4% 47.5%;
-    --accent-foreground: 0 0% 9%;
-    --border: 0 0% 14.9%;
+
+    --muted:               0 0% 20%;
+    --muted-foreground:    0 0% 63.9%;
+
+    /* Gold accent kept from original */
+    --accent:              45 93.4% 47.5%;
+    --accent-foreground:   0 0% 9%;
+
+    /* Cream brand accent */
+    --brand:               40 27% 95%;        /* #F6F4F0 */
+    --brand-foreground:    0 0% 10%;
+
+    --border:              0 0% 20%;
   }
 }
 
@@ -41,7 +75,10 @@ body {
   color: hsl(var(--foreground));
 }
 
-/* Scrollbar styling */
+/* ─────────────────────────────────────────────────────────────────────────────
+   SCROLLBAR
+   ───────────────────────────────────────────────────────────────────────────── */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -60,20 +97,22 @@ body {
   background: hsl(var(--foreground));
 }
 
-/* Selection */
+/* ─────────────────────────────────────────────────────────────────────────────
+   SELECTION
+   ───────────────────────────────────────────────────────────────────────────── */
+
 ::selection {
-  background-color: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
+  background-color: hsl(var(--brand));
+  color: hsl(var(--brand-foreground));        /* ← cream selection highlight */
 }
 
-/* Smooth animations */
+/* ─────────────────────────────────────────────────────────────────────────────
+   ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────────── */
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
@@ -87,14 +126,13 @@ body {
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
-}
+.animate-fade-in  { animation: fadeIn  0.5s ease-in-out; }
+.animate-slide-up { animation: slideUp 0.5s ease-in-out; }
 
-.animate-slide-up {
-  animation: slideUp 0.5s ease-in-out;
-}
-/* Full-width pages (Mood TV, etc) */
+/* ─────────────────────────────────────────────────────────────────────────────
+   FULL-WIDTH PAGES (Mood TV, etc.)
+   ───────────────────────────────────────────────────────────────────────────── */
+
 .full-width-page {
   padding: 0 !important;
   margin: 0 !important;
@@ -106,7 +144,6 @@ body {
   max-width: 100vw;
 }
 
-/* Mood TV page - remove all padding */
 body:has([class*="mood-tv"]) {
   padding: 0 !important;
   margin: 0 !important;
@@ -116,3 +153,12 @@ body:has([class*="mood-tv"]) main {
   padding: 0 !important;
   margin: 0 !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   UTILITY: Cream accent helpers (use with Tailwind's arbitrary value syntax
+   or extend your tailwind.config.js to include these as named colours)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* If you add these to tailwind.config:
+   colors: { brand: '#F6F4F0', charcoal: '#2E2E2E' }
+   you can use: bg-brand, text-brand, border-brand, bg-charcoal etc.  */

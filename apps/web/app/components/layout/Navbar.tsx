@@ -4,12 +4,18 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthContext } from '@houselevi/auth';
 import { AuthPromptModal } from '../common/AuthPromptModal';
+
+// Fix: import the CSS file using a relative path with explicit extension.
+// If your tsconfig/next.config is set up for CSS modules you can rename to
+// navbar.module.css and use styles.className instead — but a plain side-effect
+// import like this is fully valid in Next.js. Add the declaration below if TS
+// still complains (see navbar.css.d.ts note at bottom of this file).
 import './navbar.css';
 
 // Types
 type SubStatus = 'guest' | 'free' | 'premium';
 
-// Nav items - Watch is rendered separately first
+// Nav items
 const NAV_ITEMS = [
   { label: 'Home',           path: '/home' },
   { label: 'Premium Access', path: '/premium-access' },
@@ -191,7 +197,7 @@ export function Navbar() {
   const redirectToLogin = useCallback(() => {
     const state = Math.random().toString(36).substring(2, 15);
     const nonce = Math.random().toString(36).substring(2, 15);
-    window.location.href = `${process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || "https://authorize.houselevi.com"}/login?state=${state}&nonce=${nonce}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'https://authorize.houselevi.com'}/login?state=${state}&nonce=${nonce}`;
   }, []);
 
   const handleMoodTVClick = useCallback((closeMobile = false) => {
@@ -396,22 +402,13 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Actions */}
+          {/* ─────────────────────────────────────────────────────────────────
+              MOBILE ACTIONS
+              Only Menu button + Join HL+ CTA are rendered.
+              Cart and Search icons are intentionally excluded here — they are
+              accessible via the mobile menu drawer instead.
+          ───────────────────────────────────────────────────────────────────── */}
           <div className="nav-mobile-actions">
-            <button className="nav-icon" onClick={() => setSearchOpen(true)} aria-label="Search">
-              <Icon.Search />
-            </button>
-            <button
-              className="nav-icon nav-cart"
-              title={isAuthenticated ? 'Shopping Cart' : 'Sign in to use cart'}
-              onClick={handleCartClick}
-              disabled={!isAuthenticated}
-            >
-              <Icon.Cart />
-              {isAuthenticated && cartCount > 0 && (
-                <span className="nav-cart-badge">{cartCount}</span>
-              )}
-            </button>
             <button className="nav-mobile-btn" onClick={() => setMobileOpen(o => !o)}>
               {mobileOpen ? 'Close' : 'Menu'}
             </button>
@@ -441,6 +438,11 @@ export function Navbar() {
               {NAV_ITEMS.slice(1).map(renderMobileNavItem)}
 
               <div className="nav-mobile-utils">
+                {/* Search is accessible inside the menu on mobile */}
+                <button className="nav-mobile-util"
+                  onClick={() => { setMobileOpen(false); setSearchOpen(true); }}>
+                  <Icon.Search /> Search
+                </button>
                 <button className="nav-mobile-util"
                   onClick={() => { go('/download'); setMobileOpen(false); }}>
                   <Icon.Download /> Get App
@@ -450,6 +452,11 @@ export function Navbar() {
 
               {isAuthenticated ? (
                 <>
+                  {/* Cart link inside menu for authenticated users */}
+                  <button className="nav-mobile-link"
+                    onClick={() => { go('/shop/cart'); setMobileOpen(false); }}>
+                    Cart {cartCount > 0 && `(${cartCount})`}
+                  </button>
                   <button className="nav-mobile-link"
                     onClick={() => { go('/dashboard/account'); setMobileOpen(false); }}>
                     My Account
@@ -499,3 +506,22 @@ export function Navbar() {
     </>
   );
 }
+
+/*
+  ─────────────────────────────────────────────────────────────────────────────
+  TYPESCRIPT CSS IMPORT FIX
+  ─────────────────────────────────────────────────────────────────────────────
+  If TS still shows: "Cannot find module or type declarations for './navbar.css'"
+  create a file called  navbar.css.d.ts  in the SAME folder with this content:
+
+    declare module './navbar.css';
+
+  OR add a global declaration in your  src/types/global.d.ts  (or any .d.ts
+  file included in your tsconfig):
+
+    declare module '*.css';
+
+  Both approaches tell TypeScript to accept CSS side-effect imports without
+  needing to switch to CSS Modules.
+  ─────────────────────────────────────────────────────────────────────────────
+*/

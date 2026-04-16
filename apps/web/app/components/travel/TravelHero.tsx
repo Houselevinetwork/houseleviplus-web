@@ -8,7 +8,7 @@ export function TravelHero() {
         <h1 className="travel-hero__title">Curated Travel Journeys</h1>
         <p className="travel-hero__subtitle">
           Extraordinary journeys to the world&rsquo;s most remarkable
-          destinations Ã¢â‚¬â€ thoughtfully curated by Levi.
+          destinations thoughtfully curated by Levi.
         </p>
         <a href="#packages" className="travel-hero__cta">
           VIEW UPCOMING JOURNEYS

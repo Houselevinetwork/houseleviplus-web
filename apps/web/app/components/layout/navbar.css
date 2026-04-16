@@ -1,6 +1,8 @@
 /* ════════════════════════════════════════════════════════════════════════════════
-   HOUSE LEVI+ NAVBAR - Daily Wire Elegant Desktop + Original Mobile
-   Production Ready - Ready to Paste
+   HOUSE LEVI+ NAVBAR — Charcoal + Royal Blue Edition
+   Colours:  Accent  #4169E1  (royal blue)
+             BG Base #2E2E2E  (charcoal — replaces pure black)
+   Mobile:   Cart + Search icons removed; Menu + Join HL+ always visible to 320px
    ════════════════════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -13,19 +15,19 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #0a0a0a;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #2e2e2e;
+  border-bottom: 1px solid rgba(65, 105, 225, 0.15);
   transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               backdrop-filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav--scrolled {
-  background: rgba(10, 10, 10, 0.95);
+  background: rgba(46, 46, 46, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  border-bottom-color: rgba(65, 105, 225, 0.10);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.40);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -64,11 +66,11 @@
 }
 
 .nav-logo:hover {
-  color: #4169e1;
+  color: #c8d4f8;
 }
 
 .nav-logo-plus {
-  color: #4169e1;
+  color: #4169E1;                             /* ← royal blue accent */
   margin-left: 2px;
   font-weight: 900;
 }
@@ -107,7 +109,7 @@
 
 .nav-link:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(65, 105, 225, 0.1);
 }
 
 .nav-link--active {
@@ -122,7 +124,7 @@
   left: 16px;
   right: 16px;
   height: 2px;
-  background: #4169e1;
+  background: #4169E1;                        /* ← royal blue active underline */
   border-radius: 1px;
 }
 
@@ -158,7 +160,7 @@
 
 .nav-action-btn:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(65, 105, 225, 0.1);
 }
 
 .nav-action-btn:disabled {
@@ -176,7 +178,7 @@
   position: absolute;
   top: 2px;
   right: 2px;
-  background: #4169e1;
+  background: #4169E1;                        /* ← royal blue badge */
   color: #fff;
   font-size: 0.6rem;
   font-weight: 800;
@@ -197,7 +199,7 @@
 .nav-divider {
   width: 1px;
   height: 28px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(65, 105, 225, 0.2);
   margin: 0 4px;
 }
 
@@ -218,8 +220,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(65, 105, 225, 0.25), rgba(65, 105, 225, 0.15));
-  border: 1.5px solid rgba(65, 105, 225, 0.5);
+  background: linear-gradient(135deg, rgba(65, 105, 225, 0.25), rgba(65, 105, 225, 0.12));
+  border: 1.5px solid rgba(65, 105, 225, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,22 +234,22 @@
 }
 
 .nav-avatar-btn:hover .nav-avatar-initials {
-  border-color: rgba(65, 105, 225, 0.8);
-  background: linear-gradient(135deg, rgba(65, 105, 225, 0.35), rgba(65, 105, 225, 0.25));
+  border-color: rgba(65, 105, 225, 0.85);
+  background: linear-gradient(135deg, rgba(65, 105, 225, 0.35), rgba(65, 105, 225, 0.22));
 }
 
 .nav-crown {
   position: absolute;
   top: -6px;
   right: -6px;
-  background: #0a0a0a;
+  background: #2e2e2e;
   border-radius: 50%;
   width: 16px;
   height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(65, 105, 225, 0.4);
+  border: 1px solid rgba(65, 105, 225, 0.35);
 }
 
 /* Account Menu */
@@ -255,12 +257,12 @@
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  background: #0f0f0f;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #383838;
+  border: 1px solid rgba(65, 105, 225, 0.12);
   border-radius: 10px;
   padding: 8px;
   min-width: 240px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.50);
   animation: slideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   z-index: 1001;
 }
@@ -287,8 +289,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(65, 105, 225, 0.25), rgba(65, 105, 225, 0.15));
-  border: 1.5px solid rgba(65, 105, 225, 0.4);
+  background: linear-gradient(135deg, rgba(65, 105, 225, 0.25), rgba(65, 105, 225, 0.12));
+  border: 1.5px solid rgba(65, 105, 225, 0.40);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -313,7 +315,7 @@
 
 .nav-account-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(65, 105, 225, 0.1);
   margin: 6px 0;
 }
 
@@ -335,18 +337,18 @@
 }
 
 .nav-account-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(65, 105, 225, 0.1);
   color: #fff;
 }
 
 .nav-account-item--upgrade {
-  color: #4169e1;
+  color: #7b9ff5;                             /* ← lighter blue for upgrade CTA in menu */
   font-weight: 600;
 }
 
 .nav-account-item--upgrade:hover {
   background: rgba(65, 105, 225, 0.15);
-  color: #6b8ff5;
+  color: #a8c0f8;
 }
 
 .nav-account-item--danger {
@@ -366,7 +368,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #4169e1;
+  background: #4169E1;                        /* ← royal blue CTA */
   color: #fff;
   border: none;
   padding: 10px 22px;
@@ -376,13 +378,15 @@
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+              transform 0.1s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-left: 8px;
   white-space: nowrap;
 }
 
 .nav-cta:hover:not(:disabled) {
-  background: #3558c8;
+  background: #3457c0;
+  box-shadow: 0 4px 14px rgba(65, 105, 225, 0.45);
 }
 
 .nav-cta:active:not(:disabled) {
@@ -395,13 +399,16 @@
 
 .nav-cta--subscribe {
   background: transparent;
-  border: 1.5px solid #4169e1;
-  color: #4169e1;
+  border: 1.5px solid #4169E1;
+  color: #7b9ff5;
   padding: 8px 20px;
+  box-shadow: none;
 }
 
 .nav-cta--subscribe:hover:not(:disabled) {
-  background: rgba(65, 105, 225, 0.1);
+  background: rgba(65, 105, 225, 0.12);
+  color: #fff;
+  box-shadow: none;
 }
 
 .nav-cta--premium {
@@ -409,6 +416,7 @@
   color: #000;
   font-weight: 800;
   cursor: default;
+  box-shadow: none;
 }
 
 .nav-cta--premium:disabled {
@@ -417,6 +425,8 @@
 
 /* ─────────────────────────────────────────────────────────────────────────────
    MOBILE ACTIONS (Top Bar)
+   — Cart and Search icons are intentionally omitted from mobile.
+   — Only Menu button + Join HL+ CTA are shown on all mobile sizes.
    ───────────────────────────────────────────────────────────────────────────── */
 
 .nav-mobile-actions {
@@ -426,28 +436,40 @@
   margin-left: auto;
 }
 
+/* Keep .nav-icon defined for any icons still used (e.g. search overlay trigger
+   is handled via the mobile menu), but hide cart + search in the top bar */
 .nav-icon {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
   color: rgba(255, 255, 255, 0.8);
   background: none;
   border: none;
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-icon:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(65, 105, 225, 0.1);
   color: #fff;
 }
 
 .nav-icon:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/*
+  CRITICAL FIX: Hide both the search icon AND the cart icon in the mobile top bar.
+  We target them by their actual classes used in the JSX: .nav-icon (search) and
+  .nav-icon.nav-cart (cart). Both are hidden via the wrapper rule below.
+  This frees up space so "Menu" + "Join HL+" always fit at any width ≥ 320px.
+*/
+.nav-mobile-actions .nav-icon {
+  display: none;
 }
 
 .nav-mobile-btn {
@@ -461,17 +483,20 @@
   border-radius: 6px;
   transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-mobile-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(65, 105, 225, 0.1);
 }
 
-/* Mobile CTA */
+/* Mobile CTA — compact but always visible */
 .nav-cta--mobile {
-  padding: 7px 14px;
-  font-size: 0.8rem;
-  margin-left: 4px;
+  padding: 9px 16px;
+  font-size: 0.82rem;
+  margin-left: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -481,7 +506,7 @@
 .nav-mobile-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.60);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 999;
@@ -489,19 +514,15 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .nav-mobile-menu {
   position: relative;
   z-index: 1000;
-  background: #0a0a0a;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: #2e2e2e;
+  border-top: 1px solid rgba(65, 105, 225, 0.1);
   padding: 8px 12px 24px;
   animation: slideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: calc(100dvh - 64px);
@@ -509,7 +530,7 @@
 }
 
 .nav-mobile-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(65, 105, 225, 0.08);
   padding-bottom: 4px;
   margin-bottom: 4px;
 }
@@ -531,17 +552,18 @@
 }
 
 .nav-mobile-link:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(65, 105, 225, 0.08);
   color: #fff;
 }
 
 .nav-mobile-link--upgrade {
-  color: #4169e1;
+  color: #7b9ff5;
   font-weight: 600;
 }
 
 .nav-mobile-link--upgrade:hover {
   background: rgba(65, 105, 225, 0.12);
+  color: #a8c0f8;
 }
 
 .nav-mobile-link--danger {
@@ -568,22 +590,23 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(65, 105, 225, 0.07);
+  border: 1px solid rgba(65, 105, 225, 0.12);
   border-radius: 8px;
   padding: 10px;
   cursor: pointer;
-  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-mobile-util:hover {
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(65, 105, 225, 0.15);
   color: #fff;
 }
 
 .nav-mobile-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(65, 105, 225, 0.08);
   margin: 6px 0;
 }
 
@@ -594,7 +617,7 @@
 .nav-search-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 2000;
@@ -609,10 +632,10 @@
   width: 100%;
   max-width: 680px;
   margin: 0 16px;
-  background: #0f0f0f;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #383838;
+  border: 1px solid rgba(65, 105, 225, 0.18);
   border-radius: 12px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.60);
   overflow: hidden;
   animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -633,7 +656,7 @@
   align-items: center;
   gap: 12px;
   padding: 16px 18px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(65, 105, 225, 0.6);
 }
 
 .nav-search-input {
@@ -643,7 +666,7 @@
   outline: none;
   font-size: 1.125rem;
   color: #fff;
-  caret-color: #4169e1;
+  caret-color: #4169E1;                       /* ← royal blue caret */
   font-weight: 400;
 }
 
@@ -666,7 +689,7 @@
 
 .nav-search-close:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(65, 105, 225, 0.1);
 }
 
 .nav-search-hint {
@@ -677,13 +700,14 @@
 }
 
 .nav-search-hint kbd {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(65, 105, 225, 0.1);
+  border: 1px solid rgba(65, 105, 225, 0.18);
   border-radius: 4px;
   padding: 2px 7px;
   font-size: 0.75rem;
   font-family: 'Menlo', 'Monaco', monospace;
   font-weight: 500;
+  color: #a8c0f8;
 }
 
 .nav-search-hint strong {
@@ -695,7 +719,7 @@
    BREAKPOINTS
    ───────────────────────────────────────────────────────────────────────────── */
 
-/* Medium screens and up: show desktop menu */
+/* ≥ 1024px — full desktop layout */
 @media (min-width: 1024px) {
   .nav-desktop-menu,
   .nav-desktop-actions {
@@ -711,7 +735,7 @@
   }
 }
 
-/* Small screens: show mobile menu button */
+/* < 1024px — mobile layout */
 @media (max-width: 1023px) {
   .nav-desktop-menu,
   .nav-desktop-actions {
@@ -728,7 +752,7 @@
   }
 }
 
-/* Extra small screens */
+/* ≤ 640px — small phones */
 @media (max-width: 640px) {
   .nav-container {
     padding: 0 12px;
@@ -751,5 +775,53 @@
 
   .nav-search-box {
     max-width: calc(100% - 32px);
+  }
+}
+
+/* ≤ 400px — iPhone SE / 6s and Galaxy Fold outer screen */
+@media (max-width: 400px) {
+  .nav-container {
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .nav-logo {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-cta--mobile {
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    letter-spacing: 0;
+    margin-left: 0;
+  }
+
+  .nav-mobile-btn {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ≤ 320px — iPhone 5 / very tight fallback */
+@media (max-width: 320px) {
+  .nav-container {
+    padding: 0 8px;
+    gap: 4px;
+  }
+
+  .nav-logo {
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-cta--mobile {
+    padding: 7px 9px;
+    font-size: 0.72rem;
+  }
+
+  .nav-mobile-btn {
+    padding: 7px 8px;
+    font-size: 0.8rem;
   }
 }

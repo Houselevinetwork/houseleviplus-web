@@ -1,7 +1,12 @@
-/* ─── Hardcoded dark — never inherits CSS variables ─────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════════════════
+   HOUSE LEVI+ FOOTER — Charcoal + Warm Cream Edition
+   Colours:  Accent  #F6F4F0  (warm cream / ivory)
+             BG Base #272727  (footer sits slightly deeper than navbar charcoal)
+   ════════════════════════════════════════════════════════════════════════════════ */
+
 .footer {
-  background: #080808;
-  border-top: 1px solid rgba(65, 105, 225, 0.15);
+  background: #272727;                        /* ← deep charcoal footer (was #080808) */
+  border-top: 1px solid rgba(246, 244, 240, 0.1);  /* ← cream border tint */
   width: 100%;
 }
 
@@ -32,7 +37,7 @@
 }
 
 .footer-logo {
-  font-size: 1.25rem;           /* matches nav-logo scale */
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.07em;
   color: #fff;
@@ -45,11 +50,11 @@
   width: auto;
   line-height: 1;
 }
-.footer-logo:hover { opacity: 0.65; }
-.footer-logo-plus  { color: #4169E1; }
+.footer-logo:hover    { opacity: 0.65; }
+.footer-logo-plus     { color: #F6F4F0; }       /* ← cream accent (was blue) */
 
 .footer-sub {
-  font-size: 0.875rem;           /* same as nav-link */
+  font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.4);
   margin: 0;
   line-height: 1.6;
@@ -65,7 +70,7 @@
 }
 
 .footer-legal-link {
-  font-size: 0.9rem;             /* matches nav-link */
+  font-size: 0.9rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.5);
   background: none;
@@ -80,7 +85,7 @@
 }
 .footer-legal-link:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(246, 244, 240, 0.06);      /* ← cream hover tint */
 }
 
 /* ── Right: socials + badges ─────────────────────────── */
@@ -113,8 +118,8 @@
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
 }
 .footer-icon:hover {
-  background: rgba(65, 105, 225, 0.15);
-  border-color: rgba(65, 105, 225, 0.4);
+  background: rgba(246, 244, 240, 0.12);      /* ← cream tint on hover */
+  border-color: rgba(246, 244, 240, 0.4);
   color: #fff;
   transform: scale(1.08);
 }
@@ -123,7 +128,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: rgba(65, 105, 225, 0.25);
+  background: rgba(246, 244, 240, 0.18);      /* ← soft cream glow */
   opacity: 0;
   filter: blur(7px);
   transition: opacity 0.2s;
@@ -151,8 +156,8 @@
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
 .footer-badge:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(246, 244, 240, 0.07);
+  border-color: rgba(246, 244, 240, 0.2);
   transform: translateY(-2px);
 }
 
@@ -178,7 +183,7 @@
 .footer-rule {
   width: 100%;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.08), transparent);
+  background: linear-gradient(to right, transparent, rgba(246, 244, 240, 0.1), transparent);
   margin: 0;
 }
 
@@ -194,7 +199,7 @@
 }
 
 .footer-copy {
-  font-size: 0.825rem;           /* pronounced, readable */
+  font-size: 0.825rem;
   color: rgba(255, 255, 255, 0.3);
   margin: 0;
   display: flex;
@@ -231,7 +236,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 5px 10px;
-  font-size: 0.775rem;           /* readable, not tiny */
+  font-size: 0.775rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -240,13 +245,16 @@
   font-style: normal;
 }
 .footer-dpa:hover {
-  border-color: rgba(65, 105, 225, 0.35);
+  border-color: rgba(246, 244, 240, 0.3);     /* ← cream border on hover */
   color: rgba(255, 255, 255, 0.6);
 }
-.footer-dpa svg { color: rgba(65, 105, 225, 0.7); flex-shrink: 0; }
+.footer-dpa svg {
+  color: rgba(246, 244, 240, 0.65);           /* ← cream icon */
+  flex-shrink: 0;
+}
 
 /* ══════════════════════════════════════════════════════════
-   TABLET  (≤ 1024px) — 2-col: brand+legal left, right col
+   TABLET  (≤ 1024px)
 ══════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .footer-grid {
@@ -255,12 +263,10 @@
     gap: 36px 24px;
   }
 
-  /* Brand spans full first row */
   .footer-brand {
     grid-column: 1 / -1;
   }
 
-  /* Legal links left, right col right on second row */
   .footer-legal-links {
     align-items: flex-start;
     flex-direction: row;
@@ -274,7 +280,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════
-   MOBILE  (≤ 640px) — full stack
+   MOBILE  (≤ 640px)
 ══════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
   .footer-wrap { padding: 40px 20px 24px; gap: 28px; }
