@@ -106,7 +106,7 @@ export function Footer() {
         {/* -- Bottom bar -- */}
         <div className="footer-bottom">
           <p className="footer-copy">
-            2026 House Levika Plus Ltd. All rights reserved.
+            2026 House Levitika Plus Ltd. All rights reserved.
             <span className="footer-sep" aria-hidden></span>
             <button onClick={() => router.push('/cookies')} className="footer-cookie-link">
           Cookie Policy
