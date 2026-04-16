@@ -4,12 +4,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthContext } from '@houselevi/auth';
 import { AuthPromptModal } from '../common/AuthPromptModal';
-
-// Fix: import the CSS file using a relative path with explicit extension.
-// If your tsconfig/next.config is set up for CSS modules you can rename to
-// navbar.module.css and use styles.className instead — but a plain side-effect
-// import like this is fully valid in Next.js. Add the declaration below if TS
-// still complains (see navbar.css.d.ts note at bottom of this file).
 import './navbar.css';
 
 // Types
@@ -65,7 +59,7 @@ const Icon = {
     </svg>
   ),
   Crown: ({ size = 12 }: { size?: number }) => (
-    <svg width={size} height={size} fill="#FFD700" viewBox="0 0 24 24">
+    <svg width={size} height={size} fill="#F6F4F0" viewBox="0 0 24 24">
       <path d="M2 19l2-10 5 5 3-8 3 8 5-5 2 10H2z" />
     </svg>
   ),
@@ -114,7 +108,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
-// Cart count hook - authenticated users only
+// Cart count hook
 function useCartCount() {
   const { isAuthenticated } = useAuthContext();
   const [count, setCount] = useState(0);
@@ -199,6 +193,13 @@ export function Navbar() {
     const nonce = Math.random().toString(36).substring(2, 15);
     window.location.href = `${process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'https://authorize.houselevi.com'}/login?state=${state}&nonce=${nonce}`;
   }, []);
+
+  // ─── Logo click: always go to /home, never back to splash ─────────────────
+  const handleLogoClick = useCallback(() => {
+    // Ensure splash is marked as seen so it never shows mid-session
+    sessionStorage.setItem('splashShown', 'true');
+    router.push('/home');
+  }, [router]);
 
   const handleMoodTVClick = useCallback((closeMobile = false) => {
     if (closeMobile) setMobileOpen(false);
@@ -289,8 +290,8 @@ export function Navbar() {
       <header className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
         <div className="nav-container">
 
-          {/* Logo */}
-          <button onClick={() => go('/')} className="nav-logo">
+          {/* Logo — always goes to /home, never triggers splash */}
+          <button onClick={handleLogoClick} className="nav-logo">
             HOUSE LEVI<span className="nav-logo-plus">+</span>
           </button>
 
@@ -402,12 +403,7 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* ─────────────────────────────────────────────────────────────────
-              MOBILE ACTIONS
-              Only Menu button + Join HL+ CTA are rendered.
-              Cart and Search icons are intentionally excluded here — they are
-              accessible via the mobile menu drawer instead.
-          ───────────────────────────────────────────────────────────────────── */}
+          {/* Mobile Actions */}
           <div className="nav-mobile-actions">
             <button className="nav-mobile-btn" onClick={() => setMobileOpen(o => !o)}>
               {mobileOpen ? 'Close' : 'Menu'}
@@ -438,7 +434,6 @@ export function Navbar() {
               {NAV_ITEMS.slice(1).map(renderMobileNavItem)}
 
               <div className="nav-mobile-utils">
-                {/* Search is accessible inside the menu on mobile */}
                 <button className="nav-mobile-util"
                   onClick={() => { setMobileOpen(false); setSearchOpen(true); }}>
                   <Icon.Search /> Search
@@ -452,7 +447,6 @@ export function Navbar() {
 
               {isAuthenticated ? (
                 <>
-                  {/* Cart link inside menu for authenticated users */}
                   <button className="nav-mobile-link"
                     onClick={() => { go('/shop/cart'); setMobileOpen(false); }}>
                     Cart {cartCount > 0 && `(${cartCount})`}
@@ -506,22 +500,3 @@ export function Navbar() {
     </>
   );
 }
-
-/*
-  ─────────────────────────────────────────────────────────────────────────────
-  TYPESCRIPT CSS IMPORT FIX
-  ─────────────────────────────────────────────────────────────────────────────
-  If TS still shows: "Cannot find module or type declarations for './navbar.css'"
-  create a file called  navbar.css.d.ts  in the SAME folder with this content:
-
-    declare module './navbar.css';
-
-  OR add a global declaration in your  src/types/global.d.ts  (or any .d.ts
-  file included in your tsconfig):
-
-    declare module '*.css';
-
-  Both approaches tell TypeScript to accept CSS side-effect imports without
-  needing to switch to CSS Modules.
-  ─────────────────────────────────────────────────────────────────────────────
-*/

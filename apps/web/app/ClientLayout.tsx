@@ -12,14 +12,15 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
   const isFullWidth = pathname === '/mood-tv';
+  const isSplash   = pathname === '/';   // ← hide nav + footer on splash
 
   return (
     <AuthProvider>
-      <Navbar />
+      {!isSplash && <Navbar />}
       <main className={isFullWidth ? 'flex-1 full-width-page' : 'flex-1'}>
         {children}
       </main>
-      <Footer />
+      {!isSplash && <Footer />}
     </AuthProvider>
   );
 }
