@@ -2,77 +2,92 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuthContext } from '@houselevi/auth';
 import { AuthPromptModal } from '../common/AuthPromptModal';
 import './navbar.css';
 
-// Types
+// ─── Types ────────────────────────────────────────────────────────
 type SubStatus = 'guest' | 'free' | 'premium';
 
-// Nav items
+// ─── Production URLs ──────────────────────────────────────────────
+const AUTHORIZE_URL = process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL ?? 'https://authorize.houselevi.com';
+const GOPREMIUM_URL = process.env.NEXT_PUBLIC_GOPREMIUM_URL    ?? 'https://gopremium.houselevi.com';
+const SHOP_URL      = 'https://store.houselevi.com';
+const LIFESTYLE_URL = 'https://lifestyle.houselevi.com';
+
+// ─── Nav items ────────────────────────────────────────────────────
 const NAV_ITEMS = [
-  { label: 'Home',           path: '/home' },
-  { label: 'Premium Access', path: '/premium-access' },
-  { label: 'Shop',           path: '/shop' },
-  { label: 'Travel',         path: '/travel' },
-  { label: 'HL Live TV',     path: '/live-tv' },
+  { label: 'Home',         path: '/home',          internal: true  },
+  { label: 'Premium Access', path: '/premium-access', internal: true },
+  { label: 'Shop',         path: SHOP_URL,         internal: false },
+  { label: 'HL+ Lifestyle', path: LIFESTYLE_URL,   internal: false },
+  { label: 'HL Live TV',   path: '/live-tv',        internal: true  },
 ];
 
-const GO_PREMIUM_URL =
-  process.env.NEXT_PUBLIC_GOPREMIUM_URL || 'https://gopremium.houselevi.com';
-
 function redirectToGoPremium() {
-  const token =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('token') || ''
-      : '';
-  const dest = token
-    ? `${GO_PREMIUM_URL}/choose-plans?t=${encodeURIComponent(token)}`
-    : `${GO_PREMIUM_URL}/choose-plans`;
-  window.location.href = dest;
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') ?? '' : '';
+  window.location.href = token
+    ? `${GOPREMIUM_URL}/choose-plans?t=${encodeURIComponent(token)}`
+    : `${GOPREMIUM_URL}/choose-plans`;
 }
 
-// Icons
+/** Read session cookie set by authorize.houselevi.com */
+function getSessionToken(): string | null {
+  if (typeof document === 'undefined') return null;
+  const m = document.cookie.match(/(?:^|;\s*)hl_session=([^;]+)/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+/** Minimal user data from JWT payload (base64 decode middle segment) */
+function parseSessionUser(token: string): Record<string, string> | null {
+  try {
+    const payload = token.split('.')[1];
+    if (!payload) return null;
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(json);
+  } catch { return null; }
+}
+
+// ─── Icons ────────────────────────────────────────────────────────
 const Icon = {
   Search: () => (
     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <circle cx="11" cy="11" r="7" /><path d="M16.5 16.5l4 4" strokeLinecap="round" />
+      <circle cx="11" cy="11" r="7"/><path d="M16.5 16.5l4 4" strokeLinecap="round"/>
     </svg>
   ),
   Close: () => (
     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round"/>
     </svg>
   ),
   Cart: () => (
     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" strokeLinecap="round" strokeLinejoin="round" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <path d="M16 10a4 4 0 01-8 0" />
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" strokeLinecap="round" strokeLinejoin="round"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 01-8 0"/>
     </svg>
   ),
   Download: () => (
     <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <rect x="5" y="2" width="14" height="20" rx="2" />
-      <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none" />
-      <line x1="9" y1="7" x2="15" y2="7" strokeLinecap="round" />
+      <rect x="5" y="2" width="14" height="20" rx="2"/>
+      <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/>
+      <line x1="9" y1="7" x2="15" y2="7" strokeLinecap="round"/>
     </svg>
   ),
   Crown: ({ size = 12 }: { size?: number }) => (
     <svg width={size} height={size} fill="#F6F4F0" viewBox="0 0 24 24">
-      <path d="M2 19l2-10 5 5 3-8 3 8 5-5 2 10H2z" />
+      <path d="M2 19l2-10 5 5 3-8 3 8 5-5 2 10H2z"/>
     </svg>
   ),
   Help: () => (
     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" strokeLinecap="round" />
-      <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" strokeLinecap="round"/>
+      <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="none"/>
     </svg>
   ),
 };
 
-// Search Overlay
+// ─── Search overlay ───────────────────────────────────────────────
 function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [q, setQ] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,6 +98,10 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
     window.addEventListener('keydown', esc);
     return () => window.removeEventListener('keydown', esc);
   }, [onClose]);
+
+  const handleSearch = () => {
+    if (q.trim()) window.location.href = `/search?q=${encodeURIComponent(q.trim())}`;
+  };
 
   return (
     <div className="nav-search-overlay" onClick={onClose}>
@@ -95,12 +114,13 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             placeholder="Search movies, shows, podcasts..."
             value={q}
             onChange={e => setQ(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSearch()}
           />
           <button className="nav-search-close" onClick={onClose}><Icon.Close /></button>
         </div>
         {q.length > 1 && (
           <p className="nav-search-hint">
-            Press <kbd>Enter</kbd> to search for <strong>"{q}"</strong>
+            Press <kbd>Enter</kbd> to search for <strong>&ldquo;{q}&rdquo;</strong>
           </p>
         )}
       </div>
@@ -108,42 +128,46 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
-// Cart count hook
-function useCartCount() {
-  const { isAuthenticated } = useAuthContext();
+// ─── Cart count (reads localStorage, cross-tab aware) ─────────────
+function useCartCount(isAuthenticated: boolean) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!isAuthenticated) { setCount(0); return; }
-    const updateCount = () => {
+    const update = () => {
       try {
         const stored = localStorage.getItem('hl_cart');
         const items  = stored ? JSON.parse(stored) : [];
-        setCount(items.reduce((sum: number, item: any) => sum + (item.qty || 0), 0));
+        setCount(items.reduce((s: number, i: { qty?: number }) => s + (i.qty ?? 0), 0));
       } catch { /* ignore */ }
     };
-    updateCount();
-    window.addEventListener('hl_cart_updated', updateCount);
-    return () => window.removeEventListener('hl_cart_updated', updateCount);
+    update();
+    window.addEventListener('hl_cart_updated', update);
+    return () => window.removeEventListener('hl_cart_updated', update);
   }, [isAuthenticated]);
 
   return count;
 }
 
-// User initials helper
-function getUserInitials(user: any): string {
+function getUserInitials(user: Record<string, string> | null): string {
   if (user?.firstName && user?.lastName)
     return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+  if (user?.given_name && user?.family_name)
+    return `${user.given_name[0]}${user.family_name[0]}`.toUpperCase();
   if (user?.firstName) return user.firstName[0].toUpperCase();
   if (user?.email)     return user.email[0].toUpperCase();
   return 'HL';
 }
 
+// ─── Main Navbar ──────────────────────────────────────────────────
 export function Navbar() {
   const router   = useRouter();
   const pathname = usePathname();
-  const { user, isAuthenticated, logout } = useAuthContext();
-  const cartCount = useCartCount();
+
+  // Auth state — derived entirely from cookie, no external package needed
+  const [sessionToken,    setSessionToken]    = useState<string | null>(null);
+  const [user,            setUser]            = useState<Record<string, string> | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [scrolled,      setScrolled]      = useState(false);
   const [mobileOpen,    setMobileOpen]    = useState(false);
@@ -152,18 +176,25 @@ export function Navbar() {
   const [showMoodModal, setShowMoodModal] = useState(false);
 
   const accountRef = useRef<HTMLDivElement>(null);
+  const cartCount  = useCartCount(isAuthenticated);
+
+  // Read session on mount
+  useEffect(() => {
+    const token = getSessionToken();
+    setSessionToken(token);
+    setIsAuthenticated(!!token);
+    if (token) setUser(parseSessionUser(token));
+  }, []);
 
   const subscriptionStatus: SubStatus = !isAuthenticated
     ? 'guest'
-    : user?.isPremium && user?.subscriptionStatus === 'ACTIVE'
-      ? 'premium'
-      : 'free';
+    : user?.isPremium === 'true' ? 'premium' : 'free';
 
   const userInitials = getUserInitials(user);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', fn);
+    window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
@@ -186,45 +217,44 @@ export function Navbar() {
     setAccountOpen(false);
   }, [pathname]);
 
-  const go = (path: string) => router.push(path);
+  const go = (path: string) => {
+    // External URLs (shop, lifestyle) — use window.location
+    if (path.startsWith('http')) { window.location.href = path; return; }
+    router.push(path);
+  };
 
   const redirectToLogin = useCallback(() => {
     const state = Math.random().toString(36).substring(2, 15);
     const nonce = Math.random().toString(36).substring(2, 15);
-    window.location.href = `${process.env.NEXT_PUBLIC_AUTHORIZE_UI_URL || 'https://authorize.houselevi.com'}/login?state=${state}&nonce=${nonce}`;
+    window.location.href = `${AUTHORIZE_URL}/login?state=${state}&nonce=${nonce}&redirect=${encodeURIComponent(window.location.origin + '/home')}`;
   }, []);
 
-  // ─── Logo click: always go to /home, never back to splash ─────────────────
   const handleLogoClick = useCallback(() => {
-    // Ensure splash is marked as seen so it never shows mid-session
     sessionStorage.setItem('splashShown', 'true');
     router.push('/home');
   }, [router]);
 
   const handleMoodTVClick = useCallback((closeMobile = false) => {
     if (closeMobile) setMobileOpen(false);
-    if (!isAuthenticated) {
-      setShowMoodModal(true);
-    } else {
-      go('/mood-tv');
-    }
+    if (!isAuthenticated) { setShowMoodModal(true); } else { go('/mood-tv'); }
   }, [isAuthenticated]);
 
   const handleCtaClick = () => {
     if (subscriptionStatus === 'premium') return;
-    if (subscriptionStatus === 'guest') {
-      redirectToLogin();
-    } else {
-      redirectToGoPremium();
-    }
+    if (subscriptionStatus === 'guest') redirectToLogin();
+    else redirectToGoPremium();
   };
 
-  const handleSignOut = async () => {
-    await logout();
+  const handleSignOut = () => {
+    // Clear session cookie (houselevi.com domain)
+    document.cookie = 'hl_session=; Max-Age=0; path=/; domain=.houselevi.com';
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('hl_cart');
-    go('/home');
+    setIsAuthenticated(false);
+    setUser(null);
+    setSessionToken(null);
+    router.push('/home');
   };
 
   const ctaConfig = {
@@ -236,50 +266,27 @@ export function Navbar() {
 
   const handleCartClick = () => {
     if (!isAuthenticated) { redirectToLogin(); return; }
-    go('/shop/cart');
+    window.location.href = `${SHOP_URL}/cart`;
   };
 
-  const renderDesktopNavItem = (item: { label: string; path: string }) => {
-    if (item.path === '/mood-tv') {
+  const renderNavItem = (item: typeof NAV_ITEMS[0], mobile = false) => {
+    const isActive = item.internal && pathname === item.path;
+    const className = mobile
+      ? `nav-mobile-link${isActive ? ' nav-mobile-link--active' : ''}`
+      : `nav-link${isActive ? ' nav-link--active' : ''}`;
+
+    if (item.path === '/live-tv') {
       return (
-        <button
-          key={item.path}
-          onClick={() => handleMoodTVClick()}
-          className={`nav-link${pathname === item.path ? ' nav-link--active' : ''}`}
-        >
+        <button key={item.path} className={className}
+          onClick={() => { if (mobile) setMobileOpen(false); handleMoodTVClick(); }}>
           {item.label}
         </button>
       );
     }
-    return (
-      <button
-        key={item.path}
-        onClick={() => go(item.path)}
-        className={`nav-link${pathname === item.path ? ' nav-link--active' : ''}`}
-      >
-        {item.label}
-      </button>
-    );
-  };
 
-  const renderMobileNavItem = (item: { label: string; path: string }) => {
-    if (item.path === '/mood-tv') {
-      return (
-        <button
-          key={item.path}
-          className="nav-mobile-link"
-          onClick={() => handleMoodTVClick(true)}
-        >
-          {item.label}
-        </button>
-      );
-    }
     return (
-      <button
-        key={item.path}
-        className="nav-mobile-link"
-        onClick={() => { go(item.path); setMobileOpen(false); }}
-      >
+      <button key={item.path} className={className}
+        onClick={() => { if (mobile) setMobileOpen(false); go(item.path); }}>
         {item.label}
       </button>
     );
@@ -290,12 +297,12 @@ export function Navbar() {
       <header className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
         <div className="nav-container">
 
-          {/* Logo — always goes to /home, never triggers splash */}
+          {/* Logo */}
           <button onClick={handleLogoClick} className="nav-logo">
             HOUSE LEVI<span className="nav-logo-plus">+</span>
           </button>
 
-          {/* Desktop Navigation */}
+          {/* Desktop nav */}
           <nav className="nav-desktop-menu">
             <button
               onClick={() => go('/watch')}
@@ -303,10 +310,10 @@ export function Navbar() {
             >
               Watch
             </button>
-            {NAV_ITEMS.slice(1).map(renderDesktopNavItem)}
+            {NAV_ITEMS.slice(1).map(item => renderNavItem(item, false))}
           </nav>
 
-          {/* Desktop Right Actions */}
+          {/* Desktop right actions */}
           <div className="nav-desktop-actions">
             <button className="nav-action-btn" title="Search" onClick={() => setSearchOpen(true)}>
               <Icon.Search />
@@ -322,7 +329,6 @@ export function Navbar() {
               className="nav-action-btn nav-cart"
               title={isAuthenticated ? 'Shopping Cart' : 'Sign in to use cart'}
               onClick={handleCartClick}
-              disabled={!isAuthenticated}
             >
               <Icon.Cart />
               {isAuthenticated && cartCount > 0 && (
@@ -337,7 +343,7 @@ export function Navbar() {
                 <button
                   className="nav-action-btn nav-avatar-btn"
                   title="My Account"
-                  onClick={() => setAccountOpen(!accountOpen)}
+                  onClick={() => setAccountOpen(o => !o)}
                 >
                   <div className="nav-avatar-initials">
                     {userInitials}
@@ -353,7 +359,8 @@ export function Navbar() {
                       <div className="nav-account-avatar">{userInitials}</div>
                       <div>
                         <p className="nav-account-name">
-                          {user?.firstName || user?.email?.split('@')[0]} {user?.lastName || ''}
+                          {user?.firstName ?? user?.given_name ?? user?.email?.split('@')[0]}{' '}
+                          {user?.lastName ?? user?.family_name ?? ''}
                         </p>
                         <p className="nav-account-tier">
                           {subscriptionStatus === 'premium' ? 'Premium Member' : 'Free Plan'}
@@ -369,6 +376,17 @@ export function Navbar() {
                     <button className="nav-account-item"
                       onClick={() => { go('/help'); setAccountOpen(false); }}>
                       <Icon.Help /> Help Center
+                    </button>
+
+                    {/* Quick links to subdomains */}
+                    <div className="nav-account-divider" />
+                    <button className="nav-account-item"
+                      onClick={() => { window.location.href = SHOP_URL; setAccountOpen(false); }}>
+                      HL+ Shop
+                    </button>
+                    <button className="nav-account-item"
+                      onClick={() => { window.location.href = LIFESTYLE_URL; setAccountOpen(false); }}>
+                      HL+ Lifestyle
                     </button>
 
                     {subscriptionStatus !== 'premium' && (
@@ -403,7 +421,7 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Actions */}
+          {/* Mobile actions */}
           <div className="nav-mobile-actions">
             <button className="nav-mobile-btn" onClick={() => setMobileOpen(o => !o)}>
               {mobileOpen ? 'Close' : 'Menu'}
@@ -419,19 +437,16 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         {mobileOpen && (
           <>
             <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />
             <div className="nav-mobile-menu">
-              <div className="nav-mobile-section">
-                <button className="nav-mobile-link"
-                  onClick={() => { go('/watch'); setMobileOpen(false); }}>
-                  Watch
-                </button>
-              </div>
-
-              {NAV_ITEMS.slice(1).map(renderMobileNavItem)}
+              <button className="nav-mobile-link"
+                onClick={() => { go('/watch'); setMobileOpen(false); }}>
+                Watch
+              </button>
+              {NAV_ITEMS.slice(1).map(item => renderNavItem(item, true))}
 
               <div className="nav-mobile-utils">
                 <button className="nav-mobile-util"
@@ -448,7 +463,7 @@ export function Navbar() {
               {isAuthenticated ? (
                 <>
                   <button className="nav-mobile-link"
-                    onClick={() => { go('/shop/cart'); setMobileOpen(false); }}>
+                    onClick={() => { window.location.href = `${SHOP_URL}/cart`; setMobileOpen(false); }}>
                     Cart {cartCount > 0 && `(${cartCount})`}
                   </button>
                   <button className="nav-mobile-link"
@@ -460,10 +475,8 @@ export function Navbar() {
                     Help Center
                   </button>
                   {subscriptionStatus !== 'premium' && (
-                    <button
-                      className="nav-mobile-link nav-mobile-link--upgrade"
-                      onClick={() => { setMobileOpen(false); redirectToGoPremium(); }}
-                    >
+                    <button className="nav-mobile-link nav-mobile-link--upgrade"
+                      onClick={() => { setMobileOpen(false); redirectToGoPremium(); }}>
                       Go Premium
                     </button>
                   )}
