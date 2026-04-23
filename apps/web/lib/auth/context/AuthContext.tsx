@@ -10,7 +10,7 @@ import React, {
   useRef,
 } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.houselevi.com';
 
 // --- How long before expiry we proactively refresh (5 minutes) ---------------
 const REFRESH_BUFFER_MS = 5 * 60 * 1000;
@@ -19,7 +19,7 @@ const REFRESH_BUFFER_MS = 5 * 60 * 1000;
 const DEFAULT_REFRESH_INTERVAL_MS = 6 * 24 * 60 * 60 * 1000;
 
 // -----------------------------------------------------------------------------
-// ?? TYPES
+// 🔐 TYPES
 // -----------------------------------------------------------------------------
 
 interface User {
@@ -50,7 +50,7 @@ interface AuthContextType {
 }
 
 // -----------------------------------------------------------------------------
-// ?? CONTEXT CREATION
+// 🔐 CONTEXT CREATION
 // -----------------------------------------------------------------------------
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,7 +60,7 @@ interface AuthProviderProps {
 }
 
 // -----------------------------------------------------------------------------
-// ?? AUTH PROVIDER
+// 🔐 AUTH PROVIDER
 // -----------------------------------------------------------------------------
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -109,13 +109,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // --- Decode JWT to read the real expiry -------------------------------------
-  // No library needed â€” JWT payload is just base64.
 
   const getTokenExpiryMs = useCallback((token: string): number | null => {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       if (!payload.exp) return null;
-      // exp is in seconds ? convert to ms
       return payload.exp * 1000;
     } catch {
       return null;
@@ -123,10 +121,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // --- Schedule proactive refresh based on actual token expiry ----------------
-  //
-  // With JWT_EXPIRES_IN=7d the interval becomes ~6 days 23 hrs 55 min.
-  // The old hardcoded 10-minute interval caused /auth/refresh to be called
-  // ~1008 times per week instead of once.
 
   const scheduleTokenRefresh = useCallback(
     (refreshFn: () => Promise<boolean>) => {
@@ -142,22 +136,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const expiryMs = getTokenExpiryMs(token);
         if (expiryMs) {
           const msUntilExpiry = expiryMs - Date.now();
-          // Refresh 5 minutes before expiry, but never sooner than 1 minute
           delayMs = Math.max(msUntilExpiry - REFRESH_BUFFER_MS, 60_000);
         }
       }
 
       const days = Math.round(delayMs / 86_400_000);
       const hours = Math.round((delayMs % 86_400_000) / 3_600_000);
-      console.log(
-        `? Next token refresh scheduled in ~${days}d ${hours}h`,
-      );
+      console.log(`⏰ Next token refresh scheduled in ~${days}d ${hours}h`);
 
       refreshTimerRef.current = setTimeout(async () => {
-        console.log('?? Proactive token refresh triggered');
+        console.log('🔄 Proactive token refresh triggered');
         const ok = await refreshFn();
         if (ok) {
-          // Re-schedule after successful refresh
           scheduleTokenRefresh(refreshFn);
         }
       }, delayMs);
@@ -171,12 +161,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const storedRefreshToken = getRefreshToken();
 
     if (!storedRefreshToken) {
-      console.warn('?? No refresh token â€” user must log in again');
+      console.warn('⚠️ No refresh token — user must log in again');
       return false;
     }
 
     try {
-      console.log('?? Exchanging refresh token for new access token...');
+      console.log('🔄 Exchanging refresh token for new access token...');
 
       const response = await fetch(`${API_URL}/auth/refresh`, {
         method: 'POST',
@@ -185,7 +175,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (response.status === 401) {
-        console.warn('?? Refresh token expired â€” user must log in again');
+        console.warn('⚠️ Refresh token expired — user must log in again');
         return false;
       }
 
@@ -197,14 +187,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setAccessToken(newAccessToken);
         if (newRefreshToken) setRefreshToken(newRefreshToken);
 
-        console.log('? Access token refreshed successfully');
+        console.log('✅ Access token refreshed successfully');
         return true;
       }
 
-      console.error('? Token refresh failed:', response.status);
+      console.error('❌ Token refresh failed:', response.status);
       return false;
     } catch (error) {
-      console.error('? Token refresh network error:', error);
+      console.error('❌ Token refresh network error:', error);
       return false;
     }
   }, [getRefreshToken, setAccessToken, setRefreshToken]);
@@ -215,14 +205,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const token = getAccessToken();
 
     if (!token) {
-      console.log('?? No access token â€” skipping profile fetch');
+      console.log('👤 No access token — skipping profile fetch');
       setUser(null);
       setIsLoading(false);
       return;
     }
 
     try {
-      console.log('?? Fetching user profile (/auth/me)');
+      console.log('🔄 Fetching user profile (/auth/me)');
 
       const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
@@ -231,9 +221,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       });
 
-      // Token expired ? try to refresh silently
       if (response.status === 401) {
-        console.warn('?? Access token rejected (401) â€” attempting refresh');
+        console.warn('⚠️ Access token rejected (401) — attempting refresh');
         const refreshed = await refreshAccessToken();
 
         if (refreshed) {
@@ -248,14 +237,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
               const userData = data.user || data;
               setUser(userData);
               localStorage.setItem('user', JSON.stringify(userData));
-              console.log('? Profile loaded after token refresh:', userData.email);
+              console.log('✅ Profile loaded after token refresh:', userData.email);
               setIsLoading(false);
               return;
             }
           }
         }
 
-        // Refresh failed â€” clear everything
         await clearAuthData();
         setIsLoading(false);
         return;
@@ -266,13 +254,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const userData = data.user || data;
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
-        console.log('? Profile loaded:', userData.email);
+        console.log('✅ Profile loaded:', userData.email);
       } else {
-        console.error('? Profile fetch failed:', response.status);
+        console.error('❌ Profile fetch failed:', response.status);
         setUser(null);
       }
     } catch (error) {
-      console.error('? Profile fetch error:', error);
+      console.error('❌ Profile fetch error:', error);
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -286,7 +274,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const refreshToken = getRefreshToken();
 
     try {
-      console.log('?? Logging out...');
+      console.log('🚪 Logging out...');
       if (token) {
         await fetch(`${API_URL}/auth/logout`, {
           method: 'POST',
@@ -295,7 +283,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ refreshToken }),
-        }).catch((e) => console.warn('?? Backend logout failed:', e));
+        }).catch((e) => console.warn('⚠️ Backend logout failed:', e));
       }
     } finally {
       await clearAuthData();
@@ -315,7 +303,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // --- 5. Clear all auth data -------------------------------------------------
 
   const clearAuthData = useCallback(async (): Promise<void> => {
-    console.log('??? Clearing auth data');
+    console.log('🗑️ Clearing auth data');
     setAccessToken(null);
     setRefreshToken(null);
     setUser(null);
@@ -334,35 +322,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [setAccessToken, setRefreshToken]);
 
-  // clearAuth is exposed in the context so it is identical to clearAuthData
   const clearAuth = clearAuthData;
 
   // --- 6. Initialize on app load ----------------------------------------------
 
   useEffect(() => {
+    // Guard against React StrictMode double-fire only.
+    // We reset this on cleanup so re-mounts (e.g. after full page navigation) work correctly.
     if (initializingRef.current) return;
     initializingRef.current = true;
 
-    console.log('?? AuthProvider initializing');
+    console.log('🔐 AuthProvider initializing');
 
     const init = async () => {
       try {
         const hasAccessToken = getAccessToken();
         const hasRefreshToken = getRefreshToken();
 
-        console.log('  - Access token :', hasAccessToken ? '?' : '?');
-        console.log('  - Refresh token:', hasRefreshToken ? '?' : '?');
+        console.log('  - Access token :', hasAccessToken ? '✅' : '❌');
+        console.log('  - Refresh token:', hasRefreshToken ? '✅' : '❌');
 
         if (hasAccessToken) {
-          // Happy path: valid token in storage ? load user and schedule refresh
+          // Happy path: valid token in storage → load user and schedule refresh
           await refreshUserData();
           scheduleTokenRefresh(refreshAccessToken);
           return;
         }
 
         if (hasRefreshToken) {
-          // Token missing from storage but refresh token present ? silent re-login
-          console.log('?? No access token â€” attempting silent login via refresh token');
+          // Token missing but refresh token present → silent re-login
+          console.log('🔄 No access token — attempting silent login via refresh token');
           const ok = await refreshAccessToken();
           if (ok) {
             await refreshUserData();
@@ -375,16 +364,51 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
 
         // No tokens at all
-        console.log('?? No tokens found â€” guest session');
+        console.log('👤 No tokens found — guest session');
         setIsLoading(false);
       } catch (error) {
-        console.error('? Auth init error:', error);
+        console.error('❌ Auth init error:', error);
         await clearAuthData();
         setIsLoading(false);
       }
     };
 
     init();
+
+    // -------------------------------------------------------------------------
+    // Storage event listener — handles the case where AuthProvider initializes
+    // as a guest BEFORE the callback page has stored the token.
+    //
+    // The storage event fires on OTHER tabs/windows when localStorage changes.
+    // On the SAME tab (our case after redirect), window.location.href causes a
+    // full reload so AuthProvider re-initializes from scratch and reads the
+    // token directly — the storage event is a safety net for edge cases where
+    // the token arrives asynchronously after init (e.g. slow storage writes,
+    // shared-worker auth patterns, or future SSO implementations).
+    // -------------------------------------------------------------------------
+    const handleStorage = (e: StorageEvent) => {
+      if ((e.key === 'token' || e.key === 'accessToken') && e.newValue) {
+        console.log('🔔 Storage event: token detected — refreshing user data');
+        refreshUserData().then(() => scheduleTokenRefresh(refreshAccessToken));
+      }
+      if ((e.key === 'token' || e.key === 'accessToken') && !e.newValue) {
+        // Token was removed in another tab — sync logout
+        console.log('🔔 Storage event: token removed — clearing session');
+        setUser(null);
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      // Reset guard on unmount so the next mount (e.g. after HMR or navigation)
+      // runs init() fresh instead of being blocked by the stale ref value.
+      initializingRef.current = false;
+      window.removeEventListener('storage', handleStorage);
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // --- Restart refresh timer whenever user changes ----------------------------
@@ -399,7 +423,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ---------------------------------------------------------------------------
-  // ?? CONTEXT VALUE
+  // 🔐 CONTEXT VALUE
   // ---------------------------------------------------------------------------
 
   const value: AuthContextType = {
@@ -416,14 +440,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 }
 
 // -----------------------------------------------------------------------------
-// ?? HOOK
+// 🔐 HOOK
 // -----------------------------------------------------------------------------
 
 export function useAuthContext(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error(
-      '? useAuthContext must be used inside <AuthProvider>. ' +
+      '❌ useAuthContext must be used inside <AuthProvider>. ' +
         'Wrap your app in <AuthProvider> in layout.tsx.',
     );
   }
