@@ -10,7 +10,7 @@ import React, {
   useRef,
 } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_URL = (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL) || 'https://api.houselevi.com';
 
 // --- How long before expiry we proactively refresh (5 minutes) ---------------
 const REFRESH_BUFFER_MS = 5 * 60 * 1000;
@@ -66,7 +66,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const initializingRef = useRef(false);
 
   // --- Storage helpers --------------------------------------------------------
