@@ -280,9 +280,9 @@ export function Navbar() {
     router.push('/home');
   }, [router]);
 
-  const handleMoodTVClick = useCallback((closeMobile = false) => {
+const handleMoodTVClick = useCallback((closeMobile = false) => {
     if (closeMobile) setMobileOpen(false);
-    if (!isAuthenticated) { setShowMoodModal(true); } else { go('/mood-tv'); }
+    if (!isAuthenticated) { setShowMoodModal(true); } else { go('/live-tv'); }
   }, [isAuthenticated]);
 
   const handleCtaClick = () => {
