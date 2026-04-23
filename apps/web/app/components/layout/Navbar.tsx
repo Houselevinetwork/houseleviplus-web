@@ -16,11 +16,11 @@ const LIFESTYLE_URL = 'https://lifestyle.houselevi.com';
 
 // ─── Nav items ────────────────────────────────────────────────────
 const NAV_ITEMS = [
-  { label: 'Home',         path: '/home',          internal: true  },
-  { label: 'Premium Access', path: '/premium-access', internal: true },
-  { label: 'Shop',         path: SHOP_URL,         internal: false },
-  { label: 'HL+ Lifestyle', path: LIFESTYLE_URL,   internal: false },
-  { label: 'HL Live TV',   path: '/live-tv',        internal: true  },
+  { label: 'Home',           path: '/home',            internal: true  },
+  { label: 'Premium Access', path: '/premium-access',  internal: true  },
+  { label: 'Shop',           path: SHOP_URL,           internal: false },
+  { label: 'HL+ Lifestyle',  path: LIFESTYLE_URL,      internal: false },
+  { label: 'HL Live TV',     path: '/live-tv',          internal: true  },
 ];
 
 function redirectToGoPremium() {
@@ -164,7 +164,7 @@ export function Navbar() {
   const router   = useRouter();
   const pathname = usePathname();
 
-  // Auth state — derived entirely from cookie, no external package needed
+  // Auth state — reads from localStorage (set by callback page) with cookie fallback
   const [sessionToken,    setSessionToken]    = useState<string | null>(null);
   const [user,            setUser]            = useState<Record<string, string> | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -178,13 +178,60 @@ export function Navbar() {
   const accountRef = useRef<HTMLDivElement>(null);
   const cartCount  = useCartCount(isAuthenticated);
 
-  // Read session on mount
-  useEffect(() => {
-    const token = getSessionToken();
+  // ─── Auth loader — reads localStorage first, falls back to cookie ──
+  const loadAuth = useCallback(() => {
+    const token =
+      localStorage.getItem('token') ||
+      localStorage.getItem('accessToken') ||
+      sessionStorage.getItem('accessToken') ||
+      getSessionToken(); // cookie fallback
+
     setSessionToken(token);
     setIsAuthenticated(!!token);
-    if (token) setUser(parseSessionUser(token));
+
+    if (token) {
+      // Try to get richer user data from stored user object first
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+          return;
+        }
+      } catch { /* fall through to JWT parse */ }
+      setUser(parseSessionUser(token));
+    } else {
+      setUser(null);
+    }
   }, []);
+
+  // Read session on mount + react to login/logout events
+  useEffect(() => {
+    loadAuth();
+
+    // Fires when another tab writes to localStorage (cross-tab login/logout)
+    const handleStorage = (e: StorageEvent) => {
+      if (
+        e.key === 'token' ||
+        e.key === 'accessToken' ||
+        e.key === 'user' ||
+        e.key === null // localStorage.clear() was called
+      ) {
+        loadAuth();
+      }
+    };
+
+    // Fires on the SAME tab after the callback page stores the token and
+    // dispatches this custom event — window.storage does NOT fire same-tab
+    const handleAuthUpdated = () => loadAuth();
+
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('hl_auth_updated', handleAuthUpdated);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('hl_auth_updated', handleAuthUpdated);
+    };
+  }, [loadAuth]);
 
   const subscriptionStatus: SubStatus = !isAuthenticated
     ? 'guest'
@@ -218,7 +265,6 @@ export function Navbar() {
   }, [pathname]);
 
   const go = (path: string) => {
-    // External URLs (shop, lifestyle) — use window.location
     if (path.startsWith('http')) { window.location.href = path; return; }
     router.push(path);
   };
@@ -249,11 +295,16 @@ export function Navbar() {
     // Clear session cookie (houselevi.com domain)
     document.cookie = 'hl_session=; Max-Age=0; path=/; domain=.houselevi.com';
     localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     localStorage.removeItem('hl_cart');
+    sessionStorage.removeItem('accessToken');
     setIsAuthenticated(false);
     setUser(null);
     setSessionToken(null);
+    // Notify other tabs
+    window.dispatchEvent(new Event('hl_auth_updated'));
     router.push('/home');
   };
 
@@ -378,7 +429,6 @@ export function Navbar() {
                       <Icon.Help /> Help Center
                     </button>
 
-                    {/* Quick links to subdomains */}
                     <div className="nav-account-divider" />
                     <button className="nav-account-item"
                       onClick={() => { window.location.href = SHOP_URL; setAccountOpen(false); }}>
