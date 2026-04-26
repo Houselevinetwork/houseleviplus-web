@@ -37,13 +37,13 @@ export const metadata: Metadata = {
   // ── 2. Title ───────────────────────────────────────────────────────────────
   //       template applies to every child page: "Watch | House Levi+"
   title: {
-    default:  'House Levi+ | Premium African Theatre, TV, Shop & Travel',
+    default:  'Watch Theatre, TV Shows, Movies, Podcasts, Documentaries & Live TV | House Levi+',
     template: '%s | House Levi+',
   },
 
   // ── 3. Description — 150–160 chars, action-oriented, keyword-rich ──────────
   description:
-    'House Levi+ is Africa\'s premium lifestyle platform. Stream exclusive theatre, TV shows and films, shop curated merchandise, and discover premium travel — all in one place.',
+    'Stream exclusive theatre shows, TV series, movies, podcasts, documentaries and 24-hour live TV on House Levi+. Watch now at houselevi.com.',
 
   // ── 4. keywords — intentionally OMITTED (Google has ignored since 2009) ────
 
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     locale:      'en_US',
     url:         'https://houselevi.com',
     siteName:    'House Levi+',
-    title:       'House Levi+ | Watch Theatre, TV Shows, Movies, Podcasts, Documentaries & Live TV | House Levi+',
+    title:       'House Levi+ | Watch Theatre, TV Shows, Movies, Podcasts, Documentaries & Live TV',
     description:
       'Stream exclusive theatre shows, TV series, movies, podcasts, documentaries and 24-hour live TV on House Levi+. Watch now at houselevi.com.',
     images: [
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
         url:    '/og-image.jpg',   // place a 1200×630 image in /public/og-image.jpg
         width:  1200,
         height: 630,
-        alt:    'House Levi+ — Africa\'s Premium Lifestyle Platform',
+        alt:    'House Levi+ — Watch Theatre, TV Shows, Movies & Live TV',
         type:   'image/jpeg',
       },
     ],
@@ -101,9 +101,9 @@ export const metadata: Metadata = {
     card:        'summary_large_image',
     site:        '@houseleviplus',
     creator:     '@houseleviplus',
-    title:       'House Levi+ | Premium African Theatre, TV, Shop & Travel',
+    title:       'House Levi+ | Watch Theatre, TV Shows, Movies, Podcasts & Live TV',
     description:
-      'Stream exclusive African theatre, TV shows and films. Shop premium merchandise and discover curated travel.',
+      'Stream exclusive theatre shows, TV series, movies, podcasts, documentaries and 24-hour live TV on House Levi+.',
     images: ['/twitter-image.jpg'], // ideally 1200×628, same as og-image is fine
   },
 
@@ -115,18 +115,18 @@ export const metadata: Metadata = {
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon.ico',       sizes: 'any' },
     ],
-    apple:   [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
-    other:   [{ rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#2E2E2E' }],
-  },8
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+    other: [{ rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#2E2E2E' }],
+  },
 
   // ── 11. Web App Manifest (PWA / home screen) ───────────────────────────────
   manifest: '/manifest.json',
 
   // ── 12. Apple Web App (iOS home screen behaviour) ─────────────────────────
   appleWebApp: {
-    capable:         true,
-    statusBarStyle:  'black-translucent',
-    title:           'House Levi+',
+    capable:        true,
+    statusBarStyle: 'black-translucent',
+    title:          'House Levi+',
   },
 
   // ── 13. Google Search Console + Yandex verification ───────────────────────
@@ -138,7 +138,7 @@ export const metadata: Metadata = {
   },
 
   // ── 14. Category — signals content type to search engines ─────────────────
-  category: 'entertainment, lifestyle, travel, shopping',
+  category: 'entertainment',
 
 }
 
@@ -158,10 +158,10 @@ const jsonLd = {
       url:      'https://houselevi.com',
       name:     'House Levi+',
       description:
-        'Africa\'s premium lifestyle platform — stream theatre, TV & film, shop curated merchandise, and discover premium travel.',
+        'Stream exclusive theatre shows, TV series, movies, podcasts, documentaries and 24-hour live TV on House Levi+.',
       publisher: { '@id': 'https://houselevi.com/#organization' },
       potentialAction: {
-        '@type':       'SearchAction',
+        '@type':  'SearchAction',
         target: {
           '@type':      'EntryPoint',
           urlTemplate: 'https://houselevi.com/search?q={search_term_string}',
@@ -179,10 +179,10 @@ const jsonLd = {
       alternateName: 'House Levitika Plus',
       url:           'https://houselevi.com',
       logo: {
-        '@type':      'ImageObject',
-        url:          'https://houselevi.com/og-image.jpg',
-        width:        1200,
-        height:       630,
+        '@type':  'ImageObject',
+        url:      'https://houselevi.com/og-image.jpg',
+        width:    1200,
+        height:   630,
       },
       sameAs: [
         'https://web.facebook.com/houseleviplus',
@@ -199,12 +199,12 @@ const jsonLd = {
       name:          'House Levi+',
       url:           'https://houselevi.com',
       description:
-        'Stream exclusive African theatre productions, TV shows, films and live broadcasts.',
+        'Stream exclusive theatre productions, TV shows, movies, podcasts, documentaries and 24-hour live TV.',
       provider: { '@id': 'https://houselevi.com/#organization' },
       offers: {
-        '@type':    'Offer',
-        category:  'Subscription',
-        url:       'https://houselevi.com/subscribe',
+        '@type':   'Offer',
+        category: 'Subscription',
+        url:      'https://houselevi.com/subscribe',
       },
     },
   ],
@@ -231,9 +231,9 @@ export default function RootLayout({
 
         {/* ── DNS Prefetch for common third-party origins ────────────────── */}
         {/* Shaves ~100–300ms off first external resource load                */}
-        <link rel="dns-prefetch"    href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch"    href="//static.cloudflareinsights.com" />
-        <link rel="preconnect"      href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//static.cloudflareinsights.com" />
+        <link rel="preconnect"   href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <ClientLayout>{children}</ClientLayout>
