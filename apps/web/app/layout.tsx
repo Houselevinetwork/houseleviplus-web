@@ -81,9 +81,9 @@ export const metadata: Metadata = {
     locale:      'en_US',
     url:         'https://houselevi.com',
     siteName:    'House Levi+',
-    title:       'House Levi+ | Premium African Theatre, TV, Shop & Travel',
+    title:       'House Levi+ | Watch Theatre, TV Shows, Movies, Podcasts, Documentaries & Live TV | House Levi+',
     description:
-      'Stream exclusive African theatre, TV shows and films. Shop premium merchandise and discover curated travel on House Levi+.',
+      'Stream exclusive theatre shows, TV series, movies, podcasts, documentaries and 24-hour live TV on House Levi+. Watch now at houselevi.com.',
     images: [
       {
         url:    '/og-image.jpg',   // place a 1200×630 image in /public/og-image.jpg
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     ],
     apple:   [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
     other:   [{ rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#2E2E2E' }],
-  },
+  },8
 
   // ── 11. Web App Manifest (PWA / home screen) ───────────────────────────────
   manifest: '/manifest.json',

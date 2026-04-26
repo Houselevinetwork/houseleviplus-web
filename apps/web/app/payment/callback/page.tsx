@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useAuthContext } from '@houselevi/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.houselevi.com';
 
@@ -10,7 +9,6 @@ type Status = 'verifying' | 'completed' | 'failed';
 
 function AuthCallbackContent() {
   const searchParams = useSearchParams();
-  const { refreshUserData } = useAuthContext();
   const [status, setStatus] = useState<Status>('verifying');
   const [error, setError] = useState('');
 
@@ -28,16 +26,17 @@ function AuthCallbackContent() {
         return;
       }
 
-      // Store token in localStorage — matches what authcontext reads
+      // Store token in houselevi.com localStorage — this is the correct origin.
+      // AuthProvider on /home initializes fresh after the redirect and reads these.
       localStorage.setItem('token', code);
       localStorage.setItem('accessToken', code);
       sessionStorage.setItem('accessToken', code);
 
-      // Store user info if available in the token
+      // Pre-fetch user profile to warm localStorage cache.
+      // AuthProvider will re-fetch too, but this speeds up the first render.
       try {
         const payload = JSON.parse(atob(code.split('.')[1]));
         if (payload.userId) {
-          // Fetch full user profile from API
           const response = await fetch(`${API_URL}/auth/me`, {
             headers: {
               Authorization: `Bearer ${code}`,
@@ -52,25 +51,16 @@ function AuthCallbackContent() {
           }
         }
       } catch {
-        // Token decode failed — still continue, authcontext will handle it
-      }
-
-      // Refresh auth context so Navbar updates immediately
-      try {
-        if (refreshUserData && typeof refreshUserData === 'function') {
-          await refreshUserData();
-        }
-      } catch {
-        // Don't fail if refresh fails — token is stored, full reload will fix it
+        // Token decode or profile fetch failed — non-fatal.
+        // AuthProvider will fetch the profile itself on /home.
       }
 
       setStatus('completed');
 
-      // Full page reload forces AuthProvider to reinitialize with the new token
-      // router.push() would NOT reinitialize AuthProvider — that's why Navbar stays as guest
-      setTimeout(() => {
-        window.location.href = '/home';
-      }, 1500);
+      // Redirect immediately — no setTimeout.
+      // window.location.href causes a full page reload so AuthProvider
+      // re-initializes from scratch and reads the token we just stored above.
+      window.location.href = '/home';
 
     } catch (err: any) {
       setStatus('failed');

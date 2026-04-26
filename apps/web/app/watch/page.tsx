@@ -73,23 +73,23 @@ export default function WatchPage() {
       moviesData,
       seriesData,
     ] = await Promise.all([
-      // Hero ÃƒÂ¯Ã‚Â¿Ã‚Â½ public, but filtered to free content only
+      // Hero public, but filtered to free content only
       fetchJSON<any>('/api/content/hero', { item: null }),
-      // Hosts ÃƒÂ¯Ã‚Â¿Ã‚Â½ public
+      // Hostspublic
       fetchJSON<any>('/api/content/hosts', { hosts: [] }),
-      // Latest ÃƒÂ¯Ã‚Â¿Ã‚Â½ FREE content only (isPremium=false enforced on backend)
+      // Latest FREE content only (isPremium=false enforced on backend)
       fetchJSON<any>('/api/content/latest-episodes?limit=12&isPremium=false', { items: [] }, token || undefined),
-      // Continue watching ÃƒÂ¯Ã‚Â¿Ã‚Â½ auth only
+      // Continue watching  auth only
       token
         ? fetchJSON<any>('/api/content/continue-watching?limit=8', { items: [] }, token)
         : Promise.resolve({ items: [] }),
-      // Featured ÃƒÂ¯Ã‚Â¿Ã‚Â½ free only
+      // Featured  free only
       fetchJSON<any>('/api/content?isPremium=false&limit=12', { items: [] }),
-      // Stage plays ÃƒÂ¯Ã‚Â¿Ã‚Â½ free only
+      // Stage plays free only
       fetchJSON<any>('/api/content?type=stage-play&isPremium=false&limit=12', { items: [] }),
-      // Movies ÃƒÂ¯Ã‚Â¿Ã‚Â½ free only
+      // Movies  free only
       fetchJSON<any>('/api/content?type=movie&isPremium=false&limit=12', { items: [] }),
-      // Series ÃƒÂ¯Ã‚Â¿Ã‚Â½ free only
+      // Series  free only
       fetchJSON<any>('/api/content?type=series&isPremium=false&limit=12', { items: [] }),
     ]);
 
