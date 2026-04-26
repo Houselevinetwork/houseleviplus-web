@@ -204,7 +204,7 @@ const jsonLd = {
       offers: {
         '@type':   'Offer',
         category: 'Subscription',
-        url:      'https://houselevi.com/subscribe',
+        url:      'https://gopremium.houselevi.com/choose-plans',
       },
     },
   ],
